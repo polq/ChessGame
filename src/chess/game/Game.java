@@ -1,7 +1,7 @@
 package chess.game;
 
+import chess.gamestate.ActiveGameState;
 import chess.gamestate.GameState;
-import chess.gamestate.NotStartedGameState;
 import chess.items.board.Board;
 import chess.rules.GameRule;
 
@@ -16,6 +16,9 @@ public class Game {
 
   public Game() {}
 
+  public GameState getGameState() {
+    return gameState;
+  }
   // main API method which takes input String and returns all info about board, game state and
   // modifications
   public String play(String inputCommand) {
@@ -35,12 +38,15 @@ public class Game {
               + GameRule.gameRuleDelimiters);
     }
 
+    inputCommand = inputCommand.toUpperCase();
     String[] inputCoordinates = inputCommand.split(GameRule.gameRuleDelimiters);
     String fromCoordinate = inputCoordinates[0];
     String toCoordinate = inputCoordinates[1];
 
     this.gameState.executeCommand(fromCoordinate, toCoordinate);
 
+    // if everything is OK, switch player's turn
+    this.gameState.switchPlayer();
     // after command is executed, switch state (e.g if game just started or in check/mat states)
     this.gameState = gameState.switchGameState();
 
@@ -56,7 +62,7 @@ public class Game {
 
     this.rule = rule;
     this.gameBoard = new Board(rule);
-    this.gameState = new NotStartedGameState(gameBoard);
+    this.gameState = new ActiveGameState(gameBoard);
   }
 
   // check input coordinates for valid input

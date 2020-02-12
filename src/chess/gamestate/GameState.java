@@ -1,13 +1,18 @@
 package chess.gamestate;
 
 import chess.behavior.Jumpable;
+import chess.behavior.Queenable;
 import chess.items.board.Board;
 import chess.items.board.Cell;
 import chess.items.chesspieces.ChessFigure;
+import chess.items.chesspieces.king.King;
+import chess.items.chesspieces.queen.Queen;
 import chess.player.ChessPlayer;
 
-import java.util.regex.Matcher;
-import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class GameState {
 
@@ -40,6 +45,109 @@ public abstract class GameState {
 
   public abstract void executeCommand(String fromCoordinate, String toCoordinate);
 
+  void executeMove(Cell fromCell, Cell toCell) {
+    ChessFigure figure = fromCell.getFigure();
+
+    // Check if figure can move from the given cell to the destination one and there are no
+    // obstacles on their path
+    if (!figure.move(fromCell, toCell) || !isPathClear(fromCell, toCell, figure)) {
+      throw new IllegalArgumentException(
+          "Invalid input "
+              + figure.toString()
+              + " cannot move from "
+              + fromCell.getStringKey()
+              + " to "
+              + toCell.getStringKey());
+    }
+    if (figure instanceof King && isUnderCheck(figure.getChessOwner(), toCell)) {
+      throw new IllegalArgumentException("Invalid input, King cannot move under check");
+    }
+
+    // Modifying cell from where chess piece has moved
+    fromCell.figureMovedFromThisCell();
+    // Modifying cell to where chess has moved
+    toCell.figureMovedToThisCell(figure);
+
+    // if figure that can become a Queen moves to a queenable cell
+    if (figure instanceof Queenable && toCell instanceof Queenable) {
+      executeBecomeQueen(figure, toCell);
+    }
+  }
+
+  void executeBecomeQueen(ChessFigure previousFigure, Cell toCell) {
+    ChessPlayer player = previousFigure.getChessOwner();
+    toCell.setFigure(new Queen(player, player.getQueenIcon()));
+  }
+
+  void executeBeat(Cell fromCell, Cell toCell) {
+    ChessFigure figure = fromCell.getFigure();
+    if (!figure.beat(fromCell, toCell) || !isPathClear(fromCell, toCell, figure)) {
+      throw new IllegalArgumentException(
+          "Invalid input "
+              + figure.toString()
+              + " cannot beat from "
+              + fromCell.getStringKey()
+              + " to "
+              + toCell.getStringKey());
+    }
+
+    if (figure instanceof King && isUnderCheck(figure.getChessOwner(), toCell)) {
+      throw new IllegalArgumentException("Invalid input, King cannot move under check");
+    }
+
+    fromCell.figureMovedFromThisCell();
+    toCell.figureMovedToThisCell(figure);
+
+    if (figure instanceof Queenable && toCell instanceof Queenable) {
+      executeBecomeQueen(figure, toCell);
+    }
+  }
+
+  void executeCastle(Cell fromCell, Cell toCell) {
+  }
+
+  // find if cell is under check
+  boolean isUnderCheck(ChessPlayer player, Cell kingCell) {
+    List<Cell> enemyfigures =
+        gameBoard.getBoardCells().entrySet().stream()
+            .map(Map.Entry::getValue)
+            .filter(cell -> !cell.isEmpty())
+            .filter(cell -> !cell.getFigure().getChessOwner().getClass().equals(player.getClass()))
+            .filter(cell -> cell.getFigure().beat(cell, kingCell))
+            .filter(cell -> isPathClear(cell, kingCell, cell.getFigure()))
+            .collect(Collectors.toList());
+
+    return !enemyfigures.isEmpty();
+  }
+
+  // find king by player color
+  Cell findKing(ChessPlayer player) {
+    return getGameBoard().getBoardCells().entrySet().stream()
+        .filter(entry -> !entry.getValue().isEmpty())
+        .filter(
+            entry ->
+                entry.getValue().getFigure().getChessOwner().getClass().equals(player.getClass()))
+        .filter(entry -> entry.getValue().getFigure() instanceof King)
+        .map(Map.Entry::getValue)
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("No king on the board, game is already over"));
+  }
+
+  boolean isUnderCheckMate(ChessPlayer player, Cell kingCell) {
+    List<Cell> potentialCellList =
+        gameBoard.getBoardCells().entrySet().stream()
+            .map(Map.Entry::getValue)
+            .filter(entry -> !entry.equals(kingCell))
+            .filter(Cell::isEmpty)
+            .filter(entry -> kingCell.getFigure().move(kingCell, entry))
+            .collect(Collectors.toList());
+
+    Optional<Cell> potentialUncheckedCells =
+        potentialCellList.stream().filter(cell -> !isUnderCheck(player, cell)).findAny();
+
+    return potentialUncheckedCells.isEmpty();
+  }
+
   // checks if moving path from one cell to another is not occupied
   boolean isPathClear(Cell startPoint, Cell endPoint, ChessFigure figure) {
 
@@ -69,7 +177,7 @@ public abstract class GameState {
         }
       }
     } else if (startPoint.getPositionLetter()
-        == startPoint.getPositionLetter()) { // letters identical - vertical movement
+        == endPoint.getPositionLetter()) { // letters identical - vertical movement
       int min = Integer.min(startPoint.getPositionNumber(), endPoint.getPositionNumber());
       int abs = Math.abs(startPoint.getPositionNumber() - endPoint.getPositionNumber());
 

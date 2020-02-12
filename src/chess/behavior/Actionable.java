@@ -2,7 +2,7 @@ package chess.behavior;
 
 import chess.items.board.Cell;
 
-public interface Movable {
+public interface Actionable {
 
   boolean move(Cell start, Cell destination);
 

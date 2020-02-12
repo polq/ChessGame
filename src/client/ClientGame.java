@@ -11,6 +11,7 @@ public class ClientGame {
     GameRule desiredRule = new StandardChessRule();
     Game chessGame = new Game();
     chessGame.startNewGame(desiredRule);
+    System.out.println("Game has been started\n");
     System.out.println(chessGame);
 
     Scanner scanner = new Scanner(System.in);
@@ -19,9 +20,9 @@ public class ClientGame {
       try{
         System.out.println(chessGame.play(inputCommand));
       } catch (IllegalArgumentException e){
-        System.out.println(e);
+        System.out.println(e.getMessage());
       } catch (NullPointerException e){
-        System.out.println(e);
+        System.out.println(e.getMessage());
       }
     }
 

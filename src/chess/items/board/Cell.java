@@ -6,34 +6,20 @@ import java.util.Objects;
 
 public class Cell {
 
-  public int getPositionNumber() {
-    return positionNumber;
-  }
-
-  public char getPositionLetter() {
-    return positionLetter;
-  }
-
   private final int positionNumber;
   private final char positionLetter;
   private ChessFigure figure;
-
   private boolean isEmpty;
 
-  Cell(int positionNumber, char positionLetter, ChessFigure figure, boolean isEmpty) {
+  Cell(char positionLetter, int positionNumber, ChessFigure figure, boolean isEmpty) {
+    this.positionLetter = Character.toUpperCase(positionLetter);
     this.positionNumber = positionNumber;
-    this.positionLetter = positionLetter;
     this.figure = figure;
     this.isEmpty = isEmpty;
   }
 
-  public Cell(int positionNumber, char positionLetter) {
-    this.positionNumber = positionNumber;
-    this.positionLetter = positionLetter;
-  }
-
-  public Cell(int positionNumber, char positionLetter, ChessFigure figure) {
-    this(positionNumber, positionLetter, figure, false);
+  public Cell(char positionLetter, int positionNumber) {
+    this(positionLetter, positionNumber, null, false);
   }
 
   public ChessFigure getFigure() {
@@ -52,14 +38,26 @@ public class Cell {
     return isEmpty;
   }
 
-  public void figureMovedFromThisCell(){
+  public int getPositionNumber() {
+    return positionNumber;
+  }
+
+  public char getPositionLetter() {
+    return positionLetter;
+  }
+
+  public void figureMovedFromThisCell() {
     this.isEmpty = true;
     this.figure = null;
   }
 
-  public void figureMovedToThisCell(ChessFigure figure){
+  public void figureMovedToThisCell(ChessFigure figure) {
     this.figure = figure;
     this.isEmpty = false;
+  }
+
+  public String getStringKey(){
+    return "" + Character.toUpperCase(this.getPositionLetter()) + this.getPositionNumber();
   }
 
   @Override

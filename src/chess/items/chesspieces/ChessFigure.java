@@ -1,17 +1,19 @@
 package chess.items.chesspieces;
 
-import chess.behavior.Movable;
+import chess.behavior.Actionable;
 import chess.items.board.Cell;
 import chess.player.ChessPlayer;
 
-public abstract class ChessFigure implements Movable {
+public abstract class ChessFigure implements Actionable {
 
   ChessPlayer chessOwner;
   String chessIcon;
+  boolean isMoved;
 
   public ChessFigure(ChessPlayer chessOwner, String chessIcon) {
     this.chessOwner = chessOwner;
     this.chessIcon = chessIcon;
+    this.isMoved = false;
   }
 
   public String getChessIcon() {
@@ -20,6 +22,14 @@ public abstract class ChessFigure implements Movable {
 
   public ChessPlayer getChessOwner() {
     return chessOwner;
+  }
+
+  public boolean isMoved() {
+    return isMoved;
+  }
+
+  public void setMoved(boolean moved) {
+    isMoved = moved;
   }
 
   @Override
@@ -37,5 +47,10 @@ public abstract class ChessFigure implements Movable {
   @Override
   public boolean beat(Cell start, Cell destination) {
     return this.move(start, destination);
+  }
+
+  @Override
+  public String toString() {
+    return this.getChessOwner().toString();
   }
 }

@@ -1,14 +1,18 @@
 package chess.player;
 
-abstract public class ChessPlayer {
+import chess.behavior.Queenable;
 
-    int defaultStep;
+public abstract class ChessPlayer implements Queenable {
 
-    public ChessPlayer(){
+  private int defaultStep;
 
-    }
+  public ChessPlayer() {}
 
-    public ChessPlayer(int defaultStep){
-        this.defaultStep = defaultStep;
-    }
+  public ChessPlayer(int defaultStep) {
+    this.defaultStep = defaultStep;
+  }
+
+  public int getDefaultStep() {
+    return defaultStep;
+  }
 }

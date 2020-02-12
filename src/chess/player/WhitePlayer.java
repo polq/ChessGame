@@ -1,4 +1,4 @@
-package chess.player.playertypes;
+package chess.player;
 
 import chess.player.ChessPlayer;
 
@@ -8,11 +8,14 @@ public class WhitePlayer extends ChessPlayer {
     super(defaultStep);
   }
 
-    public WhitePlayer() {
+  public WhitePlayer() {}
 
-    }
+  @Override
+  public String getQueenIcon() {
+    return "\u2655";
+  }
 
-    @Override
+  @Override
   public String toString() {
     return "White Player";
   }

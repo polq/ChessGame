@@ -1,12 +1,11 @@
 package chess.items.board;
 
-import chess.items.board.Cell;
 import chess.player.ChessPlayer;
 import chess.rules.GameRule;
 
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.stream.IntStream;
 
 public class Board {
 
@@ -34,14 +33,16 @@ public class Board {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("  A B C D E F G H\n");
+    StringBuilder builder = new StringBuilder("  ");
+    int firstLetter = GameRule.initialBoardWeight;
+    int lastLetter = firstLetter + rules.getBoardWeight();
+    IntStream.range(firstLetter, lastLetter).forEach(i -> builder.append((char) i + " "));
+    builder.append("\n");
+
     for (int i = rules.getBoardHeight(); i >= 1; i--) {
       builder.append(i);
       builder.append(" ");
-      for (int j = GameRule.initialBoardWeight + rules.getBoardWeight() - 1;
-          j >= GameRule.initialBoardWeight;
-          j--) {
+      for (int j = firstLetter; j <lastLetter; j++) {
         String cellKey = "" + (char) j + i;
         builder.append(boardCells.get(cellKey));
         builder.append(" ");

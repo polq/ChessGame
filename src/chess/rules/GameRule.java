@@ -2,8 +2,6 @@ package chess.rules;
 
 import chess.items.board.Cell;
 import chess.player.ChessPlayer;
-
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
