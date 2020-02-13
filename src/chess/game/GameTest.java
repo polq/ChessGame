@@ -19,13 +19,13 @@ class GameTest {
 
   @Test
   public void checkValidInput() {
-    assertEquals(true, game.checkValidInput("A1 A3"));
-    assertEquals(true, game.checkValidInput("a1-B2"));
-    assertEquals(true, game.checkValidInput("b1/b2"));
-    assertEquals(false, game.checkValidInput("H9.B2"));
-    assertEquals(false, game.checkValidInput("H7 I4"));
-    assertEquals(true, game.checkValidInput("h7-b4"));
-    assertEquals(true, game.checkValidInput("h7-b4"));
+    assertTrue(game.checkValidInput("A1 A3"));
+    assertTrue(game.checkValidInput("a1-B2"));
+    assertTrue(game.checkValidInput("b1/b2"));
+    assertFalse(game.checkValidInput("H9.B2"));
+    assertFalse(game.checkValidInput("H7 I4"));
+    assertTrue(game.checkValidInput("h7-b4"));
+    assertTrue(game.checkValidInput("h7-b4"));
   }
 
   @Test
@@ -38,12 +38,12 @@ class GameTest {
   }
 
   @Test
-  public void testGameJustStarted(){
-    //assertEquals("In active", game.play("A2 A3"));
+  public void testGameJustStarted() {
+    // assertEquals("In active", game.play("A2 A3"));
   }
 
   @Test
-  public void testStateSwitching(){
+  public void testStateSwitching() {
     game.play("e2-e4");
     assertTrue(game.getGameState() instanceof ActiveGameState);
   }

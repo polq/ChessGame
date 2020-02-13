@@ -1,10 +1,11 @@
 package chess.items.chesspieces.king;
 
+import chess.behavior.Castlable;
 import chess.items.board.Cell;
 import chess.items.chesspieces.ChessFigure;
 import chess.player.ChessPlayer;
 
-public class King extends ChessFigure {
+public class King extends ChessFigure implements Castlable {
 
   public King(ChessPlayer chessOwner, String chessIcon) {
     super(chessOwner, chessIcon);
@@ -16,7 +17,13 @@ public class King extends ChessFigure {
 
     int letterDifference = Math.abs(start.getPositionLetter() - destination.getPositionLetter());
     int numberDifference = Math.abs(start.getPositionNumber() - destination.getPositionNumber());
-    return (letterDifference <= 1 && numberDifference <= 1);
+
+    return letterDifference <= 1 && numberDifference <= 1;
+  }
+
+  @Override
+  public boolean castle() {
+    return !isMoved();
   }
 
   @Override

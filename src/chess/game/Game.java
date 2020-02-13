@@ -52,7 +52,6 @@ public class Game {
 
     return this.toString();
   }
-
   // start new method with a defined gameRule
   public void startNewGame(GameRule rule) {
 

@@ -20,6 +20,6 @@ class ImaginaryGameRuleTest {
   void getInitBoard() {
     board = new Board(rule);
     assertEquals(16, board.getBoardCells().size());
+    System.out.println(board);
   }
-
 }

@@ -52,8 +52,14 @@ public class Pawn extends ChessFigure implements Queenable {
     int defaultStep = this.getChessOwner().getDefaultStep();
 
     // pawn can only beat by diagonal for 1 step
-    return (Math.abs(start.getPositionLetter() - destination.getPositionLetter()) == 1
-        && destination.getPositionNumber() - start.getPositionNumber() == defaultStep);
+    boolean result =
+        (Math.abs(start.getPositionLetter() - destination.getPositionLetter()) == 1
+            && destination.getPositionNumber() - start.getPositionNumber() == defaultStep);
+
+    if (result) {
+      setMoved(true);
+    }
+    return result;
   }
 
   @Override

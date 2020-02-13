@@ -42,7 +42,7 @@ public class Board {
     for (int i = rules.getBoardHeight(); i >= 1; i--) {
       builder.append(i);
       builder.append(" ");
-      for (int j = firstLetter; j <lastLetter; j++) {
+      for (int j = firstLetter; j < lastLetter; j++) {
         String cellKey = "" + (char) j + i;
         builder.append(boardCells.get(cellKey));
         builder.append(" ");

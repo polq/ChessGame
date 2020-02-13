@@ -107,4 +107,16 @@ class PawnTest {
     endCell = new Cell('d', 1);
     assertFalse(blackPawn.beat(startCell, endCell));
   }
+
+  @Test
+  void testBeat(){
+    startCell = new Cell('a', 1);
+    endCell = new Cell('b', 2);
+    assertTrue(whitePawn.beat(startCell, endCell));
+
+    startCell = new Cell('b', 2);
+    endCell = new Cell('b', 4);
+    assertFalse(whitePawn.move(startCell, endCell));
+
+  }
 }

@@ -56,7 +56,7 @@ public class Cell {
     this.isEmpty = false;
   }
 
-  public String getStringKey(){
+  public String getStringKey() {
     return "" + Character.toUpperCase(this.getPositionLetter()) + this.getPositionNumber();
   }
 

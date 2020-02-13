@@ -18,13 +18,13 @@ import java.util.Map;
 import java.util.Queue;
 
 /*
- * 4x4 board with 8 chess pieces rule (for testing purpose)
+* 4x4 board with 8 chess pieces rule (for testing purpose)
     A B C D
-  4 ♞ ♚ ♛ ♟
+  4 ♟ ♚ ♛ ♜
   3 □ □ □ □
   2 □ □ □ □
-  1 ♘ ♔ ♕ ♙
- */
+  1 ♙ ♔ ♕ ♖
+*/
 
 public class ImaginaryGameRule extends GameRule {
 
@@ -36,6 +36,8 @@ public class ImaginaryGameRule extends GameRule {
   private static final String BLACK_KNIGHT_ICON = "\u265E";
   private static final String WHITE_KING_ICON = "\u2654";
   private static final String BLACK_KING_ICON = "\u265A";
+  private static final String WHITE_ROOK_ICON = "\u2656";
+  private static final String BLACK_ROOK_ICON = "\u265C";
 
   @Override
   public int getBoardWeight() {
@@ -59,24 +61,24 @@ public class ImaginaryGameRule extends GameRule {
         if (i == GameRule.initialBoardHeight) {
           newCell = new QueenableCell((char) j, i);
           if (j == 'A') {
-            newCell.setFigure(new Knight(whitePlayer, WHITE_KNIGHT_ICON));
+            newCell.setFigure(new Pawn(new WhitePlayer(1), WHITE_PAWN_ICON));
           } else if (j == 'B') {
             newCell.setFigure(new King(whitePlayer, WHITE_KING_ICON));
           } else if (j == 'C') {
             newCell.setFigure(new Queen(whitePlayer, WHITE_QUEEN_ICON));
           } else if (j == 'D') {
-            newCell.setFigure(new Pawn(new WhitePlayer(1), WHITE_PAWN_ICON));
+            newCell.setFigure(new Rook(whitePlayer, WHITE_ROOK_ICON));
           }
         } else if (i == getBoardHeight()) {
           newCell = new QueenableCell((char) j, i);
           if (j == 'A') {
-            newCell.setFigure(new Knight(blackPlayer, BLACK_KNIGHT_ICON));
+            newCell.setFigure(new Pawn(new BlackPlayer(-1), BLACK_PAWN_ICON));
           } else if (j == 'B') {
             newCell.setFigure(new King(blackPlayer, BLACK_KING_ICON));
           } else if (j == 'C') {
             newCell.setFigure(new Queen(blackPlayer, BLACK_QUEEN_ICON));
           } else if (j == 'D') {
-            newCell.setFigure(new Pawn(new BlackPlayer(-1), BLACK_PAWN_ICON));
+            newCell.setFigure(new Rook(blackPlayer, BLACK_ROOK_ICON));
           }
         } else {
           newCell.setEmpty(true);

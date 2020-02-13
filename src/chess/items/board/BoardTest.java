@@ -14,10 +14,11 @@ class BoardTest {
   Board board;
 
   @BeforeEach
-  void init(){
+  void init() {
     rule = new StandardChessRule();
     board = new Board(rule);
   }
+
   @Test
   void testToString() {
     System.out.println(board);

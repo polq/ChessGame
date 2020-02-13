@@ -7,9 +7,9 @@ import java.util.Queue;
 
 public abstract class GameRule {
 
-  public final static char initialBoardWeight = 'A';
-  public final static int initialBoardHeight = 1;
-  public final static String gameRuleDelimiters = "[- \\\\./|]";
+  public static final char initialBoardWeight = 'A';
+  public static final int initialBoardHeight = 1;
+  public static final String gameRuleDelimiters = "[- \\\\./|]";
 
   public abstract int getBoardWeight();
 

@@ -1,10 +1,11 @@
 package chess.items.chesspieces.rook;
 
+import chess.behavior.Castlable;
 import chess.items.board.Cell;
 import chess.items.chesspieces.ChessFigure;
 import chess.player.ChessPlayer;
 
-public class Rook extends ChessFigure {
+public class Rook extends ChessFigure implements Castlable {
 
   public Rook(ChessPlayer chessOwner, String chessIcon) {
     super(chessOwner, chessIcon);

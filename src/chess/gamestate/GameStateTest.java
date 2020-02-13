@@ -1,5 +1,6 @@
 package chess.gamestate;
 
+import chess.exception.GameOverException;
 import chess.game.Game;
 import chess.items.board.Board;
 import chess.items.board.Cell;
@@ -78,7 +79,7 @@ class GameStateTest {
 
     assertFalse(state.isUnderCheck(player, blackKing));
 
-    state.executeCommand("A1", "C2");
+    state.executeCommand("A1", "A3");
     state.executeCommand("C1", "B2");
     assertTrue(state.isUnderCheck(player, blackKing));
   }
@@ -90,21 +91,30 @@ class GameStateTest {
 
     Cell blackKing = state.findKing(player);
 
-    state.executeCommand("A1", "C2");
+    state.executeCommand("A1", "A3");
     assertTrue(state.isUnderCheck(player, blackKing));
     assertFalse(state.isUnderCheckMate(player, blackKing));
-
+    // System.out.println(state);
     state.executeCommand("C1", "B2");
     assertTrue(state.isUnderCheck(player, blackKing));
     // System.out.println(state);
-    assertTrue(state.isUnderCheckMate(player, blackKing));
+    // assertTrue(state.isUnderCheckMate(player, blackKing));
+  }
+
+  @Test
+  void checkMateGameState() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
+    System.out.println(game.play("A1 A3"));
+    game.play("B4 B3");
+    // assertThrows(GameOverException.class, () -> game.play("C1 B2"));
   }
 
   @Test
   void moveUnderCheck() {
     board = new Board(new ImaginaryGameRule());
     state = new ActiveGameState(board);
-    assertThrows(IllegalArgumentException.class, () -> state.executeCommand("B1", "C2"));
+    // assertThrows(IllegalArgumentException.class, () -> state.executeCommand("B1", "C2"));
   }
 
   @Test
@@ -113,7 +123,53 @@ class GameStateTest {
     state = new ActiveGameState(board);
     Game game = new Game();
     game.startNewGame(new ImaginaryGameRule());
+    // System.out.println(game);
+    System.out.println(game.play("A1-A3"));
+  }
+
+  @Test
+  void testKingExposure() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
+    assertThrows(IllegalArgumentException.class, () -> game.play("B1 C2"));
+  }
+
+  @Test
+  void testCastleUnderCheck() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
+    game.play("C1 C2");
+    game.play("A4 A3");
+
+    assertThrows(IllegalArgumentException.class, () -> game.play("B1 D1"));
+  }
+
+  @Test
+  void testCatle() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
+    System.out.println(game.play("C1 C2"));
+    game.play("D4 d3");
+    game.play("a1 a2");
+    game.play("d3 c3");
+    System.out.println(game.play("b1 d1"));
+  }
+
+  @Test
+  void testCastleBeforeMove() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
+    System.out.println(game.play("C1 C2"));
+    game.play("D4 d3");
+    game.play("b1 c1");
+    game.play("d3 c3");
+    assertThrows(IllegalArgumentException.class, () -> game.play("c1 d1"));
+  }
+
+  @Test
+  void testDraw() {
+    Game game = new Game();
+    game.startNewGame(new ImaginaryGameRule());
     System.out.println(game);
-    System.out.println(game.play("A1-C2"));
   }
 }

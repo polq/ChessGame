@@ -1,11 +1,12 @@
 package chess.gamestate;
 
-import chess.behavior.Queenable;
 import chess.items.board.Board;
 import chess.items.board.Cell;
 import chess.items.chesspieces.ChessFigure;
+import chess.player.ChessPlayer;
 
 import java.util.Map;
+import java.util.Set;
 
 public class ActiveGameState extends GameState {
 
@@ -15,10 +16,20 @@ public class ActiveGameState extends GameState {
 
   @Override
   public GameState switchGameState() {
-    if (isUnderCheck(getCurrentTurnPlayer(), findKing(getCurrentTurnPlayer()))) {
-      return new CheckGameState(getGameBoard());
+    ChessPlayer currentPlayer = getCurrentTurnPlayer();
+    if (isUnderCheck(currentPlayer, findKing(currentPlayer))) {
+      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))) {
+        return new CheckMateGameState(getGameBoard());
+      } else {
+        return new CheckGameState(getGameBoard());
+      }
     } else {
-      return this;
+      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))
+          && getAliveFigures(currentPlayer).size() <= 1) {
+        return new DrawGameState(getGameBoard());
+      } else {
+        return this;
+      }
     }
   }
 

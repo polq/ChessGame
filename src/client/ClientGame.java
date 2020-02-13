@@ -1,7 +1,9 @@
 package client;
 
+import chess.exception.GameOverException;
 import chess.game.Game;
 import chess.rules.GameRule;
+import chess.rules.ImaginaryGameRule;
 import chess.rules.StandardChessRule;
 
 import java.util.Scanner;
@@ -17,12 +19,15 @@ public class ClientGame {
     Scanner scanner = new Scanner(System.in);
     String inputCommand;
     while ((inputCommand = scanner.nextLine()) != null) {
-      try{
+      try {
         System.out.println(chessGame.play(inputCommand));
-      } catch (IllegalArgumentException e){
+      } catch (IllegalArgumentException e) {
         System.out.println(e.getMessage());
-      } catch (NullPointerException e){
+      } catch (NullPointerException e) {
         System.out.println(e.getMessage());
+      } catch (GameOverException e) {
+        System.out.println(e.getMessage());
+        break;
       }
     }
 
