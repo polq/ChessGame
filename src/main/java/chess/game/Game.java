@@ -56,7 +56,7 @@ public class Game {
   public void startNewGame(GameRule rule) {
 
     if (rule == null) {
-      throw new NullPointerException("GameRule cannot be null");
+      throw new NullPointerException("GameRule cannot be empty");
     }
 
     this.rule = rule;
