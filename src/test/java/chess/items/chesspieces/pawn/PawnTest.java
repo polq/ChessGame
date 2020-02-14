@@ -109,7 +109,7 @@ class PawnTest {
   }
 
   @Test
-  void testBeat(){
+  void testBeat() {
     startCell = new Cell('a', 1);
     endCell = new Cell('b', 2);
     assertTrue(whitePawn.beat(startCell, endCell));
@@ -117,6 +117,5 @@ class PawnTest {
     startCell = new Cell('b', 2);
     endCell = new Cell('b', 4);
     assertFalse(whitePawn.move(startCell, endCell));
-
   }
 }

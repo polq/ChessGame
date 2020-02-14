@@ -14,34 +14,34 @@ class BishopTest {
   Cell endCell;
 
   @BeforeEach
-  public void init(){
+  public void init() {
     bishop = new Bishop(new BlackPlayer(), "");
   }
+
   @Test
   void move() {
-    startCell = new Cell('E',2 );
+    startCell = new Cell('E', 2);
     endCell = new Cell('E', 4);
     assertFalse(bishop.move(startCell, endCell));
 
-    startCell = new Cell('E',2 );
+    startCell = new Cell('E', 2);
     endCell = new Cell('a', 2);
     assertFalse(bishop.move(startCell, endCell));
 
-    startCell = new Cell('E',2 );
+    startCell = new Cell('E', 2);
     endCell = new Cell('D', 3);
     assertTrue(bishop.move(startCell, endCell));
 
-    startCell = new Cell('E',2 );
+    startCell = new Cell('E', 2);
     endCell = new Cell('d', 1);
     assertTrue(bishop.move(startCell, endCell));
 
-    startCell = new Cell('E',2 );
+    startCell = new Cell('E', 2);
     endCell = new Cell('F', 3);
     assertTrue(bishop.move(startCell, endCell));
 
-    startCell = new Cell('a',7 );
+    startCell = new Cell('a', 7);
     endCell = new Cell('c', 6);
     assertFalse(bishop.move(startCell, endCell));
-
   }
 }

@@ -1,6 +1,6 @@
 package chess.game;
 
-import chess.gamestate.ActiveGameState;
+import chess.rules.ImaginaryGameRule;
 import chess.rules.StandardChessRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class GameTest {
   @BeforeEach
   public void init() {
     game = new Game();
-    game.startNewGame(new StandardChessRule());
+    game.startNewGame(new ImaginaryGameRule());
   }
 
   @Test
@@ -24,27 +24,29 @@ class GameTest {
     assertTrue(game.checkValidInput("b1/b2"));
     assertFalse(game.checkValidInput("H9.B2"));
     assertFalse(game.checkValidInput("H7 I4"));
-    assertTrue(game.checkValidInput("h7-b4"));
-    assertTrue(game.checkValidInput("h7-b4"));
+    assertTrue(game.checkValidInput("a1-b2"));
+    assertTrue(game.checkValidInput("c4-b4"));
   }
 
   @Test
   public void testPlay() {
     assertThrows(NullPointerException.class, () -> game.play(null));
-
     assertThrows(IllegalArgumentException.class, () -> game.play("H9.B2"));
-
     assertThrows(IllegalArgumentException.class, () -> game.play("test"));
+
+    assertDoesNotThrow(() -> game.play("A1 A2"));
+    assertDoesNotThrow(() -> game.play("A4 A3"));
   }
 
   @Test
-  public void testGameJustStarted() {
-    // assertEquals("In active", game.play("A2 A3"));
-  }
+  void testStartNewGame() {
+    assertThrows(NullPointerException.class, () -> game.startNewGame(null));
+    game.startNewGame(new ImaginaryGameRule());
+    assertNotNull(game.getGameBoard());
+    assertNotNull(game.getGameState());
+    assertEquals(16, game.getGameBoard().getBoardCells().size());
 
-  @Test
-  public void testStateSwitching() {
-    game.play("e2-e4");
-    assertTrue(game.getGameState() instanceof ActiveGameState);
+    game.startNewGame(new StandardChessRule());
+    assertEquals(64, game.getGameBoard().getBoardCells().size());
   }
 }

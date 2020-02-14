@@ -13,25 +13,6 @@ public class CheckGameState extends GameState {
   }
 
   @Override
-  public GameState switchGameState() {
-    ChessPlayer currentPlayer = getCurrentTurnPlayer();
-    if (isUnderCheck(currentPlayer, findKing(currentPlayer))) {
-      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))) {
-        return new CheckMateGameState(getGameBoard());
-      } else {
-        return this;
-      }
-    } else {
-      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))
-          && getAliveFigures(currentPlayer).size() <= 1) {
-        return new DrawGameState(getGameBoard());
-      } else {
-        return new ActiveGameState(getGameBoard());
-      }
-    }
-  }
-
-  @Override
   public void executeCommand(String fromCoordinate, String toCoordinate) {
     Map<String, Cell> gameBoardCells = getGameBoard().getBoardCells();
     Cell fromCell = gameBoardCells.get(fromCoordinate);

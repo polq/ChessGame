@@ -4,33 +4,12 @@ import chess.items.board.Board;
 import chess.items.board.Cell;
 import chess.items.chesspieces.ChessFigure;
 import chess.player.ChessPlayer;
-
 import java.util.Map;
-import java.util.Set;
 
 public class ActiveGameState extends GameState {
 
   public ActiveGameState(Board board) {
     super(board);
-  }
-
-  @Override
-  public GameState switchGameState() {
-    ChessPlayer currentPlayer = getCurrentTurnPlayer();
-    if (isUnderCheck(currentPlayer, findKing(currentPlayer))) {
-      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))) {
-        return new CheckMateGameState(getGameBoard());
-      } else {
-        return new CheckGameState(getGameBoard());
-      }
-    } else {
-      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))
-          && getAliveFigures(currentPlayer).size() <= 1) {
-        return new DrawGameState(getGameBoard());
-      } else {
-        return this;
-      }
-    }
   }
 
   @Override

@@ -3,7 +3,6 @@ package client;
 import chess.exception.GameOverException;
 import chess.game.Game;
 import chess.rules.GameRule;
-import chess.rules.ImaginaryGameRule;
 import chess.rules.StandardChessRule;
 
 import java.util.Scanner;

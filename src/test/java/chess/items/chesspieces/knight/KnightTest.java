@@ -42,7 +42,7 @@ class KnightTest {
   }
 
   @Test
-  void testToString(){
+  void testToString() {
     System.out.println(knight);
   }
 }

@@ -26,35 +26,56 @@ public abstract class GameState {
     this.gameBoard = board;
   }
 
-  public Board getGameBoard() {
+  Board getGameBoard() {
     return gameBoard;
   }
 
+  // switches game states depending on situation on board
   public GameState switchGameState() {
-    return this;
+    ChessPlayer currentPlayer = getCurrentTurnPlayer();
+    if (isUnderCheck(currentPlayer, findKing(currentPlayer))) {
+      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))) {
+        return new CheckMateGameState(getGameBoard());
+      } else {
+        return new CheckGameState(getGameBoard());
+      }
+    } else {
+      if (isUnderCheckMate(currentPlayer, findKing(currentPlayer))
+          && getAliveFigures(currentPlayer).size() <= 1) {
+        return new DrawGameState(getGameBoard());
+      } else {
+        return new ActiveGameState(getGameBoard());
+      }
+    }
   }
 
-  public ChessPlayer getCurrentTurnPlayer() {
+  // gets players that should play now
+  ChessPlayer getCurrentTurnPlayer() {
     return gameBoard.getPlayersQueue().peek();
   }
 
+  // gives turn to the next player
   public ChessPlayer switchPlayer() {
     ChessPlayer previousPlayer = gameBoard.getPlayersQueue().remove();
     gameBoard.getPlayersQueue().add(previousPlayer);
     return getCurrentTurnPlayer();
   }
 
+  // checks if figure belongs to current player
   boolean checkOwner(ChessFigure figure) {
     return figure.getChessOwner().getClass().equals(getCurrentTurnPlayer().getClass());
   }
 
+
   public void executeCommand(String fromCoordinate, String toCoordinate) {}
 
+  // move from one cell to another empty cell
   void executeMove(Cell fromCell, Cell toCell) {
     ChessFigure figure = fromCell.getFigure();
 
     // Check if figure can move from the given cell to the destination one and there are no
     // obstacles on their path
+
     if (!figure.move(fromCell, toCell) || !isPathClear(fromCell, toCell, figure)) {
       throw new IllegalArgumentException(
           "Invalid input "
@@ -68,6 +89,7 @@ public abstract class GameState {
     switchFigure(fromCell, toCell, figure);
   }
 
+  // switch figure on board
   void switchFigure(Cell fromCell, Cell toCell, ChessFigure figure) {
     // Modifying cell from where chess piece has moved
     fromCell.figureMovedFromThisCell();
@@ -83,16 +105,18 @@ public abstract class GameState {
 
     figure.setMoved(true);
     // if figure that can become a Queen moves to a queenable cell
-    if (figure instanceof Queenable && toCell instanceof Queenable) {
-      executeBecomeQueen(figure, toCell);
+    becomeQueen(figure, toCell);
+  }
+
+  // checks if figure is allowed to become queen
+  void becomeQueen(ChessFigure previousFigure, Cell toCell) {
+    if (previousFigure instanceof Queenable && toCell instanceof Queenable) {
+      ChessPlayer player = previousFigure.getChessOwner();
+      toCell.setFigure(new Queen(player, player.getQueenIcon()));
     }
   }
 
-  void executeBecomeQueen(ChessFigure previousFigure, Cell toCell) {
-    ChessPlayer player = previousFigure.getChessOwner();
-    toCell.setFigure(new Queen(player, player.getQueenIcon()));
-  }
-
+  // executes beating
   void executeBeat(Cell fromCell, Cell toCell) {
     ChessFigure figure = fromCell.getFigure();
     ChessFigure figureToBeat = toCell.getFigure();
@@ -119,12 +143,10 @@ public abstract class GameState {
     }
 
     figure.setMoved(true);
-    // if figure that can become a Queen moves to a queenable cell
-    if (figure instanceof Queenable && toCell instanceof Queenable) {
-      executeBecomeQueen(figure, toCell);
-    }
+    becomeQueen(figure, toCell);
   }
 
+  // castle rook and king
   void executeCastle(Cell fromCell, Cell toCell) {
     if (fromCell.getFigure() == null || toCell.getFigure() == null) {
       throw new NullPointerException("Null arguments while castling");
@@ -170,6 +192,7 @@ public abstract class GameState {
     }
   }
 
+  // checks if players king is under check
   boolean isUnderCheck(ChessPlayer player, Cell kingCell) {
     List<Cell> enemyfigures =
         gameBoard.getBoardCells().entrySet().stream()
@@ -183,6 +206,7 @@ public abstract class GameState {
     return !enemyfigures.isEmpty();
   }
 
+  // gets all figures on board by player
   Set<ChessFigure> getAliveFigures(ChessPlayer player) {
     return gameBoard.getBoardCells().entrySet().stream()
         .map(Map.Entry::getValue)
@@ -192,6 +216,7 @@ public abstract class GameState {
         .collect(Collectors.toSet());
   }
 
+  // find cell where king is located
   Cell findKing(ChessPlayer player) {
     return getGameBoard().getBoardCells().entrySet().stream()
         .filter(entry -> !entry.getValue().isEmpty())
@@ -204,6 +229,7 @@ public abstract class GameState {
         .orElseThrow(() -> new IllegalStateException("No king on the board, game is already over"));
   }
 
+  // checks if players king is under check mate
   boolean isUnderCheckMate(ChessPlayer player, Cell kingCell) {
     // First check if figures that check our king can be eliminated
     List<Cell> enemyFiguresUnderCheck =
@@ -235,6 +261,7 @@ public abstract class GameState {
     return potentialUncheckedCells.isEmpty();
   }
 
+  // checks if figure can move from start point to end point without any obstacles
   boolean isPathClear(Cell startPoint, Cell endPoint, ChessFigure figure) {
 
     if (startPoint == null || endPoint == null || figure == null) {

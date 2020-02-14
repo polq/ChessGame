@@ -16,11 +16,16 @@ public class Game {
 
   public Game() {}
 
-  public GameState getGameState() {
+  Board getGameBoard() {
+    return gameBoard;
+  }
+
+  GameState getGameState() {
     return gameState;
   }
-  // main API method which takes input String and returns all info about board, game state and
-  // modifications
+
+  // main method which takes input String and returns
+  // all info about board, game state and modifications
   public String play(String inputCommand) {
 
     if (this.rule == null) {
@@ -52,6 +57,7 @@ public class Game {
 
     return this.toString();
   }
+
   // start new method with a defined gameRule
   public void startNewGame(GameRule rule) {
 

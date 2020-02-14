@@ -15,7 +15,9 @@ public abstract class GameRule {
 
   public abstract int getBoardHeight();
 
+  // defines board state at the beginning of the game
   public abstract Map<String, Cell> getInitialBoard();
 
+  // defines number of players
   public abstract Queue<ChessPlayer> getInitialPlayersQueue();
 }
