@@ -13,7 +13,7 @@ class GameTest {
 
   @BeforeEach
   public void init() {
-    game = new Game();
+    game = new ChessGame();
     game.startNewGame(new ImaginaryGameRule());
   }
 

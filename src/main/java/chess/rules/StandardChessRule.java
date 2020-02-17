@@ -1,17 +1,15 @@
 package chess.rules;
 
 import chess.items.board.Cell;
-import chess.items.board.QueenableCell;
-import chess.items.chesspieces.bishop.Bishop;
-import chess.items.chesspieces.king.King;
-import chess.items.chesspieces.knight.Knight;
-import chess.items.chesspieces.pawn.Pawn;
-import chess.items.chesspieces.queen.Queen;
-import chess.items.chesspieces.rook.Rook;
-import chess.player.ChessPlayer;
+import chess.items.figures.chess.Bishop;
+import chess.items.figures.chess.King;
+import chess.items.figures.chess.Knight;
+import chess.items.figures.chess.Pawn;
+import chess.items.figures.chess.Queen;
+import chess.items.figures.chess.Rook;
+import chess.player.Player;
 import chess.player.BlackPlayer;
 import chess.player.WhitePlayer;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -47,15 +45,15 @@ public class StandardChessRule extends GameRule {
 
   @Override
   public Map<String, Cell> getInitialBoard() {
-    ChessPlayer whitePlayer = new WhitePlayer();
-    ChessPlayer blackPlayer = new BlackPlayer();
+    Player whitePlayer = new WhitePlayer();
+    Player blackPlayer = new BlackPlayer();
     Map<String, Cell> standardChessCells = new HashMap<>();
     for (int i = 1; i <= BOARD_WEIGHT; i++) {
       for (int j = 'A'; j < 'A' + BOARD_HEIGHT; j++) {
         Cell newCell = new Cell((char) j, i);
 
         if (i == GameRule.initialBoardHeight) {
-          newCell = new QueenableCell((char) j, i);
+          newCell.setChangeable(true);
           if (j == 'A' || j == 'H') {
             newCell.setFigure(new Rook(whitePlayer, WHITE_ROOK_ICON));
           } else if (j == 'B' || j == 'G') {
@@ -68,7 +66,7 @@ public class StandardChessRule extends GameRule {
             newCell.setFigure(new Queen(whitePlayer, WHITE_QUEEN_ICON));
           }
         } else if (i == getBoardHeight()) {
-          newCell = new QueenableCell((char) j, i);
+          newCell.setChangeable(true);
           if (j == 'A' || j == 'H') {
             newCell.setFigure(new Rook(blackPlayer, BLACK_ROOK_ICON));
           } else if (j == 'B' || j == 'G') {
@@ -82,8 +80,10 @@ public class StandardChessRule extends GameRule {
           }
         } else if (i == GameRule.initialBoardHeight + 1) {
           newCell.setFigure(new Pawn(new WhitePlayer(1), WHITE_PAWN_ICON));
+          newCell.getFigure().setNewIcon(WHITE_QUEEN_ICON);
         } else if (i == getBoardHeight() - 1) {
           newCell.setFigure(new Pawn(new BlackPlayer(-1), BLACK_PAWN_ICON));
+          newCell.getFigure().setNewIcon(BLACK_QUEEN_ICON);
         } else {
           newCell.setEmpty(true);
         }
@@ -95,10 +95,10 @@ public class StandardChessRule extends GameRule {
   }
 
   @Override
-  public Queue<ChessPlayer> getInitialPlayersQueue() {
-    Queue<ChessPlayer> chessPlayersQueue = new LinkedList<>();
-    chessPlayersQueue.add(new WhitePlayer());
-    chessPlayersQueue.add(new BlackPlayer());
-    return chessPlayersQueue;
+  public Queue<Player> getInitialPlayersQueue() {
+    Queue<Player> playersQueue = new LinkedList<>();
+    playersQueue.add(new WhitePlayer());
+    playersQueue.add(new BlackPlayer());
+    return playersQueue;
   }
 }

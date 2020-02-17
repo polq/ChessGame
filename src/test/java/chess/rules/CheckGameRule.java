@@ -1,9 +1,9 @@
 package chess.rules;
 
 import chess.items.board.Cell;
-import chess.items.chesspieces.king.King;
+import chess.items.figures.chess.King;
 import chess.player.BlackPlayer;
-import chess.player.ChessPlayer;
+import chess.player.Player;
 import chess.player.WhitePlayer;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,8 +32,8 @@ public class CheckGameRule extends GameRule {
 
   @Override
   public Map<String, Cell> getInitialBoard() {
-    ChessPlayer whitePlayer = new WhitePlayer();
-    ChessPlayer blackPlayer = new BlackPlayer();
+    Player whitePlayer = new WhitePlayer();
+    Player blackPlayer = new BlackPlayer();
     Map<String, Cell> map = new HashMap<>();
     Cell emptyCell = new Cell('A', 1);
     emptyCell.setEmpty(true);
@@ -51,10 +51,10 @@ public class CheckGameRule extends GameRule {
   }
 
   @Override
-  public Queue<ChessPlayer> getInitialPlayersQueue() {
-    Queue<ChessPlayer> chessPlayersQueue = new LinkedList<>();
-    chessPlayersQueue.add(new WhitePlayer());
-    chessPlayersQueue.add(new BlackPlayer());
-    return chessPlayersQueue;
+  public Queue<Player> getInitialPlayersQueue() {
+    Queue<Player> playersQueue = new LinkedList<>();
+    playersQueue.add(new WhitePlayer());
+    playersQueue.add(new BlackPlayer());
+    return playersQueue;
   }
 }

@@ -1,7 +1,7 @@
 package chess.rules;
 
 import chess.items.board.Cell;
-import chess.player.ChessPlayer;
+import chess.player.Player;
 import java.util.Map;
 import java.util.Queue;
 
@@ -19,5 +19,5 @@ public abstract class GameRule {
   public abstract Map<String, Cell> getInitialBoard();
 
   // defines number of players
-  public abstract Queue<ChessPlayer> getInitialPlayersQueue();
+  public abstract Queue<Player> getInitialPlayersQueue();
 }

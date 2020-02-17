@@ -1,6 +1,6 @@
 package chess.items.board;
 
-import chess.player.ChessPlayer;
+import chess.player.Player;
 import chess.rules.GameRule;
 
 import java.util.Map;
@@ -11,9 +11,9 @@ public class Board {
 
   private Map<String, Cell> boardCells;
   private GameRule rules;
-  private Queue<ChessPlayer> playersQueue;
+  private Queue<Player> playersQueue;
 
-  public Queue<ChessPlayer> getPlayersQueue() {
+  public Queue<Player> getPlayersQueue() {
     return playersQueue;
   }
 

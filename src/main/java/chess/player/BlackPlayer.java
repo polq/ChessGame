@@ -1,17 +1,17 @@
 package chess.player;
 
-import chess.player.ChessPlayer;
-
-public class BlackPlayer extends ChessPlayer {
+public class BlackPlayer extends Player {
 
   public BlackPlayer(int defaultStep) {
     super(defaultStep);
   }
 
-  public BlackPlayer() {}
+  public BlackPlayer() {
+
+  }
 
   @Override
-  public String getQueenIcon() {
+  public String getNewFigureIcon() {
     return "\u265B"; // ♛
   }
 

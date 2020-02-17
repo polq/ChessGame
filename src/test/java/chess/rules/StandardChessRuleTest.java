@@ -1,8 +1,7 @@
 package chess.rules;
 
-import chess.items.board.Board;
 import chess.items.board.Cell;
-import chess.player.ChessPlayer;
+import chess.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +34,7 @@ class StandardChessRuleTest {
 
   @Test
   void testGetInitialPlayerQueue() {
-    Queue<ChessPlayer> players = gameRule.getInitialPlayersQueue();
+    Queue<Player> players = gameRule.getInitialPlayersQueue();
 
     assertEquals(2, players.size());
   }

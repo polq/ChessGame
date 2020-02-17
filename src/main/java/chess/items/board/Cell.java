@@ -1,6 +1,6 @@
 package chess.items.board;
 
-import chess.items.chesspieces.ChessFigure;
+import chess.items.figures.Figure;
 
 import java.util.Objects;
 
@@ -8,10 +8,11 @@ public class Cell {
 
   private final int positionNumber;
   private final char positionLetter;
-  private ChessFigure figure;
+  private Figure figure;
   private boolean isEmpty;
+  private boolean isChangeable;
 
-  Cell(char positionLetter, int positionNumber, ChessFigure figure, boolean isEmpty) {
+  Cell(char positionLetter, int positionNumber, Figure figure, boolean isEmpty) {
     this.positionLetter = Character.toUpperCase(positionLetter);
     this.positionNumber = positionNumber;
     this.figure = figure;
@@ -22,11 +23,11 @@ public class Cell {
     this(positionLetter, positionNumber, null, false);
   }
 
-  public ChessFigure getFigure() {
+  public Figure getFigure() {
     return figure;
   }
 
-  public void setFigure(ChessFigure figure) {
+  public void setFigure(Figure figure) {
     this.figure = figure;
   }
 
@@ -46,12 +47,20 @@ public class Cell {
     return positionLetter;
   }
 
+  public boolean isChangeable() {
+    return isChangeable;
+  }
+
+  public void setChangeable(boolean changeable) {
+    isChangeable = changeable;
+  }
+
   public void figureMovedFromThisCell() {
     this.isEmpty = true;
     this.figure = null;
   }
 
-  public void figureMovedToThisCell(ChessFigure figure) {
+  public void figureMovedToThisCell(Figure figure) {
     this.figure = figure;
     this.isEmpty = false;
   }

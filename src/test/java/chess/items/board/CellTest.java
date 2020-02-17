@@ -1,7 +1,5 @@
 package chess.items.board;
 
-import chess.items.chesspieces.king.King;
-import chess.player.WhitePlayer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,6 @@
 package chess.player;
 
-import chess.player.ChessPlayer;
-
-public class WhitePlayer extends ChessPlayer {
+public class WhitePlayer extends Player {
 
   public WhitePlayer(int defaultStep) {
     super(defaultStep);
@@ -11,7 +9,7 @@ public class WhitePlayer extends ChessPlayer {
   public WhitePlayer() {}
 
   @Override
-  public String getQueenIcon() {
+  public String getNewFigureIcon() {
     return "\u2655";
   }
 
