@@ -1,18 +1,16 @@
 package client;
 
-import chess.exception.GameOverException;
-import chess.game.CheckersGame;
-import chess.game.ChessGame;
-import chess.game.Game;
-import chess.rules.GameRule;
-import chess.rules.RussianCheckersRule;
-import chess.rules.StandardChessRule;
+import boardgame.exception.GameOverException;
+import boardgame.game.CheckersGame;
+import boardgame.game.Game;
+import boardgame.rules.GameRule;
+import boardgame.rules.StandardChessRule;
 
 import java.util.Scanner;
 
 public class ClientGame {
   public static void main(String[] args) {
-    GameRule desiredRule = new RussianCheckersRule();
+    GameRule desiredRule = new StandardChessRule();
     Game chessGame = new CheckersGame();
     chessGame.startNewGame(desiredRule);
     System.out.println("Game has been started, White player plays first\n");
