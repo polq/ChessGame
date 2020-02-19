@@ -4,13 +4,14 @@ import boardgame.exception.GameOverException;
 import boardgame.game.CheckersGame;
 import boardgame.game.Game;
 import boardgame.rules.GameRule;
+import boardgame.rules.RussianCheckersRule;
 import boardgame.rules.StandardChessRule;
 
 import java.util.Scanner;
 
 public class ClientGame {
   public static void main(String[] args) {
-    GameRule desiredRule = new StandardChessRule();
+    GameRule desiredRule = new RussianCheckersRule();
     Game chessGame = new CheckersGame();
     chessGame.startNewGame(desiredRule);
     System.out.println("Game has been started, White player plays first\n");
