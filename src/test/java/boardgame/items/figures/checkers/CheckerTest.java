@@ -1,7 +1,7 @@
 package boardgame.items.figures.checkers;
 
 import boardgame.items.board.Cell;
-import boardgame.player.WhitePlayer;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ class CheckerTest {
 
   @BeforeEach
   void init(){
-    checker = new Checker(new WhitePlayer(1), "");
+    checker = new Checker(new Player("white",1), "");
   }
   @Test
   void move() {

@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
  */
 public class CheckersGameState extends GameState {
 
+  private Cell tempFromCell;
+
   /**
    * Creates new {@link GameState} class with the board specified in the param.
    *

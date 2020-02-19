@@ -4,9 +4,7 @@ import boardgame.exception.GameOverException;
 import boardgame.items.board.Board;
 import boardgame.items.board.Cell;
 import boardgame.items.figures.checkers.Checker;
-import boardgame.player.BlackPlayer;
 import boardgame.player.Player;
-import boardgame.player.WhitePlayer;
 import boardgame.rules.GameRule;
 import boardgame.rules.RussianCheckersRule;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,14 +43,14 @@ class CheckersGameStateTest {
           }
 
           @Override
-          public Map<String, Cell> getInitialBoard() {
+          public Map<String, Cell> generateBoardCells() {
             return Collections.emptyMap();
           }
 
           @Override
-          public Queue<Player> getInitialPlayersQueue() {
+          public Queue<Player> generatePlayerQueue() {
             Queue<Player> que = new LinkedList<>();
-            que.add(new WhitePlayer());
+            que.add(new Player("white"));
             return que;
           }
         };
@@ -141,7 +139,7 @@ class CheckersGameStateTest {
           1 ⚆ □ □
           */
           @Override
-          public Map<String, Cell> getInitialBoard() {
+          public Map<String, Cell> generateBoardCells() {
             Map<String, Cell> map = new HashMap<>();
             for (int i = 1; i <= getBoardHeight(); i++) {
               for (int j = 'A'; j < 'A' + getBoardWeight(); j++) {
@@ -151,11 +149,11 @@ class CheckersGameStateTest {
               }
             }
             Cell cell = map.get("A1");
-            cell.figureMovedToThisCell(new Checker(new WhitePlayer(), "\u2686"));
+            cell.figureMovedToThisCell(new Checker(new Player("white"), "\u2686"));
             cell = map.get("B2");
-            cell.figureMovedToThisCell(new Checker(new BlackPlayer(), "\u2688"));
+            cell.figureMovedToThisCell(new Checker(new Player("black"), "\u2688"));
             cell = map.get("B4");
-            cell.figureMovedToThisCell(new Checker(new BlackPlayer(), "\u2688"));
+            cell.figureMovedToThisCell(new Checker(new Player("black"), "\u2688"));
             return map;
           }
         };

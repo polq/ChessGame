@@ -1,10 +1,8 @@
 package boardgame.rules;
 
+import boardgame.items.board.Board;
 import boardgame.items.board.Cell;
-import boardgame.player.BlackPlayer;
 import boardgame.player.Player;
-import boardgame.player.WhitePlayer;
-
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -19,6 +17,10 @@ public abstract class GameRule {
 
   public abstract int getBoardHeight();
 
+  public Board createBoard(){
+     return new Board(this);
+  }
+
   /**
    * Creates initial {@link boardgame.items.board.Board} state including position of all {@link
    * boardgame.items.figures.Figure} on the Board for the defined game rule
@@ -27,7 +29,7 @@ public abstract class GameRule {
    *     boardgame.items.board.Board} and {@link Cell} Value representing all corresponding
    *     properties of the coordinate
    */
-  public abstract Map<String, Cell> getInitialBoard();
+  public abstract Map<String, Cell> generateBoardCells();
 
   /**
    * Method that creates {@link Player} that will be participating in the game. {@link Player} turns
@@ -37,10 +39,10 @@ public abstract class GameRule {
    * @return {@link Queue} of containing {@link Player} that will take part in the game, while first
    *     player in the queue is current turn player
    */
-  public Queue<Player> getInitialPlayersQueue(){
+  public Queue<Player> generatePlayerQueue(){
     Queue<Player> playersQueue = new LinkedList<>();
-    playersQueue.add(new WhitePlayer());
-    playersQueue.add(new BlackPlayer());
+    playersQueue.add(new Player("white"));
+    playersQueue.add(new Player("black"));
     return playersQueue;
   }
 }

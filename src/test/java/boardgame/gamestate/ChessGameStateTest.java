@@ -5,9 +5,7 @@ import boardgame.items.board.Board;
 import boardgame.items.board.Cell;
 import boardgame.items.figures.chess.King;
 import boardgame.items.figures.chess.Queen;
-import boardgame.player.BlackPlayer;
 import boardgame.player.Player;
-import boardgame.player.WhitePlayer;
 import boardgame.rules.GameRule;
 import boardgame.rules.StandardChessRule;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,9 +49,9 @@ class ChessGameStateTest {
            *  1 □ ♚
            */
           @Override
-          public Map<String, Cell> getInitialBoard() {
-            Player whitePlayer = new WhitePlayer();
-            Player blackPlayer = new BlackPlayer();
+          public Map<String, Cell> generateBoardCells() {
+            Player whitePlayer = new Player("white");
+            Player blackPlayer = new Player("black");
             Map<String, Cell> map = new HashMap<>();
             Cell emptyCell = new Cell('A', 1);
             emptyCell.setEmpty(true);
@@ -100,9 +98,9 @@ class ChessGameStateTest {
            *  1 □ □ ♛
            */
           @Override
-          public Map<String, Cell> getInitialBoard() {
-            Player whitePlayer = new WhitePlayer();
-            Player blackPlayer = new BlackPlayer();
+          public Map<String, Cell> generateBoardCells() {
+            Player whitePlayer = new Player("white");
+            Player blackPlayer = new Player("black");
             Map<String, Cell> map = new HashMap<>();
 
             Cell emptyCell = new Cell('A', 1);
@@ -156,9 +154,9 @@ class ChessGameStateTest {
            *  1 □ □ ♛
            */
           @Override
-          public Map<String, Cell> getInitialBoard() {
-            Player whitePlayer = new WhitePlayer();
-            Player blackPlayer = new BlackPlayer();
+          public Map<String, Cell> generateBoardCells() {
+            Player whitePlayer = new Player("white");
+            Player blackPlayer = new Player("black");
             Map<String, Cell> map = new HashMap<>();
 
             Cell emptyCell = new Cell('A', 1);

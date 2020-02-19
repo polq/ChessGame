@@ -1,8 +1,7 @@
 package boardgame.items.figures.chess;
 
 import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.Rook;
-import boardgame.player.WhitePlayer;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ class RookTest {
 
   @BeforeEach
   void init() {
-    rook = new Rook(new WhitePlayer(), "");
+    rook = new Rook(new Player("white"), "");
   }
 
   @Test

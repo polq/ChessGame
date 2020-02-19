@@ -1,9 +1,7 @@
 package boardgame.items.figures.chess;
 
 import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.Pawn;
-import boardgame.player.BlackPlayer;
-import boardgame.player.WhitePlayer;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +16,8 @@ class PawnTest {
 
   @BeforeEach
   void init() {
-    blackPawn = new Pawn(new BlackPlayer(-1), "");
-    whitePawn = new Pawn(new WhitePlayer(1), "");
+    blackPawn = new Pawn(new Player("black",-1), "");
+    whitePawn = new Pawn(new Player("white",1), "");
   }
 
   @Test

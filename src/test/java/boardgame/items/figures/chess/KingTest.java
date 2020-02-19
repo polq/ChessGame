@@ -1,8 +1,7 @@
 package boardgame.items.figures.chess;
 
 import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.King;
-import boardgame.player.WhitePlayer;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ class KingTest {
 
   @BeforeEach
   void init() {
-    king = new King(new WhitePlayer(), "");
+    king = new King(new Player("white"), "");
   }
 
   @Test

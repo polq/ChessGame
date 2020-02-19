@@ -2,14 +2,10 @@ package boardgame.rules;
 
 import boardgame.items.board.Cell;
 import boardgame.items.figures.checkers.Checker;
-import boardgame.player.BlackPlayer;
 import boardgame.player.Player;
-import boardgame.player.WhitePlayer;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 public class RussianCheckersRule extends GameRule {
   private static final int BOARD_WEIGHT = 8;
@@ -31,9 +27,9 @@ public class RussianCheckersRule extends GameRule {
   }
 
   @Override
-  public Map<String, Cell> getInitialBoard() {
-    Player whitePlayer = new WhitePlayer(1);
-    Player blackPlayer = new BlackPlayer(-1);
+  public Map<String, Cell> generateBoardCells() {
+    Player whitePlayer = new Player("white",1);
+    Player blackPlayer = new Player("black", -1);
     Map<String, Cell> standartCheckersCells = new HashMap<>();
     for (int i = 1; i <= BOARD_WEIGHT; i++) {
       for (int j = 'A'; j < 'A' + BOARD_HEIGHT; j++) {

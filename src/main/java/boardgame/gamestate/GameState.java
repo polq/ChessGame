@@ -72,7 +72,7 @@ public abstract class GameState {
     return gameBoard.getBoardCells().entrySet().stream()
         .map(Map.Entry::getValue)
         .filter(Predicate.not(Cell::isEmpty))
-        .filter(cell -> cell.getFigure().getChessOwner().getClass().equals(player.getClass()))
+        .filter(cell -> cell.getFigure().getChessOwner().equals(player))
         .collect(Collectors.toSet());
   }
 
@@ -99,7 +99,7 @@ public abstract class GameState {
   }
 
   boolean checkFigureOwner(Figure figure) {
-    return figure.getChessOwner().getClass().equals(getCurrentTurnPlayer().getClass());
+    return figure.getChessOwner().equals(getCurrentTurnPlayer());
   }
 
   @Override

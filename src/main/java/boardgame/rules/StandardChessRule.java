@@ -8,12 +8,9 @@ import boardgame.items.figures.chess.Pawn;
 import boardgame.items.figures.chess.Queen;
 import boardgame.items.figures.chess.Rook;
 import boardgame.player.Player;
-import boardgame.player.BlackPlayer;
-import boardgame.player.WhitePlayer;
+
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 public class StandardChessRule extends GameRule {
 
@@ -44,9 +41,9 @@ public class StandardChessRule extends GameRule {
   }
 
   @Override
-  public Map<String, Cell> getInitialBoard() {
-    Player whitePlayer = new WhitePlayer();
-    Player blackPlayer = new BlackPlayer();
+  public Map<String, Cell> generateBoardCells() {
+    Player whitePlayer = new Player("white");
+    Player blackPlayer = new Player("black");
     Map<String, Cell> standardChessCells = new HashMap<>();
     for (int i = 1; i <= BOARD_WEIGHT; i++) {
       for (int j = 'A'; j < 'A' + BOARD_HEIGHT; j++) {
@@ -79,10 +76,10 @@ public class StandardChessRule extends GameRule {
             newCell.setFigure(new Queen(blackPlayer, BLACK_QUEEN_ICON));
           }
         } else if (i == GameRule.initialBoardHeight + 1) {
-          newCell.setFigure(new Pawn(new WhitePlayer(1), WHITE_PAWN_ICON));
+          newCell.setFigure(new Pawn(new Player("white",1), WHITE_PAWN_ICON));
           newCell.getFigure().setNewIcon(WHITE_QUEEN_ICON);
         } else if (i == getBoardHeight() - 1) {
-          newCell.setFigure(new Pawn(new BlackPlayer(-1), BLACK_PAWN_ICON));
+          newCell.setFigure(new Pawn(new Player("black",-1), BLACK_PAWN_ICON));
           newCell.getFigure().setNewIcon(BLACK_QUEEN_ICON);
         } else {
           newCell.setEmpty(true);

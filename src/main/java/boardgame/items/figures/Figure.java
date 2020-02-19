@@ -1,10 +1,9 @@
 package boardgame.items.figures;
 
-import boardgame.behavior.Actionable;
 import boardgame.items.board.Cell;
 import boardgame.player.Player;
 
-public abstract class Figure implements Actionable {
+public abstract class Figure {
 
   private Player chessOwner;
   private String chessIcon;
@@ -51,7 +50,6 @@ public abstract class Figure implements Actionable {
    * @throws NullPointerException in case param values are null
    * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  @Override
   public boolean move(Cell start, Cell destination) {
     if (start == null || destination == null) {
       throw new NullPointerException("Invalid null arguments");
@@ -73,7 +71,6 @@ public abstract class Figure implements Actionable {
    * @throws NullPointerException in case param values are null
    * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  @Override
   public boolean beat(Cell start, Cell destination) {
     return this.move(start, destination);
   }

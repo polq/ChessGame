@@ -1,8 +1,7 @@
 package boardgame.items.figures.chess;
 
 import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.Bishop;
-import boardgame.player.BlackPlayer;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ class BishopTest {
 
   @BeforeEach
   public void init() {
-    bishop = new Bishop(new BlackPlayer(), "");
+    bishop = new Bishop(new Player("black"), "");
   }
 
   @Test

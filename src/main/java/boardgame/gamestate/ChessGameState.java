@@ -227,7 +227,7 @@ public class ChessGameState extends GameState {
         getGameBoard().getBoardCells().entrySet().stream()
             .map(Map.Entry::getValue)
             .filter(cell -> !cell.isEmpty())
-            .filter(cell -> !cell.getFigure().getChessOwner().getClass().equals(player.getClass()))
+            .filter(cell -> !cell.getFigure().getChessOwner().equals(player))
             .filter(cell -> cell.getFigure().beat(cell, kingCell))
             .filter(cell -> isPathClear(cell, kingCell, cell.getFigure()))
             .collect(Collectors.toList());
@@ -241,7 +241,7 @@ public class ChessGameState extends GameState {
         getGameBoard().getBoardCells().entrySet().stream()
             .map(Map.Entry::getValue)
             .filter(cell -> !cell.isEmpty())
-            .filter(cell -> !cell.getFigure().getChessOwner().getClass().equals(player.getClass()))
+            .filter(cell -> !cell.getFigure().getChessOwner().equals(player))
             .filter(cell -> cell.getFigure().beat(cell, kingCell))
             .filter(cell -> isPathClear(cell, kingCell, cell.getFigure()))
             .filter(cell -> isUnderCheck(cell.getFigure().getChessOwner(), cell))
@@ -271,7 +271,7 @@ public class ChessGameState extends GameState {
         .filter(entry -> !entry.getValue().isEmpty())
         .filter(
             entry ->
-                entry.getValue().getFigure().getChessOwner().getClass().equals(player.getClass()))
+                entry.getValue().getFigure().getChessOwner().equals(player))
         .filter(entry -> entry.getValue().getFigure() instanceof King)
         .map(Map.Entry::getValue)
         .findFirst()

@@ -21,7 +21,7 @@ class StandardChessRuleTest {
 
   @Test
   void testGetInitialBoard() {
-    Map<String, Cell> boardMap = gameRule.getInitialBoard();
+    Map<String, Cell> boardMap = gameRule.generateBoardCells();
     long figuresNumber =
         boardMap.entrySet().stream()
             .map(Map.Entry::getValue)
@@ -34,7 +34,7 @@ class StandardChessRuleTest {
 
   @Test
   void testGetInitialPlayerQueue() {
-    Queue<Player> players = gameRule.getInitialPlayersQueue();
+    Queue<Player> players = gameRule.generatePlayerQueue();
 
     assertEquals(2, players.size());
   }
