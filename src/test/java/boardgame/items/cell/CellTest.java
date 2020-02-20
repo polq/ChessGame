@@ -1,5 +1,6 @@
-package boardgame.items.board;
+package boardgame.items.cell;
 
+import boardgame.items.cell.Cell;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

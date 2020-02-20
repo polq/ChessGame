@@ -7,14 +7,15 @@ public class Player {
   private int defaultStep;
   private String playerName;
 
-  public Player(String playerName, int defaultStep){
+  public Player(String playerName, int defaultStep) {
     this.playerName = playerName;
     this.defaultStep = defaultStep;
   }
+
   public Player(String playerName) {
     this(playerName, 0);
   }
-  
+
   public int getDefaultStep() {
     return defaultStep;
   }
@@ -30,5 +31,10 @@ public class Player {
   @Override
   public int hashCode() {
     return Objects.hash(playerName);
+  }
+
+  @Override
+  public String toString() {
+    return playerName.toUpperCase();
   }
 }

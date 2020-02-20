@@ -1,7 +1,7 @@
 package boardgame.gamestate;
 
 import boardgame.items.board.Board;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 import java.util.Map;
@@ -72,7 +72,7 @@ public abstract class GameState {
     return gameBoard.getBoardCells().entrySet().stream()
         .map(Map.Entry::getValue)
         .filter(Predicate.not(Cell::isEmpty))
-        .filter(cell -> cell.getFigure().getChessOwner().equals(player))
+        .filter(cell -> cell.getFigure().getFigureOwner().equals(player))
         .collect(Collectors.toSet());
   }
 
@@ -99,7 +99,7 @@ public abstract class GameState {
   }
 
   boolean checkFigureOwner(Figure figure) {
-    return figure.getChessOwner().equals(getCurrentTurnPlayer());
+    return figure.getFigureOwner().equals(getCurrentTurnPlayer());
   }
 
   @Override

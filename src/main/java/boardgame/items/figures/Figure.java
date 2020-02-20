@@ -1,18 +1,24 @@
 package boardgame.items.figures;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 
 public abstract class Figure {
 
-  private Player chessOwner;
+  private Player figureOwner;
   private String chessIcon;
   private boolean isMoved;
   private String newIcon;
+  private boolean isChangeable;
 
-  public Figure(Player chessOwner, String chessIcon) {
-    this.chessOwner = chessOwner;
+  public Figure(Player figureOwner, String chessIcon) {
+    this.figureOwner = figureOwner;
     this.chessIcon = chessIcon;
+    this.isMoved = false;
+  }
+
+  public Figure(Player figureOwner) {
+    this.figureOwner = figureOwner;
     this.isMoved = false;
   }
 
@@ -20,8 +26,8 @@ public abstract class Figure {
     return this.chessIcon;
   }
 
-  public Player getChessOwner() {
-    return chessOwner;
+  public Player getFigureOwner() {
+    return figureOwner;
   }
 
   public boolean isMoved() {
@@ -38,6 +44,14 @@ public abstract class Figure {
 
   public void setNewIcon(String newIcon) {
     this.newIcon = newIcon;
+  }
+
+  public boolean isChangeable() {
+    return isChangeable;
+  }
+
+  public void setCanBeChanged(boolean canBeChanged) {
+    this.isChangeable = canBeChanged;
   }
 
   /**
@@ -77,6 +91,6 @@ public abstract class Figure {
 
   @Override
   public String toString() {
-    return this.getChessOwner().toString();
+    return this.getFigureOwner().toString();
   }
 }

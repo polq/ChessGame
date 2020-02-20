@@ -1,6 +1,6 @@
 package boardgame.game;
 
-import boardgame.rules.StandardChessRule;
+import boardgame.items.board.ChessBoardFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,12 @@ class ChessGameTest {
   @BeforeEach
   void init() {
     chessGame = new ChessGame();
-    chessGame.startNewGame(new StandardChessRule());
+    chessGame.startNewGame(new ChessBoardFactory());
   }
 
   @Test
   void startNewGame() {
-    chessGame.startNewGame(new StandardChessRule());
+    chessGame.startNewGame(new ChessBoardFactory());
     assertNotNull(chessGame);
   }
 

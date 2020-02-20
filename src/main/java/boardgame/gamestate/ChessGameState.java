@@ -5,8 +5,10 @@ import boardgame.behavior.Changeable;
 import boardgame.behavior.Jumpable;
 import boardgame.exception.GameOverException;
 import boardgame.items.board.Board;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
+import boardgame.items.cell.CellBuilder;
 import boardgame.items.figures.Figure;
+import boardgame.items.figures.checkers.CheckerKing;
 import boardgame.items.figures.chess.King;
 import boardgame.items.figures.chess.Queen;
 import boardgame.items.figures.chess.Rook;
@@ -127,7 +129,7 @@ public class ChessGameState extends GameState {
 
     moveFigure(fromCell, toCell);
 
-    if (isUnderCheck(figure.getChessOwner(), findKing(figure.getChessOwner()))) {
+    if (isUnderCheck(figure.getFigureOwner(), findKing(figure.getFigureOwner()))) {
       toCell.figureMovedFromThisCell();
       fromCell.figureMovedToThisCell(figure);
       throw new IllegalArgumentException("Invalid move, your king is under check");
@@ -156,7 +158,7 @@ public class ChessGameState extends GameState {
     toCell.figureMovedToThisCell(figure);
 
     // Check if move has lead to own king check and rollback if true
-    if (isUnderCheck(figure.getChessOwner(), findKing(figure.getChessOwner()))) {
+    if (isUnderCheck(figure.getFigureOwner(), findKing(figure.getFigureOwner()))) {
       toCell.figureMovedToThisCell(figureToBeat);
       fromCell.figureMovedToThisCell(figure);
       throw new IllegalArgumentException("Invalid move, your king is under check");
@@ -196,8 +198,9 @@ public class ChessGameState extends GameState {
       throw new IllegalArgumentException("Castling figures should be on the same line");
     }
 
-    if(!isPathClear(fromCell, toCell, king)){
-      throw new IllegalArgumentException("You can only castle when there is no obstacles in the path");
+    if (!isPathClear(fromCell, toCell, king)) {
+      throw new IllegalArgumentException(
+          "You can only castle when there is no obstacles in the path");
     }
 
     if (!king.castle()) {
@@ -208,7 +211,7 @@ public class ChessGameState extends GameState {
     rookCell.figureMovedToThisCell(king);
 
     // Check if move has lead to own king check and rollback if true
-    if (isUnderCheck(king.getChessOwner(), findKing(king.getChessOwner()))) {
+    if (isUnderCheck(king.getFigureOwner(), findKing(king.getFigureOwner()))) {
       kingCell.figureMovedToThisCell(king);
       rookCell.figureMovedToThisCell(rook);
       throw new IllegalArgumentException("Invalid move, your king is under check");
@@ -217,8 +220,8 @@ public class ChessGameState extends GameState {
 
   private void becomeQueen(Figure previousFigure, Cell toCell) {
     if (previousFigure instanceof Changeable && toCell.isChangeable()) {
-      Player player = previousFigure.getChessOwner();
-      toCell.setFigure(new Queen(player, ((Changeable) previousFigure).getNewFigureIcon()));
+      Player player = previousFigure.getFigureOwner();
+      toCell.figureMovedToThisCell(new Queen(player));
     }
   }
 
@@ -227,7 +230,7 @@ public class ChessGameState extends GameState {
         getGameBoard().getBoardCells().entrySet().stream()
             .map(Map.Entry::getValue)
             .filter(cell -> !cell.isEmpty())
-            .filter(cell -> !cell.getFigure().getChessOwner().equals(player))
+            .filter(cell -> !cell.getFigure().getFigureOwner().equals(player))
             .filter(cell -> cell.getFigure().beat(cell, kingCell))
             .filter(cell -> isPathClear(cell, kingCell, cell.getFigure()))
             .collect(Collectors.toList());
@@ -241,10 +244,10 @@ public class ChessGameState extends GameState {
         getGameBoard().getBoardCells().entrySet().stream()
             .map(Map.Entry::getValue)
             .filter(cell -> !cell.isEmpty())
-            .filter(cell -> !cell.getFigure().getChessOwner().equals(player))
+            .filter(cell -> !cell.getFigure().getFigureOwner().equals(player))
             .filter(cell -> cell.getFigure().beat(cell, kingCell))
             .filter(cell -> isPathClear(cell, kingCell, cell.getFigure()))
-            .filter(cell -> isUnderCheck(cell.getFigure().getChessOwner(), cell))
+            .filter(cell -> isUnderCheck(cell.getFigure().getFigureOwner(), cell))
             .collect(Collectors.toList());
 
     if (!enemyFiguresUnderCheck.isEmpty()) {
@@ -269,9 +272,7 @@ public class ChessGameState extends GameState {
   private Cell findKing(Player player) {
     return getGameBoard().getBoardCells().entrySet().stream()
         .filter(entry -> !entry.getValue().isEmpty())
-        .filter(
-            entry ->
-                entry.getValue().getFigure().getChessOwner().equals(player))
+        .filter(entry -> entry.getValue().getFigure().getFigureOwner().equals(player))
         .filter(entry -> entry.getValue().getFigure() instanceof King)
         .map(Map.Entry::getValue)
         .findFirst()

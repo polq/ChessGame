@@ -1,19 +1,24 @@
 package boardgame.items.figures.checkers;
 
 import boardgame.behavior.Changeable;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class Checker extends Figure implements Changeable {
 
-  public Checker(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public Checker(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public Checker(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override
   public boolean move(Cell start, Cell destination) {
-    int defaultStep = getChessOwner().getDefaultStep();
+    int defaultStep = getFigureOwner().getDefaultStep();
     return (destination.getPositionNumber() - start.getPositionNumber() == defaultStep
         && Math.abs(start.getPositionLetter() - destination.getPositionLetter()) == 1);
   }

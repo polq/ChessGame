@@ -1,13 +1,18 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class Queen extends Figure {
 
-  public Queen(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public Queen(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public Queen(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override

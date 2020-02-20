@@ -1,19 +1,17 @@
 package boardgame.items.board;
 
-import boardgame.rules.GameRule;
-import boardgame.rules.StandardChessRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
 
-  GameRule rule;
+  BoardFactory rule;
   Board board;
 
   @BeforeEach
   void init() {
-    rule = new StandardChessRule();
-    board = new Board(rule);
+    rule = new ChessBoardFactory();
+    board = rule.createBoard();
   }
 
   @Test

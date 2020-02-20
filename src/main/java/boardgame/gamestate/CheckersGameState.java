@@ -3,7 +3,8 @@ package boardgame.gamestate;
 import boardgame.behavior.Changeable;
 import boardgame.exception.GameOverException;
 import boardgame.items.board.Board;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
+import boardgame.items.cell.CellBuilder;
 import boardgame.items.figures.Figure;
 import boardgame.items.figures.checkers.CheckerKing;
 import boardgame.player.Player;
@@ -185,9 +186,8 @@ public class CheckersGameState extends GameState {
   }
 
   private void becomeCheckerKing(Cell cell) {
-    if (cell.getFigure() instanceof Changeable && cell.isChangeable()) {
-      Player player = cell.getFigure().getChessOwner();
-      cell.setFigure(new CheckerKing(player, ((Changeable) cell.getFigure()).getNewFigureIcon()));
+    if (cell.getFigure().isChangeable() && cell.isChangeable()) {
+      cell.figureMovedToThisCell(new CheckerKing(cell.getFigure().getFigureOwner()));
     }
   }
 
@@ -210,8 +210,8 @@ public class CheckersGameState extends GameState {
                 !findFiguresBetweenToBeat(figureCell, cell)
                     .get(0)
                     .getFigure()
-                    .getChessOwner()
-                    .equals(figureCell.getFigure().getChessOwner()))
+                    .getFigureOwner()
+                    .equals(figureCell.getFigure().getFigureOwner()))
         .collect(Collectors.toList());
   }
 

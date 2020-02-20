@@ -1,7 +1,7 @@
 package boardgame.items.board;
 
+import boardgame.items.cell.Cell;
 import boardgame.player.Player;
-import boardgame.rules.GameRule;
 import java.util.Map;
 import java.util.Queue;
 import java.util.stream.IntStream;
@@ -9,15 +9,35 @@ import java.util.stream.IntStream;
 public class Board {
 
   private Map<String, Cell> boardCells;
+  private Map<String, String> figureIcons;
   private Queue<Player> playersQueue;
-  private final int BOARD_WEIGHT;
-  private final int BOARD_HEIGHT;
+  private int boardWeight;
+  private int boardHeight;
 
-  public Board(GameRule rules) {
-    this.boardCells = rules.generateBoardCells();
-    this.playersQueue = rules.generatePlayerQueue();
-    this.BOARD_WEIGHT = rules.getBoardWeight();
-    this.BOARD_HEIGHT = rules.getBoardHeight();
+  Board() {}
+
+  public Map<String, String> getFigureIcons() {
+    return figureIcons;
+  }
+
+  void setFigureIcons(Map<String, String> figureIcons) {
+    this.figureIcons = figureIcons;
+  }
+
+  public int getBoardWeight() {
+    return boardWeight;
+  }
+
+  void setBoardWeight(int boardWeight) {
+    this.boardWeight = boardWeight;
+  }
+
+  public int getBoardHeight() {
+    return boardHeight;
+  }
+
+  void setBoardHeight(int boardHeight) {
+    this.boardHeight = boardHeight;
   }
 
   public Queue<Player> getPlayersQueue() {
@@ -27,23 +47,24 @@ public class Board {
   public Map<String, Cell> getBoardCells() {
     return boardCells;
   }
-  public void setBoardCells(Map<String, Cell> boardCells) {
+
+  void setBoardCells(Map<String, Cell> boardCells) {
     this.boardCells = boardCells;
   }
 
-  public void setPlayersQueue(Queue<Player> playersQueue) {
+  void setPlayersQueue(Queue<Player> playersQueue) {
     this.playersQueue = playersQueue;
   }
 
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder("  ");
-    int firstLetter = GameRule.initialBoardWeight;
-    int lastLetter = firstLetter + BOARD_WEIGHT;
+    int firstLetter = BoardFactory.initialBoardWeight;
+    int lastLetter = firstLetter + boardWeight;
     IntStream.range(firstLetter, lastLetter).forEach(i -> builder.append((char) i + " "));
     builder.append("\n");
 
-    for (int i = BOARD_HEIGHT; i >= 1; i--) {
+    for (int i = boardHeight; i >= 1; i--) {
       builder.append(i);
       builder.append(" ");
       for (int j = firstLetter; j < lastLetter; j++) {

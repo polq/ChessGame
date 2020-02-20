@@ -1,4 +1,4 @@
-package boardgame.items.board;
+package boardgame.items.cell;
 
 import boardgame.items.figures.Figure;
 
@@ -11,29 +11,26 @@ public class Cell {
   private Figure figure;
   private boolean isEmpty;
   private boolean isChangeable;
-  private static String EMPTY_CHESS_ICON = "\u25A1";
 
-  Cell(char positionLetter, int positionNumber, Figure figure, boolean isEmpty) {
-    this.positionLetter = Character.toUpperCase(positionLetter);
+  Cell(char positionLetter, int positionNumber) {
+    this.positionLetter = positionLetter;
     this.positionNumber = positionNumber;
-    this.figure = figure;
-    this.isEmpty = isEmpty;
-  }
-
-  public Cell(char positionLetter, int positionNumber) {
-    this(positionLetter, positionNumber, null, false);
   }
 
   public Figure getFigure() {
     return figure;
   }
 
-  public void setFigure(Figure figure) {
+  void setFigure(Figure figure) {
     this.figure = figure;
   }
 
-  public void setEmpty(boolean empty) {
+  void setEmpty(boolean empty) {
     isEmpty = empty;
+  }
+
+  void setChangeable(boolean changeable) {
+    isChangeable = changeable;
   }
 
   public boolean isEmpty() {
@@ -50,10 +47,6 @@ public class Cell {
 
   public boolean isChangeable() {
     return isChangeable;
-  }
-
-  public void setChangeable(boolean changeable) {
-    isChangeable = changeable;
   }
 
   /** Method used to changed Cell to an empty one */
@@ -91,6 +84,6 @@ public class Cell {
 
   @Override
   public String toString() {
-    return isEmpty ? EMPTY_CHESS_ICON : figure.getChessIcon();
+    return isEmpty ? "\u25A1" : figure.getChessIcon();
   }
 }

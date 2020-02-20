@@ -1,14 +1,19 @@
 package boardgame.items.figures.chess;
 
 import boardgame.behavior.Jumpable;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class Knight extends Figure implements Jumpable {
 
-  public Knight(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public Knight(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public Knight(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override

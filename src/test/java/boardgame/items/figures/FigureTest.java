@@ -1,6 +1,6 @@
 package boardgame.items.figures;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.chess.King;
 import boardgame.player.Player;
 import org.junit.jupiter.api.Test;

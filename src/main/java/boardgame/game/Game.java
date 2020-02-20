@@ -2,16 +2,16 @@ package boardgame.game;
 
 import boardgame.gamestate.GameState;
 import boardgame.items.board.Board;
-import boardgame.rules.GameRule;
+import boardgame.items.board.BoardFactory;
 
 /**
  * The abstract {@code Game} class represents main class to work with the API The class {@code Game}
- * includes methods to start a new Game with the defined {@link GameRule} and to play a Game by
+ * includes methods to start a new Game with the defined {@link BoardFactory} and to play a Game by
  * passing a {@link String} command.
  */
 public abstract class Game {
 
-  GameRule rule;
+  BoardFactory rule;
   Board gameBoard;
   GameState gameState;
 
@@ -52,7 +52,7 @@ public abstract class Game {
     }
 
     inputCommand = inputCommand.toUpperCase();
-    String[] inputCoordinates = inputCommand.split(GameRule.gameRuleDelimiters);
+    String[] inputCoordinates = inputCommand.split(BoardFactory.gameRuleDelimiters);
 
     this.gameState.executeCommand(inputCoordinates);
     this.gameState.switchPlayer();
@@ -62,11 +62,11 @@ public abstract class Game {
   }
 
   /**
-   * Starts the new game with the specified {@link GameRule}
+   * Starts the new game with the specified {@link BoardFactory}
    *
-   * @param rule represents the {@link GameRule} with which the game should be started
+   * @param rule represents the {@link BoardFactory} with which the game should be started
    */
-  public abstract void startNewGame(GameRule rule);
+  public abstract void startNewGame(BoardFactory rule);
 
   abstract boolean checkValidInput(String inputCommand);
 

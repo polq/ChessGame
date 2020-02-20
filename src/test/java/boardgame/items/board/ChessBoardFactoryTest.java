@@ -1,6 +1,6 @@
-package boardgame.rules;
+package boardgame.items.board;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,18 +10,18 @@ import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StandardChessRuleTest {
+class ChessBoardFactoryTest {
 
-  GameRule gameRule;
+  BoardFactory boardFactory;
 
   @BeforeEach
   void init() {
-    gameRule = new StandardChessRule();
+    boardFactory = new ChessBoardFactory();
   }
 
   @Test
   void testGetInitialBoard() {
-    Map<String, Cell> boardMap = gameRule.generateBoardCells();
+    Map<String, Cell> boardMap = boardFactory.generateBoardCells();
     long figuresNumber =
         boardMap.entrySet().stream()
             .map(Map.Entry::getValue)
@@ -34,7 +34,7 @@ class StandardChessRuleTest {
 
   @Test
   void testGetInitialPlayerQueue() {
-    Queue<Player> players = gameRule.generatePlayerQueue();
+    Queue<Player> players = boardFactory.generatePlayerQueue();
 
     assertEquals(2, players.size());
   }

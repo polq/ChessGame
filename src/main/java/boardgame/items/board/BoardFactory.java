@@ -1,25 +1,33 @@
-package boardgame.rules;
+package boardgame.items.board;
 
-import boardgame.items.board.Board;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public abstract class GameRule {
+public abstract class BoardFactory {
 
   public static final char initialBoardWeight = 'A';
   public static final int initialBoardHeight = 1;
   public static final String gameRuleDelimiters = "[- \\\\./|]";
 
-  public abstract int getBoardWeight();
+  abstract int getBoardWeight();
 
-  public abstract int getBoardHeight();
+  abstract int getBoardHeight();
 
   public Board createBoard(){
-     return new Board(this);
+    Board board = new Board();
+    board.setPlayersQueue(this.generatePlayerQueue());
+    board.setBoardCells(this.generateBoardCells());
+    board.setBoardHeight(this.getBoardHeight());
+    board.setBoardWeight(this.getBoardWeight());
+    board.setFigureIcons(this.generateFigureIcons());
+    return board;
   }
+
+
+  abstract Map<String, String> generateFigureIcons();
 
   /**
    * Creates initial {@link boardgame.items.board.Board} state including position of all {@link
@@ -29,7 +37,7 @@ public abstract class GameRule {
    *     boardgame.items.board.Board} and {@link Cell} Value representing all corresponding
    *     properties of the coordinate
    */
-  public abstract Map<String, Cell> generateBoardCells();
+  abstract Map<String, Cell> generateBoardCells();
 
   /**
    * Method that creates {@link Player} that will be participating in the game. {@link Player} turns
@@ -39,7 +47,7 @@ public abstract class GameRule {
    * @return {@link Queue} of containing {@link Player} that will take part in the game, while first
    *     player in the queue is current turn player
    */
-  public Queue<Player> generatePlayerQueue(){
+  Queue<Player> generatePlayerQueue(){
     Queue<Player> playersQueue = new LinkedList<>();
     playersQueue.add(new Player("white"));
     playersQueue.add(new Player("black"));

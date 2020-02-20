@@ -1,14 +1,20 @@
 package boardgame.items.figures.chess;
 
 import boardgame.behavior.Changeable;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class Pawn extends Figure implements Changeable {
 
-  public Pawn(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public Pawn(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public Pawn(Player figureOwner) {
+    super(figureOwner);
+    this.setCanBeChanged(true);
   }
 
   @Override
@@ -22,7 +28,7 @@ public class Pawn extends Figure implements Changeable {
 
     // Default step value for White pawn is 1 (can move 1 cell up), for black -1 (can move 1 cell
     // down the board)
-    int defaultStep = this.getChessOwner().getDefaultStep();
+    int defaultStep = this.getFigureOwner().getDefaultStep();
     int currentStepValue = destination.getPositionNumber() - start.getPositionNumber();
 
     if (currentStepValue == defaultStep) {
@@ -49,7 +55,7 @@ public class Pawn extends Figure implements Changeable {
     if (start.equals(destination)) {
       throw new IllegalArgumentException("Method arguments cannot be equal");
     }
-    int defaultStep = this.getChessOwner().getDefaultStep();
+    int defaultStep = this.getFigureOwner().getDefaultStep();
 
     // pawn can only beat by diagonal for 1 step
     boolean result =

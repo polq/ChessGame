@@ -1,14 +1,19 @@
 package boardgame.items.figures.chess;
 
 import boardgame.behavior.Castlable;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class King extends Figure implements Castlable {
 
-  public King(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public King(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public King(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override

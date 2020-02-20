@@ -1,13 +1,18 @@
 package boardgame.items.figures.checkers;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class CheckerKing extends Figure {
 
-  public CheckerKing(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public CheckerKing(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public CheckerKing(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override

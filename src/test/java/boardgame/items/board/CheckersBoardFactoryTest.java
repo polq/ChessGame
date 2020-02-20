@@ -1,22 +1,21 @@
-package boardgame.rules;
+package boardgame.items.board;
 
-import boardgame.items.board.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RussianCheckersRuleTest {
+class CheckersBoardFactoryTest {
 
-  GameRule rule;
+  BoardFactory rule;
 
   @BeforeEach
   public void init() {
-    rule = new RussianCheckersRule();
+    rule = new CheckersBoardFactory();
   }
 
   @Test
   void getInitialBoard() {
-    Board board = new Board(rule);
+    Board board = rule.createBoard();
     assertEquals(64, board.getBoardCells().size());
   }
 }

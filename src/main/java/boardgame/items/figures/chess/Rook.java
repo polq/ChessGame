@@ -1,14 +1,19 @@
 package boardgame.items.figures.chess;
 
 import boardgame.behavior.Castlable;
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
 public class Rook extends Figure implements Castlable {
 
-  public Rook(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+
+  public Rook(Player figureOwner, String chessIcon) {
+    super(figureOwner, chessIcon);
+  }
+
+  public Rook(Player figureOwner) {
+    super(figureOwner);
   }
 
   @Override

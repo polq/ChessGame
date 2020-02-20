@@ -1,8 +1,7 @@
 package boardgame.game;
 
-import boardgame.rules.RussianCheckersRule;
+import boardgame.items.board.CheckersBoardFactory;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +13,7 @@ public class CheckersGameTest {
   @BeforeEach
   public void init() {
     checkers = new CheckersGame();
-    checkers.startNewGame(new RussianCheckersRule());
+    checkers.startNewGame(new CheckersBoardFactory());
   }
 
   @Test
@@ -26,7 +25,7 @@ public class CheckersGameTest {
 
   @Test
   public void startNewGame() {
-    checkers.startNewGame(new RussianCheckersRule());
+    checkers.startNewGame(new CheckersBoardFactory());
     assertNotNull(checkers);
   }
 

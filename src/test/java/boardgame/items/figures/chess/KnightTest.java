@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.board.Cell;
+import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
