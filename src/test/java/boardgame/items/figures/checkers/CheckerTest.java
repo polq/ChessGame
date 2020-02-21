@@ -1,6 +1,6 @@
 package boardgame.items.figures.checkers;
 
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,27 +19,27 @@ class CheckerTest {
   void move() {
     Cell startCell = new Cell('A', 1);
     Cell endCell = new Cell('B', 2);
-    assertTrue(checker.move(startCell, endCell));
+    assertTrue(checker.canMove(startCell, endCell));
   }
 
   @Test
   void moveFail(){
     Cell startCell = new Cell('A', 1);
     Cell endCell = new Cell('B', 1);
-    assertFalse(checker.move(startCell, endCell));
+    assertFalse(checker.canMove(startCell, endCell));
   }
 
   @Test
   void beat() {
     Cell startCell = new Cell('A', 1);
     Cell endCell = new Cell('C', 3);
-    assertTrue(checker.beat(startCell, endCell));
+    assertTrue(checker.canBeat(startCell, endCell));
   }
 
   @Test
   void beatFail() {
     Cell startCell = new Cell('A', 1);
     Cell endCell = new Cell('b', 2);
-    assertFalse(checker.beat(startCell, endCell));
+    assertFalse(checker.canBeat(startCell, endCell));
   }
 }

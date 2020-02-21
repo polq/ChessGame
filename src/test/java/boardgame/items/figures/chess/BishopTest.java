@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,26 +22,26 @@ class BishopTest {
   void move() {
     startCell = new Cell('E', 2);
     endCell = new Cell('E', 4);
-    assertFalse(bishop.move(startCell, endCell));
+    assertFalse(bishop.canMove(startCell, endCell));
 
     startCell = new Cell('E', 2);
     endCell = new Cell('a', 2);
-    assertFalse(bishop.move(startCell, endCell));
+    assertFalse(bishop.canMove(startCell, endCell));
 
     startCell = new Cell('E', 2);
     endCell = new Cell('D', 3);
-    assertTrue(bishop.move(startCell, endCell));
+    assertTrue(bishop.canMove(startCell, endCell));
 
     startCell = new Cell('E', 2);
     endCell = new Cell('d', 1);
-    assertTrue(bishop.move(startCell, endCell));
+    assertTrue(bishop.canMove(startCell, endCell));
 
     startCell = new Cell('E', 2);
     endCell = new Cell('F', 3);
-    assertTrue(bishop.move(startCell, endCell));
+    assertTrue(bishop.canMove(startCell, endCell));
 
     startCell = new Cell('a', 7);
     endCell = new Cell('c', 6);
-    assertFalse(bishop.move(startCell, endCell));
+    assertFalse(bishop.canMove(startCell, endCell));
   }
 }

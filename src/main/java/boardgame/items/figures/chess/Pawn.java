@@ -1,16 +1,10 @@
 package boardgame.items.figures.chess;
 
-import boardgame.behavior.Changeable;
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
-public class Pawn extends Figure implements Changeable {
-
-
-  public Pawn(Player figureOwner, String chessIcon) {
-    super(figureOwner, chessIcon);
-  }
+public class Pawn extends Figure {
 
   public Pawn(Player figureOwner) {
     super(figureOwner);
@@ -18,9 +12,7 @@ public class Pawn extends Figure implements Changeable {
   }
 
   @Override
-  public boolean move(Cell start, Cell destination) {
-    super.move(start, destination);
-
+  public boolean canMove(Cell start, Cell destination) {
     // pawn can only move vertically, so letter must remain unchanged
     if (start.getPositionLetter() != destination.getPositionLetter()) {
       return false;
@@ -47,7 +39,7 @@ public class Pawn extends Figure implements Changeable {
   }
 
   @Override
-  public boolean beat(Cell start, Cell destination) {
+  public boolean canBeat(Cell start, Cell destination) {
     if (start == null || destination == null) {
       throw new NullPointerException("Invalid null arguments");
     }
@@ -70,11 +62,6 @@ public class Pawn extends Figure implements Changeable {
 
   @Override
   public String toString() {
-    return super.toString() + " Pawn";
-  }
-
-  @Override
-  public String getNewFigureIcon() {
-    return getNewIcon();
+    return "PAWN";
   }
 }

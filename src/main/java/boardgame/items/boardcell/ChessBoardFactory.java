@@ -1,7 +1,5 @@
-package boardgame.items.board;
+package boardgame.items.boardcell;
 
-import boardgame.items.cell.Cell;
-import boardgame.items.cell.CellBuilder;
 import boardgame.items.figures.chess.Bishop;
 import boardgame.items.figures.chess.King;
 import boardgame.items.figures.chess.Knight;

@@ -1,6 +1,5 @@
-package boardgame.items.board;
+package boardgame.items.boardcell;
 
-import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 import java.util.LinkedList;
 import java.util.Map;
@@ -10,7 +9,6 @@ public abstract class BoardFactory {
 
   public static final char initialBoardWeight = 'A';
   public static final int initialBoardHeight = 1;
-  public static final String gameRuleDelimiters = "[- \\\\./|]";
 
   abstract int getBoardWeight();
 
@@ -30,11 +28,11 @@ public abstract class BoardFactory {
   abstract Map<String, String> generateFigureIcons();
 
   /**
-   * Creates initial {@link boardgame.items.board.Board} state including position of all {@link
+   * Creates initial {@link boardgame.items.boardcell.Board} state including position of all {@link
    * boardgame.items.figures.Figure} on the Board for the defined game rule
    *
    * @return {@link Map} with {@link String} key representing coordinate on the {@link
-   *     boardgame.items.board.Board} and {@link Cell} Value representing all corresponding
+   *     boardgame.items.boardcell.Board} and {@link Cell} Value representing all corresponding
    *     properties of the coordinate
    */
   abstract Map<String, Cell> generateBoardCells();

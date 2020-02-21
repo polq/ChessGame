@@ -1,7 +1,7 @@
 package boardgame.gamestate;
 
-import boardgame.items.cell.Cell;
-import boardgame.items.board.CheckersBoardFactory;
+import boardgame.items.boardcell.Cell;
+import boardgame.items.boardcell.CheckersBoardFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

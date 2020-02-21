@@ -1,4 +1,4 @@
-package boardgame.items.cell;
+package boardgame.items.boardcell;
 
 import boardgame.items.figures.Figure;
 
@@ -50,7 +50,7 @@ public class Cell {
   }
 
   /** Method used to changed Cell to an empty one */
-  public void figureMovedFromThisCell() {
+  void figureMovedFromThisCell() {
     this.isEmpty = true;
     this.figure = null;
   }
@@ -60,7 +60,7 @@ public class Cell {
    *
    * @param figure represents {@link Figure} that has moved to this {@link Cell}
    */
-  public void figureMovedToThisCell(Figure figure) {
+  void figureMovedToThisCell(Figure figure) {
     this.figure = figure;
     this.isEmpty = false;
   }
@@ -82,8 +82,4 @@ public class Cell {
     return Objects.hash(positionNumber, positionLetter);
   }
 
-  @Override
-  public String toString() {
-    return isEmpty ? "\u25A1" : figure.getChessIcon();
-  }
 }

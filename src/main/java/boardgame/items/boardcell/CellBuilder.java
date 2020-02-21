@@ -1,4 +1,4 @@
-package boardgame.items.cell;
+package boardgame.items.boardcell;
 
 import boardgame.items.figures.Figure;
 

@@ -1,6 +1,6 @@
 package boardgame.gamestate;
 
-import boardgame.items.board.ChessBoardFactory;
+import boardgame.items.boardcell.ChessBoardFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

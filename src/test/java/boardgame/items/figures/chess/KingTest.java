@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,26 +22,26 @@ class KingTest {
   void move() {
     startCell = new Cell('E', 2);
     endCell = new Cell('E', 4);
-    assertFalse(king.move(startCell, endCell));
+    assertFalse(king.canMove(startCell, endCell));
 
     startCell = new Cell('A', 1);
     endCell = new Cell('E', 2);
-    assertFalse(king.move(startCell, endCell));
+    assertFalse(king.canMove(startCell, endCell));
 
     startCell = new Cell('E', 1);
     endCell = new Cell('E', 2);
-    assertTrue(king.move(startCell, endCell));
+    assertTrue(king.canMove(startCell, endCell));
 
     startCell = new Cell('F', 1);
     endCell = new Cell('E', 1);
-    assertTrue(king.move(startCell, endCell));
+    assertTrue(king.canMove(startCell, endCell));
 
     startCell = new Cell('C', 3);
     endCell = new Cell('B', 3);
-    assertTrue(king.move(startCell, endCell));
+    assertTrue(king.canMove(startCell, endCell));
 
     startCell = new Cell('A', 1);
     endCell = new Cell('C', 2);
-    assertFalse(king.move(startCell, endCell));
+    assertFalse(king.canMove(startCell, endCell));
   }
 }

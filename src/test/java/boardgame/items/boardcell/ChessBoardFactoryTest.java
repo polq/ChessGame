@@ -1,6 +1,5 @@
-package boardgame.items.board;
+package boardgame.items.boardcell;
 
-import boardgame.items.cell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,7 @@ class ChessBoardFactoryTest {
   void testGetInitialBoard() {
     Map<String, Cell> boardMap = boardFactory.generateBoardCells();
     long figuresNumber =
-        boardMap.entrySet().stream()
-            .map(Map.Entry::getValue)
+        boardMap.values().stream()
             .filter(cell -> !cell.isEmpty())
             .count();
 

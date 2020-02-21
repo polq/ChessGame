@@ -1,7 +1,5 @@
-package boardgame.items.board;
+package boardgame.items.boardcell;
 
-import boardgame.items.cell.Cell;
-import boardgame.items.cell.CellBuilder;
 import boardgame.items.figures.checkers.Checker;
 import boardgame.player.Player;
 import java.util.HashMap;
@@ -47,7 +45,7 @@ public class CheckersBoardFactory extends BoardFactory {
           }
         } else if (i == getBoardHeight()) {
           if (j == 'A' || j == 'C' || j == 'E' || j == 'G') {
-            builder.buildChangeableFigureCell(new Checker(whitePlayer));
+            builder.buildChangeableFigureCell(new Checker(blackPlayer));
           } else {
             builder.buildChangeAbleEmptyCell();
           }

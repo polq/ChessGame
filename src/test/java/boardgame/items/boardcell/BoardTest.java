@@ -1,4 +1,4 @@
-package boardgame.items.board;
+package boardgame.items.boardcell;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

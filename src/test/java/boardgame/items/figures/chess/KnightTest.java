@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -23,23 +23,23 @@ class KnightTest {
   void move() {
     startCell = new Cell('d', 4);
     endCell = new Cell('b', 5);
-    assertTrue(knight.move(startCell, endCell));
+    assertTrue(knight.canMove(startCell, endCell));
 
     startCell = new Cell('d', 4);
     endCell = new Cell('F', 3);
-    assertTrue(knight.move(startCell, endCell));
+    assertTrue(knight.canMove(startCell, endCell));
 
     startCell = new Cell('d', 4);
     endCell = new Cell('E', 2);
-    assertTrue(knight.move(startCell, endCell));
+    assertTrue(knight.canMove(startCell, endCell));
 
     startCell = new Cell('d', 4);
     endCell = new Cell('c', 3);
-    assertFalse(knight.move(startCell, endCell));
+    assertFalse(knight.canMove(startCell, endCell));
 
     startCell = new Cell('d', 4);
     endCell = new Cell('a', 4);
-    assertFalse(knight.move(startCell, endCell));
+    assertFalse(knight.canMove(startCell, endCell));
   }
 
   @Test

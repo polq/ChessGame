@@ -1,6 +1,6 @@
 package boardgame.game;
 
-import boardgame.items.board.CheckersBoardFactory;
+import boardgame.items.boardcell.CheckersBoardFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

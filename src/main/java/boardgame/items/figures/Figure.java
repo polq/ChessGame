@@ -1,29 +1,18 @@
 package boardgame.items.figures;
 
-import boardgame.items.cell.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 
 public abstract class Figure {
 
   private Player figureOwner;
-  private String chessIcon;
   private boolean isMoved;
-  private String newIcon;
   private boolean isChangeable;
-
-  public Figure(Player figureOwner, String chessIcon) {
-    this.figureOwner = figureOwner;
-    this.chessIcon = chessIcon;
-    this.isMoved = false;
-  }
+  private boolean isCastlable;
 
   public Figure(Player figureOwner) {
     this.figureOwner = figureOwner;
     this.isMoved = false;
-  }
-
-  public String getChessIcon() {
-    return this.chessIcon;
   }
 
   public Player getFigureOwner() {
@@ -38,14 +27,6 @@ public abstract class Figure {
     isMoved = moved;
   }
 
-  public String getNewIcon() {
-    return newIcon;
-  }
-
-  public void setNewIcon(String newIcon) {
-    this.newIcon = newIcon;
-  }
-
   public boolean isChangeable() {
     return isChangeable;
   }
@@ -53,6 +34,15 @@ public abstract class Figure {
   public void setCanBeChanged(boolean canBeChanged) {
     this.isChangeable = canBeChanged;
   }
+
+  public boolean isCastlable() {
+    return isCastlable;
+  }
+
+  public void setCastlable(boolean castlable) {
+    isCastlable = castlable;
+  }
+
 
   /**
    * Method is used to determinate if specified {@link Figure} can move from one {@link Cell} to
@@ -64,16 +54,7 @@ public abstract class Figure {
    * @throws NullPointerException in case param values are null
    * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  public boolean move(Cell start, Cell destination) {
-    if (start == null || destination == null) {
-      throw new NullPointerException("Invalid null arguments");
-    }
-
-    if (start.equals(destination)) {
-      throw new IllegalArgumentException("Method arguments cannot be equal");
-    }
-    return false;
-  }
+  public abstract boolean canMove(Cell start, Cell destination);
 
   /**
    * Method is used to determinate if specified {@link Figure} can beat from one {@link Cell} to
@@ -85,8 +66,12 @@ public abstract class Figure {
    * @throws NullPointerException in case param values are null
    * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  public boolean beat(Cell start, Cell destination) {
-    return this.move(start, destination);
+  public boolean canBeat(Cell start, Cell destination) {
+    return this.canMove(start, destination);
+  }
+
+  public String getIconStringName(){
+    return this.getFigureOwner().toString() + "_" + this.toString();
   }
 
   @Override
