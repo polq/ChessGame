@@ -6,8 +6,6 @@ import boardgame.player.Player;
 
 public class Queen extends Figure {
 
-
-
   public Queen(Player figureOwner) {
     super(figureOwner);
   }

@@ -6,7 +6,6 @@ import boardgame.player.Player;
 
 public class Knight extends Figure {
 
-
   public Knight(Player figureOwner) {
     super(figureOwner);
   }

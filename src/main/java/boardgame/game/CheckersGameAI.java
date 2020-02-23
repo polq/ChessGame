@@ -7,11 +7,21 @@ import boardgame.items.figures.checkers.CheckerKing;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Concrete class that defines main public methods to execute command, received from the {@link
+ * GameAI} class, and to get game status message.
+ *
+ * <p>Additionally class has private-package util methods that are used to determinate if the
+ * commands passed to the execute method are valid and to perform the corresponding changes on the
+ * {@link boardgame.items.boardcell.Board}
+ *
+ * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in
+ * this class will cause a {@link NullPointerException} to be thrown.
+ */
 public class CheckersGameAI extends GameAI {
 
   public CheckersGameAI() {
@@ -19,6 +29,11 @@ public class CheckersGameAI extends GameAI {
     this.playerQueue = generatePlayerQueue();
   }
 
+  /**
+   * Method returns brief game status information identifying current player's turn
+   *
+   * @return {@link String} containing current player's turn unless the game is already over
+   */
   @Override
   String getGameStatus() {
     String resultGameStatus;
@@ -30,11 +45,35 @@ public class CheckersGameAI extends GameAI {
     return resultGameStatus;
   }
 
+  /**
+   * Method is used to check if game is still active or has been ended.
+   *
+   * @return true if the game is still active, false in case the game ended.
+   */
   @Override
   boolean isActive() {
     return gameBoard.getAliveFigures(getCurrentTurnPlayer()).size() > 0;
   }
 
+  /**
+   * Main method that takes input Coordinates array and executes corresponding commands depending on
+   * the coordinates type. First array item should represent the {@link Figure} {@link Cell} and
+   * other {@link String} coordinates should represent empty {@link Cell} where figure should be
+   * moved.
+   *
+   * <p>In case initial checks are satisfied, the method invokes {@code move} or {@code beat}
+   * methods which might throw {@link IllegalArgumentException} in case those moves cannot be
+   * performed according to the defined rules.
+   *
+   * @param inputCommand {@link String} representing {@link Cell} coordinates first coordinate
+   *                     representing figure to move and other - {@link Cell} where it should be
+   *                     moved.
+   * @throws NullPointerException     in case any of the {@link Cell} coordinate specified in the
+   *                                  param does not exist on the {@link boardgame.items.boardcell.Board}
+   * @throws IllegalArgumentException if first {@link Cell} in the param does not contain a figure
+   *                                  or figure belongs to another player or if other {@link Cell}
+   *                                  coordinates are not empty
+   */
   @Override
   void executeCommand(String inputCommand) {
     String[] coordinates = spitInputIntoCoordinates(inputCommand);
@@ -82,9 +121,7 @@ public class CheckersGameAI extends GameAI {
       tempToCell = cell;
       if (!figureToBeat.canBeat(tempFromCell, tempToCell)) {
         throw new IllegalArgumentException(
-            "Invalid arguments, "
-                + figureToBeat
-                + " on "
+            "Invalid arguments, figure on "
                 + tempFromCell.getStringKey()
                 + " cannot beat in the provided sequence");
       }
@@ -136,7 +173,7 @@ public class CheckersGameAI extends GameAI {
     }
   }
 
-  private boolean isOnlyOneFigureBetweenToBeat(Cell fromCell, Cell toCell) {
+  boolean isOnlyOneFigureBetweenToBeat(Cell fromCell, Cell toCell) {
     return findFiguresBetweenToBeat(fromCell, toCell).size() == 1;
   }
 
@@ -148,10 +185,10 @@ public class CheckersGameAI extends GameAI {
     int numberStep = numberDifference / Math.abs(numberDifference);
 
     for (int posNumber = fromCell.getPositionNumber() + numberStep,
-            posLetter = fromCell.getPositionLetter() + letterStep,
-            count = 1;
+        posLetter = fromCell.getPositionLetter() + letterStep,
+        count = 1;
         count < Math.abs(letterDifference);
-        posNumber += numberStep, posLetter += letterStep, count++) {
+        posNumber = posNumber + numberStep, posLetter += letterStep, count++) {
       String cellKey = "" + (char) posLetter + posNumber;
       Cell cellBetween = gameBoard.getBoardCells().get(cellKey);
       if (cellBetween != null && !cellBetween.isEmpty()) {
@@ -161,7 +198,6 @@ public class CheckersGameAI extends GameAI {
     return listOfCellsBetween;
   }
 
-  // finds if there any current player figure that can beat someone
   private boolean isAnyFigureUnderBeat() {
     return gameBoard.getAliveFigures(getCurrentTurnPlayer()).stream()
         .anyMatch(cell -> !getPotentialCellsToBeat(cell).isEmpty());
