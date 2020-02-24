@@ -1,8 +1,8 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.King;
-import boardgame.player.WhitePlayer;
+import boardgame.items.boardcell.Cell;
+import boardgame.items.boardcell.CellBuilder;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,33 +16,33 @@ class KingTest {
 
   @BeforeEach
   void init() {
-    king = new King(new WhitePlayer(), "");
+    king = new King(new Player("white"));
   }
 
   @Test
   void move() {
-    startCell = new Cell('E', 2);
-    endCell = new Cell('E', 4);
-    assertFalse(king.move(startCell, endCell));
+    startCell = new CellBuilder('E', 2).getResultCell();
+    endCell = new CellBuilder('E', 4).getResultCell();
+    assertFalse(king.canMove(startCell, endCell));
 
-    startCell = new Cell('A', 1);
-    endCell = new Cell('E', 2);
-    assertFalse(king.move(startCell, endCell));
+    startCell = new CellBuilder('A', 1).getResultCell();
+    endCell = new CellBuilder('E', 2).getResultCell();
+    assertFalse(king.canMove(startCell, endCell));
 
-    startCell = new Cell('E', 1);
-    endCell = new Cell('E', 2);
-    assertTrue(king.move(startCell, endCell));
+    startCell = new CellBuilder('E', 1).getResultCell();
+    endCell = new CellBuilder('E', 2).getResultCell();
+    assertTrue(king.canMove(startCell, endCell));
 
-    startCell = new Cell('F', 1);
-    endCell = new Cell('E', 1);
-    assertTrue(king.move(startCell, endCell));
+    startCell = new CellBuilder('F', 1).getResultCell();
+    endCell = new CellBuilder('E', 1).getResultCell();
+    assertTrue(king.canMove(startCell, endCell));
 
-    startCell = new Cell('C', 3);
-    endCell = new Cell('B', 3);
-    assertTrue(king.move(startCell, endCell));
+    startCell = new CellBuilder('C', 3).getResultCell();
+    endCell = new CellBuilder('B', 3).getResultCell();
+    assertTrue(king.canMove(startCell, endCell));
 
-    startCell = new Cell('A', 1);
-    endCell = new Cell('C', 2);
-    assertFalse(king.move(startCell, endCell));
+    startCell = new CellBuilder('A', 1).getResultCell();
+    endCell = new CellBuilder('C', 2).getResultCell();
+    assertFalse(king.canMove(startCell, endCell));
   }
 }

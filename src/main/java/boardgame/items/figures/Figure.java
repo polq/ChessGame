@@ -1,28 +1,27 @@
 package boardgame.items.figures;
 
-import boardgame.behavior.Actionable;
-import boardgame.items.board.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.player.Player;
 
-public abstract class Figure implements Actionable {
+/**
+ * Figure class represents a class that identifies a figure on a board game. It has proper fields
+ * that identify a figure and methods that check if figure can move or beat in the specified
+ * direction.
+ */
+public abstract class Figure {
 
-  private Player chessOwner;
-  private String chessIcon;
+  private Player figureOwner;
   private boolean isMoved;
-  private String newIcon;
+  private boolean isChangeable;
+  private boolean isCastlable;
 
-  public Figure(Player chessOwner, String chessIcon) {
-    this.chessOwner = chessOwner;
-    this.chessIcon = chessIcon;
+  public Figure(Player figureOwner) {
+    this.figureOwner = figureOwner;
     this.isMoved = false;
   }
 
-  public String getChessIcon() {
-    return this.chessIcon;
-  }
-
-  public Player getChessOwner() {
-    return chessOwner;
+  public Player getFigureOwner() {
+    return figureOwner;
   }
 
   public boolean isMoved() {
@@ -33,53 +32,54 @@ public abstract class Figure implements Actionable {
     isMoved = moved;
   }
 
-  public String getNewIcon() {
-    return newIcon;
+  public boolean isChangeable() {
+    return isChangeable;
   }
 
-  public void setNewIcon(String newIcon) {
-    this.newIcon = newIcon;
+  public void setCanBeChanged(boolean canBeChanged) {
+    this.isChangeable = canBeChanged;
+  }
+
+  public boolean isCastlable() {
+    return isCastlable;
+  }
+
+  public void setCastlable(boolean castlable) {
+    isCastlable = castlable;
   }
 
   /**
    * Method is used to determinate if specified {@link Figure} can move from one {@link Cell} to
    * another
    *
-   * @param start represent initial position of the {@link Figure}
+   * @param start       represent initial position of the {@link Figure}
    * @param destination represents where {@link Figure} should move
    * @return true if figure can move from one cell to another and false - if not.
    * @throws NullPointerException in case param values are null
-   * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  @Override
-  public boolean move(Cell start, Cell destination) {
-    if (start == null || destination == null) {
-      throw new NullPointerException("Invalid null arguments");
-    }
-
-    if (start.equals(destination)) {
-      throw new IllegalArgumentException("Method arguments cannot be equal");
-    }
-    return false;
-  }
+  public abstract boolean canMove(Cell start, Cell destination);
 
   /**
    * Method is used to determinate if specified {@link Figure} can beat from one {@link Cell} to
    * another
    *
-   * @param start represent initial position of the {@link Figure}
+   * @param start       represent initial position of the {@link Figure}
    * @param destination represents where {@link Figure} should move
    * @return true if figure can beat from one cell to another and false - if not.
    * @throws NullPointerException in case param values are null
-   * @throws IllegalArgumentException in case start and destination {@link Cell} are equal
    */
-  @Override
-  public boolean beat(Cell start, Cell destination) {
-    return this.move(start, destination);
+  public boolean canBeat(Cell start, Cell destination) {
+    return this.canMove(start, destination);
   }
 
-  @Override
-  public String toString() {
-    return this.getChessOwner().toString();
+  /**
+   * Method that is used to return a name for an figure icon in a format of [PlayerOwner_Figure]
+   *
+   * @return {@link String} that can find an icon in a {@link boardgame.items.boardcell.Board}
+   * {@code figureIcons} list
+   */
+  public String getIconStringName() {
+    return this.getFigureOwner().toString() + "_" + this.toString();
   }
+
 }

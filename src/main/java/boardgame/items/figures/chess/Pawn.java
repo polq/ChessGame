@@ -1,20 +1,18 @@
 package boardgame.items.figures.chess;
 
-import boardgame.behavior.Changeable;
-import boardgame.items.board.Cell;
+import boardgame.items.boardcell.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
-public class Pawn extends Figure implements Changeable {
+public class Pawn extends Figure {
 
-  public Pawn(Player chessOwner, String chessIcon) {
-    super(chessOwner, chessIcon);
+  public Pawn(Player figureOwner) {
+    super(figureOwner);
+    this.setCanBeChanged(true);
   }
 
   @Override
-  public boolean move(Cell start, Cell destination) {
-    super.move(start, destination);
-
+  public boolean canMove(Cell start, Cell destination) {
     // pawn can only move vertically, so letter must remain unchanged
     if (start.getPositionLetter() != destination.getPositionLetter()) {
       return false;
@@ -22,7 +20,7 @@ public class Pawn extends Figure implements Changeable {
 
     // Default step value for White pawn is 1 (can move 1 cell up), for black -1 (can move 1 cell
     // down the board)
-    int defaultStep = this.getChessOwner().getDefaultStep();
+    int defaultStep = this.getFigureOwner().getDefaultStep();
     int currentStepValue = destination.getPositionNumber() - start.getPositionNumber();
 
     if (currentStepValue == defaultStep) {
@@ -41,7 +39,7 @@ public class Pawn extends Figure implements Changeable {
   }
 
   @Override
-  public boolean beat(Cell start, Cell destination) {
+  public boolean canBeat(Cell start, Cell destination) {
     if (start == null || destination == null) {
       throw new NullPointerException("Invalid null arguments");
     }
@@ -49,7 +47,7 @@ public class Pawn extends Figure implements Changeable {
     if (start.equals(destination)) {
       throw new IllegalArgumentException("Method arguments cannot be equal");
     }
-    int defaultStep = this.getChessOwner().getDefaultStep();
+    int defaultStep = this.getFigureOwner().getDefaultStep();
 
     // pawn can only beat by diagonal for 1 step
     boolean result =
@@ -64,11 +62,6 @@ public class Pawn extends Figure implements Changeable {
 
   @Override
   public String toString() {
-    return super.toString() + " Pawn";
-  }
-
-  @Override
-  public String getNewFigureIcon() {
-    return getNewIcon();
+    return "PAWN";
   }
 }

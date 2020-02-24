@@ -1,8 +1,8 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.board.Cell;
-import boardgame.items.figures.chess.Queen;
-import boardgame.player.WhitePlayer;
+import boardgame.items.boardcell.Cell;
+import boardgame.items.boardcell.CellBuilder;
+import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,29 +16,29 @@ class QueenTest {
 
   @BeforeEach
   public void init() {
-    queenChess = new Queen(new WhitePlayer(), "");
+    queenChess = new Queen(new Player("white"));
   }
 
   @Test
   public void testMove() {
-    startCell = new Cell('E', 2);
-    endCell = new Cell('e', 7);
-    assertTrue(queenChess.move(startCell, endCell));
+    startCell = new CellBuilder('E', 2).getResultCell();
+    endCell = new CellBuilder('e', 7).getResultCell();
+    assertTrue(queenChess.canMove(startCell, endCell));
 
-    startCell = new Cell('a', 7);
-    endCell = new Cell('b', 6);
-    assertTrue(queenChess.move(startCell, endCell));
+    startCell = new CellBuilder('a', 7).getResultCell();
+    endCell = new CellBuilder('b', 6).getResultCell();
+    assertTrue(queenChess.canMove(startCell, endCell));
 
-    startCell = new Cell('A', 1);
-    endCell = new Cell('a', 10);
-    assertTrue(queenChess.move(startCell, endCell));
+    startCell = new CellBuilder('A', 1).getResultCell();
+    endCell = new CellBuilder('a', 10).getResultCell();
+    assertTrue(queenChess.canMove(startCell, endCell));
 
-    startCell = new Cell('A', 1);
-    endCell = new Cell('B', 3);
-    assertFalse(queenChess.move(startCell, endCell));
+    startCell = new CellBuilder('A', 1).getResultCell();
+    endCell = new CellBuilder('B', 3).getResultCell();
+    assertFalse(queenChess.canMove(startCell, endCell));
 
-    startCell = new Cell('B', 4);
-    endCell = new Cell('A', 3);
-    assertTrue(queenChess.move(startCell, endCell));
+    startCell = new CellBuilder('B', 4).getResultCell();
+    endCell = new CellBuilder('A', 3).getResultCell();
+    assertTrue(queenChess.canMove(startCell, endCell));
   }
 }
