@@ -11,8 +11,8 @@ import java.util.stream.IntStream;
  * the specified formats. The class has several static package-private methods for building snapshot
  * representation depending on the successfullness of the commands. Additionally class has public
  * method identifying if the game is still active.
- * <p>
- * Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
+ *
+ * <p>Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
  * class will cause a {@link NullPointerException} to be thrown.
  */
 public class GameSnapshot {
@@ -22,14 +22,13 @@ public class GameSnapshot {
   private String gameStatusMessage;
   private Board board;
 
-  private GameSnapshot() {
-  }
+  private GameSnapshot() {}
 
   /**
    * Method is used to determinate if the game is still active and has not ended.
    *
    * @return true if the game is still ongoing, false - if it has ended and no more commands are
-   * necessary
+   *     necessary
    */
   public boolean isActive() {
     return isActive;
@@ -98,6 +97,16 @@ public class GameSnapshot {
             + "you want to move and position where the figure should be move, separated"
             + " either by space or following symbols: '-', '/', '|', '\\'";
     gameSnapshot.isActive = true;
+    return gameSnapshot;
+  }
+
+  static GameSnapshot buildErrorSaveSnapshot() {
+    GameSnapshot gameSnapshot = new GameSnapshot();
+    gameSnapshot.gameStatusMessage =
+        "It's seems the game save has been damaged. The game cannot be, please double-check the"
+            + " specified save and try again";
+
+    gameSnapshot.isActive = false;
     return gameSnapshot;
   }
 }

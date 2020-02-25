@@ -8,8 +8,8 @@ import java.util.Objects;
  * Class represents a single cell unit on the board with the unchangeable parameters such as
  * positionNumber and positionLetter. Additionally class has parameters to determinate is cell is
  * empty what figure is located in it right now.
- * <p>
- * {@link Cell} class has methods to move a figure to a current cell and to move a figure from a
+ *
+ * <p>{@link Cell} class has methods to move a figure to a current cell and to move a figure from a
  * cell.
  */
 public class Cell {
@@ -25,9 +25,7 @@ public class Cell {
     this.positionNumber = positionNumber;
   }
 
-  /**
-   * Method used to changed Cell to an empty one
-   */
+  /** Method used to changed Cell to an empty one */
   void figureMovedFromThisCell() {
     this.isEmpty = true;
     this.figure = null;
@@ -106,5 +104,4 @@ public class Cell {
   public boolean isChangeable() {
     return isChangeable;
   }
-
 }

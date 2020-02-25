@@ -48,5 +48,4 @@ class CellBuilderTest {
     assertTrue(resultCell.isEmpty());
     assertTrue(resultCell.isChangeable());
   }
-
 }

@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
  * commands passed to the execute method are valid and to perform the corresponding changes on the
  * {@link boardgame.items.boardcell.Board}
  *
- * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in
- * this class will cause a {@link NullPointerException} to be thrown.
+ * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
+ * class will cause a {@link NullPointerException} to be thrown.
  */
 public class ChessGameAI extends GameAI {
 
@@ -44,9 +44,9 @@ public class ChessGameAI extends GameAI {
   @Override
   boolean isActive() {
     return (!isUnderCheck(getCurrentTurnPlayer(), findKing(getCurrentTurnPlayer()))
-        || !isUnderCheckMate(getCurrentTurnPlayer(), findKing(getCurrentTurnPlayer())))
+            || !isUnderCheckMate(getCurrentTurnPlayer(), findKing(getCurrentTurnPlayer())))
         && (!isUnderCheckMate(getCurrentTurnPlayer(), findKing(getCurrentTurnPlayer()))
-        || gameBoard.getAliveFigures(getCurrentTurnPlayer()).size() > 1);
+            || gameBoard.getAliveFigures(getCurrentTurnPlayer()).size() > 1);
   }
 
   /**
@@ -78,21 +78,19 @@ public class ChessGameAI extends GameAI {
   /**
    * Main method that takes input Coordinates and executes corresponding commands depending on the
    * coordinates type. First array item should represent the {@link Figure} {@link Cell} and other
-   * {@link String} coordinate should represent another {@link Cell} where first figure should
-   * move.
+   * {@link String} coordinate should represent another {@link Cell} where first figure should move.
    *
    * <p>In case initial checks are satisfied, the method invokes {@code move}, {@code beat} {@code
    * castle} methods which might throw {@link IllegalArgumentException} in case those moves cannot
    * be performed according to the defined rules.
    *
    * @param inputCommand {@link String} representing {@link Cell} coordinates first coordinate
-   *                     representing figure to move and second {@link Cell} where this figure
-   *                     should move/beat figure located on this cell
-   * @throws NullPointerException     in case any of the {@link Cell} coordinate specified in the
-   *                                  param does not exist on the {@link boardgame.items.boardcell.Board}
+   *     representing figure to move and second {@link Cell} where this figure should move/beat
+   *     figure located on this cell
+   * @throws NullPointerException in case any of the {@link Cell} coordinate specified in the param
+   *     does not exist on the {@link boardgame.items.boardcell.Board}
    * @throws IllegalArgumentException if first {@link Cell} in the param does not contain a figure
-   *                                  or figure belongs to another player or if other {@link Cell}
-   *                                  coordinates are not empty
+   *     or figure belongs to another player or if other {@link Cell} coordinates are not empty
    */
   @Override
   void executeCommand(String inputCommand) {
@@ -115,6 +113,11 @@ public class ChessGameAI extends GameAI {
         executeBeat(fromCell, toCell);
       }
     }
+  }
+
+  @Override
+  public String getGameName() {
+    return "chess";
   }
 
   private void executeBeat(Cell fromCell, Cell toCell) {
@@ -310,7 +313,7 @@ public class ChessGameAI extends GameAI {
       int numberStep = Math.abs(numberDifference) / numberDifference;
       int letterStep = Math.abs(letterDifference) / letterDifference;
       for (int i = startPoint.getPositionNumber() + numberStep,
-          j = startPoint.getPositionLetter() + letterStep;
+              j = startPoint.getPositionLetter() + letterStep;
           i != endPoint.getPositionNumber();
           i += numberStep, j += letterStep) {
         Cell cellOnPath = getGameBoard().getBoardCells().get("" + (char) j + i);

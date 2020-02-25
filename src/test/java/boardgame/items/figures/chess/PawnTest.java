@@ -17,8 +17,8 @@ class PawnTest {
 
   @BeforeEach
   void init() {
-    blackPawn = new Pawn(new Player("black",-1));
-    whitePawn = new Pawn(new Player("white",1));
+    blackPawn = new Pawn(new Player("black", -1));
+    whitePawn = new Pawn(new Player("white", 1));
   }
 
   @Test

@@ -15,7 +15,8 @@ public class CellBuilder {
   }
 
   /**
-   *  Method that is used to get a cell result after it's building.
+   * Method that is used to get a cell result after it's building.
+   *
    * @return {@link Cell} object
    */
   public Cell getResultCell() {
@@ -45,5 +46,4 @@ public class CellBuilder {
     this.cell.setFigure(figure);
     this.cell.setChangeable(true);
   }
-
 }

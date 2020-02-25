@@ -1,12 +1,10 @@
 package boardgame.items.boardcell;
 
-import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,10 +20,7 @@ class ChessBoardFactoryTest {
   @Test
   void testGetInitialBoard() {
     Map<String, Cell> boardMap = boardFactory.generateBoardCells();
-    long figuresNumber =
-        boardMap.values().stream()
-            .filter(cell -> !cell.isEmpty())
-            .count();
+    long figuresNumber = boardMap.values().stream().filter(cell -> !cell.isEmpty()).count();
 
     assertEquals(64, boardMap.size());
     assertEquals(32, figuresNumber);
@@ -34,8 +29,8 @@ class ChessBoardFactoryTest {
   @Disabled
   @Test
   void testGetInitialPlayerQueue() {
-   // Queue<Player> players = boardFactory.generatePlayerQueue();
+    // Queue<Player> players = boardFactory.generatePlayerQueue();
 
-    //assertEquals(2, players.size());
+    // assertEquals(2, players.size());
   }
 }

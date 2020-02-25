@@ -5,8 +5,8 @@ import java.util.Map;
 /**
  * Abstract Factory to create a {@link Board} object with the specified weight, height and board
  * Cells.
- * <p>
- * Has one public method that build and returns board.
+ *
+ * <p>Has one public method that build and returns board.
  */
 public abstract class BoardFactory {
 
@@ -38,8 +38,8 @@ public abstract class BoardFactory {
    * boardgame.items.figures.Figure} on the Board for the defined game rule
    *
    * @return {@link Map} with {@link String} key representing coordinate on the {@link
-   * boardgame.items.boardcell.Board} and {@link Cell} Value representing all corresponding
-   * properties of the coordinate
+   *     boardgame.items.boardcell.Board} and {@link Cell} Value representing all corresponding
+   *     properties of the coordinate
    */
   abstract Map<String, Cell> generateBoardCells();
 }

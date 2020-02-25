@@ -6,6 +6,7 @@ import boardgame.items.figures.Figure;
 import boardgame.items.figures.checkers.CheckerKing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
  * commands passed to the execute method are valid and to perform the corresponding changes on the
  * {@link boardgame.items.boardcell.Board}
  *
- * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in
- * this class will cause a {@link NullPointerException} to be thrown.
+ * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
+ * class will cause a {@link NullPointerException} to be thrown.
  */
 public class CheckersGameAI extends GameAI {
 
@@ -66,13 +67,11 @@ public class CheckersGameAI extends GameAI {
    * performed according to the defined rules.
    *
    * @param inputCommand {@link String} representing {@link Cell} coordinates first coordinate
-   *                     representing figure to move and other - {@link Cell} where it should be
-   *                     moved.
-   * @throws NullPointerException     in case any of the {@link Cell} coordinate specified in the
-   *                                  param does not exist on the {@link boardgame.items.boardcell.Board}
+   *     representing figure to move and other - {@link Cell} where it should be moved.
+   * @throws NullPointerException in case any of the {@link Cell} coordinate specified in the param
+   *     does not exist on the {@link boardgame.items.boardcell.Board}
    * @throws IllegalArgumentException if first {@link Cell} in the param does not contain a figure
-   *                                  or figure belongs to another player or if other {@link Cell}
-   *                                  coordinates are not empty
+   *     or figure belongs to another player or if other {@link Cell} coordinates are not empty
    */
   @Override
   void executeCommand(String inputCommand) {
@@ -86,6 +85,11 @@ public class CheckersGameAI extends GameAI {
     } else {
       executeBeat(fromCell, cellsList.subList(1, cellsList.size()));
     }
+  }
+
+  @Override
+  public String getGameName() {
+    return "checkers";
   }
 
   private void executeMove(Cell fromCell, Cell toCell) {
@@ -181,12 +185,15 @@ public class CheckersGameAI extends GameAI {
     List<Cell> listOfCellsBetween = new ArrayList<>();
     int letterDifference = toCell.getPositionLetter() - fromCell.getPositionLetter();
     int numberDifference = toCell.getPositionNumber() - fromCell.getPositionNumber();
+    if (Math.abs(letterDifference) != Math.abs(numberDifference)) {
+      return Collections.emptyList();
+    }
     int letterStep = letterDifference / Math.abs(letterDifference);
     int numberStep = numberDifference / Math.abs(numberDifference);
 
     for (int posNumber = fromCell.getPositionNumber() + numberStep,
-        posLetter = fromCell.getPositionLetter() + letterStep,
-        count = 1;
+            posLetter = fromCell.getPositionLetter() + letterStep,
+            count = 1;
         count < Math.abs(letterDifference);
         posNumber = posNumber + numberStep, posLetter += letterStep, count++) {
       String cellKey = "" + (char) posLetter + posNumber;

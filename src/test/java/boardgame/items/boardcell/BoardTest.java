@@ -23,14 +23,14 @@ class BoardTest {
 
   @Test
   void getCellList() {
-    String[] coordinates = new String[]{"A1", "B2"};
+    String[] coordinates = new String[] {"A1", "B2"};
     List<Cell> cells = board.getCellList(coordinates);
     assertEquals(2, cells.size());
   }
 
   @Test
   void getIllegalCellList() {
-    String[] coordinates = new String[]{"A1", "O2"};
+    String[] coordinates = new String[] {"A1", "O2"};
     assertThrows(IllegalArgumentException.class, () -> board.getCellList(coordinates));
   }
 

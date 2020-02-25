@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
  * {@link Board} class represents game board object, which is being manipulated by {@link
  * boardgame.game.GameAI}. Board has fields that hold it's physical borders as well as all {@link
  * Cell} objects on it.
- * <p>
- * {@link Board} has methods to get Cells by input String coordinates, methods to move figures and
- * to get all alive figures on board.
  *
- * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor or method in
- * this class will cause a {@link NullPointerException} to be thrown.
+ * <p>{@link Board} has methods to get Cells by input String coordinates, methods to move figures
+ * and to get all alive figures on board.
+ *
+ * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor or method in this
+ * class will cause a {@link NullPointerException} to be thrown.
  */
 public class Board {
 
@@ -24,8 +24,7 @@ public class Board {
   private int boardWeight;
   private int boardHeight;
 
-  Board() {
-  }
+  Board() {}
 
   /**
    * Method is used to validate if coordinates are present on the board.
@@ -56,7 +55,7 @@ public class Board {
    * it will be beaten. Otherwise, figures will be swapped.
    *
    * @param fromCell representing from where Figure should move.
-   * @param toCell   representing to where the Figure would move.
+   * @param toCell representing to where the Figure would move.
    */
   public void moveFigures(Cell fromCell, Cell toCell) {
     Figure figureToBeMoved = fromCell.getFigure();
@@ -104,7 +103,7 @@ public class Board {
    * Method sets a new Figure on the Cell
    *
    * @param cellWhereToChange Cell where new Figure would be set
-   * @param newFigure         new Figure that should be set
+   * @param newFigure new Figure that should be set
    */
   public void changeCellFigure(Cell cellWhereToChange, Figure newFigure) {
     cellWhereToChange.figureMovedToThisCell(newFigure);
@@ -141,5 +140,4 @@ public class Board {
   void setBoardCells(Map<String, Cell> boardCells) {
     this.boardCells = boardCells;
   }
-
 }

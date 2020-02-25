@@ -2,17 +2,7 @@ package boardgame.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import boardgame.items.boardcell.Board;
-import boardgame.items.boardcell.BoardFactory;
-import boardgame.items.boardcell.Cell;
 import boardgame.items.boardcell.CellBuilder;
-import boardgame.items.figures.checkers.Checker;
-import boardgame.player.Player;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.maven.artifact.repository.metadata.Snapshot;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -95,8 +85,8 @@ class CheckersGameAITest {
 
   @Test
   void testFindFiguresBetweenToBeat() {
-    assertTrue(checkersGameAI.isOnlyOneFigureBetweenToBeat(new CellBuilder('B', 3).getResultCell(),
-        new CellBuilder('F', 7).getResultCell()));
+    assertTrue(
+        checkersGameAI.isOnlyOneFigureBetweenToBeat(
+            new CellBuilder('B', 3).getResultCell(), new CellBuilder('F', 7).getResultCell()));
   }
-
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 class GameSnapshotTest {
 
   GameSnapshot gameSnapshot;
+
   @Test
   void isActive() {
     gameSnapshot = GameSnapshot.buildJustStartedGameSnap(new CheckersGameAI());
@@ -20,7 +21,7 @@ class GameSnapshotTest {
   }
 
   @Test
-  void getStringGameSnapError(){
+  void getStringGameSnapError() {
     gameSnapshot = GameSnapshot.buildErrorSnap("Error");
     assertEquals("Error", gameSnapshot.getStringGameSnap());
   }

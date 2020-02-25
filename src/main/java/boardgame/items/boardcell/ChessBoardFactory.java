@@ -52,8 +52,7 @@ public class ChessBoardFactory extends BoardFactory {
       for (int j = 'A'; j < 'A' + BOARD_HEIGHT; j++) {
         CellBuilder builder = new CellBuilder((char) j, i);
         if (i == BoardFactory.initialBoardHeight || i == getBoardHeight()) {
-          Player player =
-              (i == BoardFactory.initialBoardHeight) ? whitePlayer : blackPlayer;
+          Player player = (i == BoardFactory.initialBoardHeight) ? whitePlayer : blackPlayer;
           if (j == 'A' || j == 'H') {
             builder.buildChangeableFigureCell(new Rook(player));
           } else if (j == 'B' || j == 'G') {

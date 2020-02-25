@@ -16,8 +16,8 @@ class ChessGameAITest {
 
   @Test
   void getGameStatusActive() {
-    assertEquals("It's " + chessGameAI.getCurrentTurnPlayer() + " turn.",
-        chessGameAI.getGameStatus());
+    assertEquals(
+        "It's " + chessGameAI.getCurrentTurnPlayer() + " turn.", chessGameAI.getGameStatus());
   }
 
   @Test
@@ -30,8 +30,10 @@ class ChessGameAITest {
     String noFirstCoordinate = "A9 B2";
     String noSecondCoordinate = "A2 I2";
 
-    assertThrows(IllegalArgumentException.class, () -> chessGameAI.executeCommand(noFirstCoordinate));
-    assertThrows(IllegalArgumentException.class, () -> chessGameAI.executeCommand(noSecondCoordinate));
+    assertThrows(
+        IllegalArgumentException.class, () -> chessGameAI.executeCommand(noFirstCoordinate));
+    assertThrows(
+        IllegalArgumentException.class, () -> chessGameAI.executeCommand(noSecondCoordinate));
   }
 
   @Test
@@ -72,8 +74,7 @@ class ChessGameAITest {
   @Test
   void executeCommandCastle() {
     String castleCoordinates = "A1 D1";
-    assertThrows(IllegalArgumentException.class,
-        () -> chessGameAI.executeCommand(castleCoordinates));
+    assertThrows(
+        IllegalArgumentException.class, () -> chessGameAI.executeCommand(castleCoordinates));
   }
-
 }

@@ -3,6 +3,7 @@ package boardgame.game;
 import boardgame.items.boardcell.Board;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,8 +15,8 @@ import java.util.Queue;
  * as getting current players turn, getting all alive {@link Figure} on {@link Board} or checking if
  * current {@link Player} owns the passed {@link Figure}
  *
- * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in
- * this class will cause a {@link NullPointerException} to be thrown.
+ * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
+ * class will cause a {@link NullPointerException} to be thrown.
  */
 public abstract class GameAI {
 
@@ -44,6 +45,8 @@ public abstract class GameAI {
    */
   abstract String getGameStatus();
 
+  public abstract String getGameName();
+
   Board getGameBoard() {
     return gameBoard;
   }
@@ -68,5 +71,4 @@ public abstract class GameAI {
   boolean checkFigureOwner(Figure figure) {
     return figure.getFigureOwner().equals(getCurrentTurnPlayer());
   }
-
 }

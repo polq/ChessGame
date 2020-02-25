@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import boardgame.items.figures.Figure;
 import boardgame.items.figures.chess.King;
 import boardgame.player.Player;
-import java.util.LinkedList;
 import java.util.Queue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
