@@ -19,7 +19,11 @@ public class ClientController {
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Welcome message");
+    System.out.println(
+        "In order to play, please type in game name [chess|checkers]. It will load the latest save or start a new game if no save found."
+            + "\nTo start a new game explicitly, add [-new] flag."
+            + "\nTo load game from a file, add [-load] flag followed by a file name separated by space."
+            + "\nTo specify player names, add [-players] flag followed by names you would like to use separated by space");
     String commandString;
     Args argsObj = new Args();
     GameAI gameAI;
@@ -38,7 +42,7 @@ public class ClientController {
           saver = getGameStateFromAFile(loadFile, gameName);
         } else {
           Optional<String> latestSave = findMostRecentFileSave(gameName);
-          if (latestSave.isPresent()) {
+          if (latestSave.isPresent() && !newGame) {
             saver = new FileGameStateSaver(Path.of(latestSave.get()), gameName);
           } else {
             LocalDateTime dateTime = LocalDateTime.now();
@@ -90,7 +94,8 @@ public class ClientController {
     if (save.getGameName().equals(gameName)) {
       return newFileGameSaver;
     } else {
-      throw new IllegalArgumentException("No such file specified in a load parameter exists");
+      throw new IllegalArgumentException(
+          "Game specified in file does not match with the selected one");
     }
   }
 
@@ -98,8 +103,7 @@ public class ClientController {
     Path path = Path.of(".");
     return Stream.of(Objects.requireNonNull(path.toFile().list()))
         .filter(line -> line.startsWith(gameName + "_"))
-        .sorted()
-        .findFirst();
+        .max(Comparator.naturalOrder());
   }
 
   static class Args {

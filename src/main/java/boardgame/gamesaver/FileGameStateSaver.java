@@ -65,6 +65,9 @@ public class FileGameStateSaver extends GameStateSaver {
               .collect(
                   Collectors.toMap(line -> line.split(" ", 2)[0], line -> line.split(" ", 2)[1]));
 
+      if (gameID == null || gameName == null) {
+        throw new IllegalArgumentException("File that your are trying to load is damaged");
+      }
       gameSave = new GameSave(gameID, gameName, commandsList);
     } catch (IOException e) {
       throw new IllegalArgumentException("No such file specified");
