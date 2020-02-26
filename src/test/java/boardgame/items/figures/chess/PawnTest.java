@@ -1,7 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.boardcell.Cell;
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,100 +21,74 @@ class PawnTest {
   }
 
   @Test
-  void testWhiteMove() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('E', 5).getResultCell();
-    assertFalse(whitePawn.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('E', 4).getResultCell();
+  void testWhiteMoveTwoCells() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('E', 4).build();
     assertTrue(whitePawn.canMove(startCell, endCell));
-    // Already moved, can move by 2 cells only once
-    assertFalse(whitePawn.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('e', 3).getResultCell();
-    endCell = new CellBuilder('e', 2).getResultCell();
-    assertFalse(whitePawn.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('a', 3).getResultCell();
-    endCell = new CellBuilder('b', 3).getResultCell();
+  @Test
+  void testWhiteMoveTwoCellsAfterMove() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('E', 4).build();
+    whitePawn.canMove(startCell, endCell);
     assertFalse(whitePawn.canMove(startCell, endCell));
   }
 
   @Test
-  void testBlackMove() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('E', 5).getResultCell();
-    assertFalse(blackPawn.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('E', 4).getResultCell();
-    assertFalse(blackPawn.canMove(startCell, endCell));
-    assertFalse(blackPawn.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('e', 3).getResultCell();
-    endCell = new CellBuilder('e', 2).getResultCell();
+  void testBlackMoveTwoCells() {
+    startCell = new Cell.Builder('E', 4).build();
+    endCell = new Cell.Builder('E', 2).build();
     assertTrue(blackPawn.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('a', 3).getResultCell();
-    endCell = new CellBuilder('b', 3).getResultCell();
+  @Test
+  void testBlackMoveTwoCellsAfterMove() {
+    startCell = new Cell.Builder('E', 4).build();
+    endCell = new Cell.Builder('E', 2).build();
+    blackPawn.canMove(startCell, endCell);
     assertFalse(blackPawn.canMove(startCell, endCell));
   }
 
   @Test
-  void testExceptions() {
-    assertThrows(NullPointerException.class, () -> whitePawn.canMove(startCell, endCell));
+  void testWhiteMoveFail() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('F', 2).build();
+    assertFalse(whitePawn.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('E', 2).getResultCell();
-    assertThrows(IllegalArgumentException.class, () -> blackPawn.canMove(startCell, startCell));
+  @Test
+  void testBlackMoveFail() {
+    startCell = new Cell.Builder('A', 2).build();
+    endCell = new Cell.Builder('B', 2).build();
+    assertFalse(blackPawn.canMove(startCell, endCell));
   }
 
   @Test
   void testWhiteBeat() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('d', 3).getResultCell();
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('D', 3).build();
     assertTrue(whitePawn.canBeat(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('f', 3).getResultCell();
-    assertTrue(whitePawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('e', 3).getResultCell();
-    assertFalse(whitePawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('d', 4).getResultCell();
+  @Test
+  void testWhiteBeatFail() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('f', 3).build();
     assertFalse(whitePawn.canBeat(startCell, endCell));
   }
 
   @Test
   void testBlackBeat() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('d', 1).getResultCell();
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('D', 1).build();
     assertTrue(blackPawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('f', 1).getResultCell();
-    assertTrue(blackPawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('e', 1).getResultCell();
-    assertFalse(blackPawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('E', 3).getResultCell();
-    endCell = new CellBuilder('d', 1).getResultCell();
-    assertFalse(blackPawn.canBeat(startCell, endCell));
   }
 
   @Test
-  void testBeat() {
-    startCell = new CellBuilder('a', 1).getResultCell();
-    endCell = new CellBuilder('b', 2).getResultCell();
-    assertTrue(whitePawn.canBeat(startCell, endCell));
-
-    startCell = new CellBuilder('b', 2).getResultCell();
-    endCell = new CellBuilder('b', 4).getResultCell();
-    assertFalse(whitePawn.canMove(startCell, endCell));
+  void testBlackBeatFail() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('e', 1).build();
+    assertFalse(blackPawn.canBeat(startCell, endCell));
   }
 }

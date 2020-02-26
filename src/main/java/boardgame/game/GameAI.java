@@ -1,6 +1,6 @@
 package boardgame.game;
 
-import boardgame.items.boardcell.Board;
+import boardgame.items.board.Board;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
@@ -22,7 +22,7 @@ public abstract class GameAI {
 
   static final String gameRuleDelimiters = "[- \\\\./|]";
   Board gameBoard;
-  Queue<Player> playerQueue;
+  LinkedList<Player> playerQueue;
 
   /**
    * Method is used to check if game is still active or has been ended.
@@ -61,8 +61,8 @@ public abstract class GameAI {
     return playerQueue.peek();
   }
 
-  Queue<Player> generatePlayerQueue() {
-    Queue<Player> playersQueue = new LinkedList<>();
+  static LinkedList<Player> generateStandardPlayerQueue() {
+    LinkedList<Player> playersQueue = new LinkedList<>();
     playersQueue.add(new Player("white"));
     playersQueue.add(new Player("black"));
     return playersQueue;
@@ -70,5 +70,9 @@ public abstract class GameAI {
 
   boolean checkFigureOwner(Figure figure) {
     return figure.getFigureOwner().equals(getCurrentTurnPlayer());
+  }
+
+  public Queue<Player> getPlayerQueue() {
+    return playerQueue;
   }
 }

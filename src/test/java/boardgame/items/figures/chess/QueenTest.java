@@ -1,7 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.boardcell.Cell;
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,30 +14,35 @@ class QueenTest {
   Cell endCell;
 
   @BeforeEach
-  public void init() {
+  void init() {
     queenChess = new Queen(new Player("white"));
   }
 
   @Test
-  public void testMove() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('e', 7).getResultCell();
+  void testMoveForward() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('E', 7).build();
     assertTrue(queenChess.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('a', 7).getResultCell();
-    endCell = new CellBuilder('b', 6).getResultCell();
+  @Test
+  void testMoveSideways() {
+    startCell = new Cell.Builder('a', 1).build();
+    endCell = new Cell.Builder('a', 10).build();
     assertTrue(queenChess.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('A', 1).getResultCell();
-    endCell = new CellBuilder('a', 10).getResultCell();
+  @Test
+  void testMoveDiagonal() {
+    startCell = new Cell.Builder('E', 7).build();
+    endCell = new Cell.Builder('D', 8).build();
     assertTrue(queenChess.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('A', 1).getResultCell();
-    endCell = new CellBuilder('B', 3).getResultCell();
+  @Test
+  void testMoveLikeKnight() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('B', 3).build();
     assertFalse(queenChess.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('B', 4).getResultCell();
-    endCell = new CellBuilder('A', 3).getResultCell();
-    assertTrue(queenChess.canMove(startCell, endCell));
   }
 }

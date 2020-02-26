@@ -32,7 +32,7 @@ class GameAITest {
 
   @Test
   void generatePlayerQueue() {
-    Queue<Player> playerQueue = gameAI.generatePlayerQueue();
+    Queue<Player> playerQueue = GameAI.generateStandardPlayerQueue();
     assertEquals(2, playerQueue.size());
   }
 

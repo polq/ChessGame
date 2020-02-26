@@ -2,7 +2,7 @@ package boardgame.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -87,6 +87,6 @@ class CheckersGameAITest {
   void testFindFiguresBetweenToBeat() {
     assertTrue(
         checkersGameAI.isOnlyOneFigureBetweenToBeat(
-            new CellBuilder('B', 3).getResultCell(), new CellBuilder('F', 7).getResultCell()));
+            new Cell.Builder('B', 3).build(), new Cell.Builder('F', 7).build()));
   }
 }

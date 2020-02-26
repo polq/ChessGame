@@ -8,14 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-
 class GameStarterTest {
 
   GameStarter gameStarter;
 
   @Test
   void startNewGame() {
-    gameStarter = GameStarter.startNewGame(new CheckersGameAI(), null, true);
+    gameStarter = new GameStarter.Builder().withGameAI(new CheckersGameAI()).build();
     assertNotNull(gameStarter);
     assertTrue(gameStarter.play("B3 a4").isActive());
   }
@@ -27,7 +26,7 @@ class GameStarterTest {
 
   @Test
   public void playInvalidCoordinates() {
-    gameStarter = GameStarter.startNewGame(new CheckersGameAI(), null, true);
+    gameStarter = new GameStarter.Builder().withGameAI(new CheckersGameAI()).build();
     GameSnapshot gameSnapshot = gameStarter.play("A1 I9");
     assertEquals(
         "Invalid move coordinates, input coordinates should be in range of board size: 8x8",
@@ -36,31 +35,38 @@ class GameStarterTest {
 
   @Test
   public void play() {
-    gameStarter = GameStarter.startNewGame(new CheckersGameAI(), null, true);
+    gameStarter = new GameStarter.Builder().withGameAI(new CheckersGameAI()).build();
     assertDoesNotThrow(() -> gameStarter.play("B3 A4"));
   }
 
   @Test
   void getStartedGameSnapLoadGame() {
     GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"));
-    gameStarter = GameStarter.startNewGame(new ChessGameAI(), saver, false);
+    gameStarter =
+        new GameStarter.Builder().withGameAI(new ChessGameAI()).withGameSaver(saver).build();
     GameSnapshot snapshot = gameStarter.getStartedGameSnap();
     assertNotNull(snapshot);
     assertTrue(snapshot.isActive());
   }
 
   @Test
-  void getStartedGameSnapNewGame(){
+  void getStartedGameSnapNewGame() {
     GameStateSaver saver = new FileGameStateSaver(Path.of("game.txt"), "chess");
-    gameStarter = GameStarter.startNewGame(new ChessGameAI(), saver, true);
+    gameStarter =
+        new GameStarter.Builder()
+            .withGameAI(new CheckersGameAI())
+            .withGameSaver(saver)
+            .newGame(true)
+            .build();
     GameSnapshot snapshot = gameStarter.getStartedGameSnap();
     assertTrue(snapshot.isActive());
   }
 
   @Test
-  void getStartedGameSnapDamagedFile(){
+  void getStartedGameSnapDamagedFile() {
     GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"));
-    gameStarter = GameStarter.startNewGame(new CheckersGameAI(), saver, false);
+    gameStarter =
+        new GameStarter.Builder().withGameAI(new CheckersGameAI()).withGameSaver(saver).build();
     GameSnapshot snapshot = gameStarter.getStartedGameSnap();
     assertFalse(snapshot.isActive());
   }

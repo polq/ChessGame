@@ -1,7 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.boardcell.Cell;
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,33 +19,30 @@ class RookTest {
   }
 
   @Test
-  void move() {
-    startCell = new CellBuilder('E', 2).getResultCell();
-    endCell = new CellBuilder('E', 4).getResultCell();
+  void testMoveForward() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('E', 7).build();
     assertTrue(rook.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('A', 1).getResultCell();
-    endCell = new CellBuilder('E', 2).getResultCell();
+  @Test
+  void testMoveSideways() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('A', 2).build();
+    assertTrue(rook.canMove(startCell, endCell));
+  }
+
+  @Test
+  void testMoveDiagonal() {
+    startCell = new Cell.Builder('E', 2).build();
+    endCell = new Cell.Builder('D', 1).build();
     assertFalse(rook.canMove(startCell, endCell));
+  }
 
-    startCell = new CellBuilder('E', 1).getResultCell();
-    endCell = new CellBuilder('E', 2).getResultCell();
-    assertTrue(rook.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('F', 1).getResultCell();
-    endCell = new CellBuilder('E', 1).getResultCell();
-    assertTrue(rook.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('C', 3).getResultCell();
-    endCell = new CellBuilder('B', 3).getResultCell();
-    assertTrue(rook.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('A', 1).getResultCell();
-    endCell = new CellBuilder('C', 2).getResultCell();
+  @Test
+  void testMoveLikeKnight() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('B', 3).build();
     assertFalse(rook.canMove(startCell, endCell));
-
-    startCell = new CellBuilder('A', 11).getResultCell();
-    endCell = new CellBuilder('a', 2).getResultCell();
-    assertTrue(rook.canMove(startCell, endCell));
   }
 }

@@ -1,8 +1,7 @@
 package boardgame.game;
 
-import boardgame.items.boardcell.Board;
-import boardgame.items.boardcell.BoardFactory;
-import boardgame.items.boardcell.Cell;
+import boardgame.items.board.Board;
+import boardgame.items.board.Cell;
 
 import java.util.stream.IntStream;
 
@@ -17,8 +16,7 @@ import java.util.stream.IntStream;
  */
 public class GameSnapshot {
 
-  private static String EMPTY_CELL = "\u25A1";
-  private boolean isActive;
+  private boolean active;
   private String gameStatusMessage;
   private Board board;
 
@@ -31,7 +29,7 @@ public class GameSnapshot {
    *     necessary
    */
   public boolean isActive() {
-    return isActive;
+    return active;
   }
 
   /**
@@ -47,7 +45,7 @@ public class GameSnapshot {
     }
 
     StringBuilder builder = new StringBuilder("  ");
-    int firstLetter = BoardFactory.initialBoardWeight;
+    int firstLetter = 'A';
     int lastLetter = firstLetter + board.getBoardWeight();
     IntStream.range(firstLetter, lastLetter).forEach(i -> builder.append((char) i).append(" "));
     builder.append("\n");
@@ -59,7 +57,8 @@ public class GameSnapshot {
         String cellKey = "" + (char) j + i;
         Cell cell = board.getBoardCells().get(cellKey);
         if (cell.isEmpty()) {
-          builder.append(EMPTY_CELL);
+          String emptyCell = "\u25A1";
+          builder.append(emptyCell);
         } else {
           String iconName = cell.getFigure().getIconStringName();
           builder.append(board.getFigureIcons().get(iconName));
@@ -72,41 +71,36 @@ public class GameSnapshot {
     return builder.toString();
   }
 
-  static GameSnapshot buildSuccessCommandSnap(GameAI gameAI) {
-    GameSnapshot snapshot = new GameSnapshot();
-    snapshot.gameStatusMessage = gameAI.getGameStatus();
-    snapshot.isActive = gameAI.isActive();
-    snapshot.board = gameAI.getGameBoard();
-    return snapshot;
-  }
+  static class Builder {
+    private boolean active;
+    private String gameStatusMessage;
+    private Board board;
 
-  static GameSnapshot buildErrorSnap(String errorMessage) {
-    GameSnapshot gameSnapshot = new GameSnapshot();
-    gameSnapshot.gameStatusMessage = errorMessage;
-    gameSnapshot.isActive = true;
-    return gameSnapshot;
-  }
+    Builder() {
+      active = true;
+    }
 
-  static GameSnapshot buildJustStartedGameSnap(GameAI gameAI) {
-    GameSnapshot gameSnapshot = new GameSnapshot();
-    gameSnapshot.board = gameAI.getGameBoard();
-    gameSnapshot.gameStatusMessage =
-        "Game has been started, it's "
-            + gameAI.getCurrentTurnPlayer()
-            + " turn. \nPlease type in cell coordinates that identify figure that "
-            + "you want to move and position where the figure should be move, separated"
-            + " either by space or following symbols: '-', '/', '|', '\\'";
-    gameSnapshot.isActive = true;
-    return gameSnapshot;
-  }
+    Builder end() {
+      this.active = false;
+      return this;
+    }
 
-  static GameSnapshot buildErrorSaveSnapshot() {
-    GameSnapshot gameSnapshot = new GameSnapshot();
-    gameSnapshot.gameStatusMessage =
-        "It's seems the game save has been damaged. The game cannot be, please double-check the"
-            + " specified save and try again";
+    Builder withBoard(Board board) {
+      this.board = board;
+      return this;
+    }
 
-    gameSnapshot.isActive = false;
-    return gameSnapshot;
+    Builder withGameMessage(String gameStatusMessage) {
+      this.gameStatusMessage = gameStatusMessage;
+      return this;
+    }
+
+    GameSnapshot build() {
+      GameSnapshot gameSnapshot = new GameSnapshot();
+      gameSnapshot.active = this.active;
+      gameSnapshot.board = this.board;
+      gameSnapshot.gameStatusMessage = this.gameStatusMessage;
+      return gameSnapshot;
+    }
   }
 }

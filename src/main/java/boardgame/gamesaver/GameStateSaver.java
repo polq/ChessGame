@@ -13,7 +13,7 @@ public abstract class GameStateSaver {
    *
    * @param successfulCommand represents String that is to be added to a log
    */
-  public abstract void saveNewCommand(String successfulCommand);
+  public abstract void save(String successfulCommand);
 
   /**
    * This method is used to retrieve {@link GameSave} object that contains information on how to get
@@ -24,7 +24,7 @@ public abstract class GameStateSaver {
   public abstract GameSave getSave();
 
   /** Method that is used to create a new save instance */
-  public abstract void createNewSave();
+  public abstract void createSave();
 
   /**
    * Method is used to check if current save is present

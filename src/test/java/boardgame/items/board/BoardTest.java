@@ -1,10 +1,13 @@
-package boardgame.items.boardcell;
+package boardgame.items.board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import boardgame.items.figures.Figure;
 import boardgame.items.figures.chess.King;
 import boardgame.player.Player;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +20,7 @@ class BoardTest {
 
   @BeforeEach
   void init() {
-    factory = new CheckersBoardFactory();
-    board = factory.createBoard();
+    board = BoardFactory.createBoard("checkers", (LinkedList<Player>) (Arrays.asList(new Player("white"), new Player("black"))));
   }
 
   @Test

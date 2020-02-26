@@ -21,23 +21,23 @@ class FileGameStateSaverTest {
 
   @Test
   void testCreateNewSave() throws IOException {
-    gameSaver.createNewSave();
+    gameSaver.createSave();
 
     assertEquals(2, Files.lines(Path.of(STANDARD_FILE_SAVE_PATH)).count());
   }
 
   @Test
   void testSaveCommand() throws IOException {
-    Path.of(STANDARD_FILE_SAVE_PATH).toFile().delete();
-    gameSaver.saveNewCommand("A2 A3");
+    boolean isPath = Path.of(STANDARD_FILE_SAVE_PATH).toFile().delete();
+    gameSaver.save("A2 A3");
     long linesCount = Files.lines(Path.of(STANDARD_FILE_SAVE_PATH)).count();
     assertEquals(1, linesCount);
   }
 
   @Test
-  void testGetSave()  {
-    gameSaver.createNewSave();
-    gameSaver.saveNewCommand("A1 A2");
+  void testGetSave() {
+    gameSaver.createSave();
+    gameSaver.save("A1 A2");
     GameSave gameSave = gameSaver.getSave();
 
     assertEquals("chess", gameSave.getGameName());
@@ -45,12 +45,12 @@ class FileGameStateSaverTest {
   }
 
   @Test
-  void testHasSave(){
+  void testHasSave() {
     assertTrue(gameSaver.hasSave());
   }
 
   @Test
-  void testHastSaveNoSave(){
+  void testHastSaveNoSave() {
     gameSaver = new FileGameStateSaver(Path.of("randomfile.extension"), "chess");
     assertFalse(gameSaver.hasSave());
   }

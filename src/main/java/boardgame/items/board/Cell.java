@@ -1,4 +1,4 @@
-package boardgame.items.boardcell;
+package boardgame.items.board;
 
 import boardgame.items.figures.Figure;
 
@@ -14,8 +14,8 @@ import java.util.Objects;
  */
 public class Cell {
 
-  private final int positionNumber;
-  private final char positionLetter;
+  private int positionNumber;
+  private char positionLetter;
   private Figure figure;
   private boolean isEmpty;
   private boolean isChangeable;
@@ -24,6 +24,8 @@ public class Cell {
     this.positionLetter = positionLetter;
     this.positionNumber = positionNumber;
   }
+
+  private Cell() {}
 
   /** Method used to changed Cell to an empty one */
   void figureMovedFromThisCell() {
@@ -103,5 +105,44 @@ public class Cell {
 
   public boolean isChangeable() {
     return isChangeable;
+  }
+
+  public static class Builder {
+
+    private int positionNumber;
+    private char positionLetter;
+    private Figure figure;
+    private boolean isEmpty;
+    private boolean isChangeable;
+
+    public Builder(char positionLetter, int positionNumber) {
+      this.positionLetter = positionLetter;
+      this.positionNumber = positionNumber;
+    }
+
+    public Builder withFigure(Figure figure) {
+      this.figure = figure;
+      return this;
+    }
+
+    public Builder empty(boolean isEmpty) {
+      this.isEmpty = isEmpty;
+      return this;
+    }
+
+    public Builder changeable(boolean isChangeable) {
+      this.isChangeable = isChangeable;
+      return this;
+    }
+
+    public Cell build() {
+      Cell cell = new Cell();
+      cell.positionLetter = this.positionLetter;
+      cell.positionNumber = this.positionNumber;
+      cell.figure = this.figure;
+      cell.isEmpty = this.isEmpty;
+      cell.isChangeable = this.isChangeable;
+      return cell;
+    }
   }
 }

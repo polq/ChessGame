@@ -1,15 +1,18 @@
 package boardgame.game;
 
-import boardgame.items.boardcell.ChessBoardFactory;
-import boardgame.items.boardcell.Cell;
+import boardgame.items.board.BoardFactory;
+import boardgame.items.board.ChessBoardFactory;
+import boardgame.items.board.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.items.figures.chess.King;
 import boardgame.items.figures.chess.Queen;
 import boardgame.items.figures.chess.Rook;
 import boardgame.player.Player;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * <p>Additionally class has private-package util methods that are used to determinate if the
  * commands passed to the execute method are valid and to perform the corresponding changes on the
- * {@link boardgame.items.boardcell.Board}
+ * {@link boardgame.items.board.Board}
  *
  * <p>* Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
  * class will cause a {@link NullPointerException} to be thrown.
@@ -32,8 +35,12 @@ public class ChessGameAI extends GameAI {
    * player's queue
    */
   public ChessGameAI() {
-    this.gameBoard = new ChessBoardFactory().createBoard();
-    this.playerQueue = generatePlayerQueue();
+    this(generateStandardPlayerQueue());
+  }
+
+  public ChessGameAI(LinkedList<Player> playersQueue) {
+    this.gameBoard = BoardFactory.createBoard(this.getGameName(), playersQueue);
+    this.playerQueue = playersQueue;
   }
 
   /**
@@ -88,7 +95,7 @@ public class ChessGameAI extends GameAI {
    *     representing figure to move and second {@link Cell} where this figure should move/beat
    *     figure located on this cell
    * @throws NullPointerException in case any of the {@link Cell} coordinate specified in the param
-   *     does not exist on the {@link boardgame.items.boardcell.Board}
+   *     does not exist on the {@link boardgame.items.board.Board}
    * @throws IllegalArgumentException if first {@link Cell} in the param does not contain a figure
    *     or figure belongs to another player or if other {@link Cell} coordinates are not empty
    */

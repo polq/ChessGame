@@ -24,6 +24,10 @@ public class Player {
     return defaultStep;
   }
 
+  public void setDefaultStep(int defaultStep) {
+    this.defaultStep = defaultStep;
+  }
+
   /**
    * Method to check if players are identical. Method takes player names as a benchmark and equals
    * them

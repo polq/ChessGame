@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +35,7 @@ public class FileGameStateSaver extends GameStateSaver {
    * @param successfulCommand represents String that is to be added to a log
    */
   @Override
-  public void saveNewCommand(String successfulCommand) {
+  public void save(String successfulCommand) {
     try (BufferedWriter bufferedWriter =
         new BufferedWriter(new FileWriter(filePath.toFile(), true))) {
       LocalDateTime localDateTime = LocalDateTime.now();
@@ -68,8 +67,7 @@ public class FileGameStateSaver extends GameStateSaver {
 
       gameSave = new GameSave(gameID, gameName, commandsList);
     } catch (IOException e) {
-      e.printStackTrace();
-      gameSave = getSave();
+      throw new IllegalArgumentException("No such file specified");
     }
     return gameSave;
   }
@@ -79,12 +77,12 @@ public class FileGameStateSaver extends GameStateSaver {
    * and a game name that will be used to identify which game save file belongs to.
    */
   @Override
-  public void createNewSave() {
+  public void createSave() {
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath.toFile()))) {
-      String uniqueSaveID = UUID.randomUUID().toString();
-      bufferedWriter.write(uniqueSaveID);
+      String[] fileNames = filePath.toString().split("_");
+      bufferedWriter.write(fileNames[1]);
       bufferedWriter.write("\n");
-      bufferedWriter.write(this.gameName);
+      bufferedWriter.write(fileNames[0]);
       bufferedWriter.write("\n");
     } catch (IOException e) {
       e.printStackTrace();

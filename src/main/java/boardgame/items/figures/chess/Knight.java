@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.boardcell.Cell;
+import boardgame.items.board.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 

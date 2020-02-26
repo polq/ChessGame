@@ -1,6 +1,6 @@
 package boardgame.items.figures;
 
-import boardgame.items.boardcell.Cell;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 
 /**
@@ -75,7 +75,7 @@ public abstract class Figure {
   /**
    * Method that is used to return a name for an figure icon in a format of [PlayerOwner_Figure]
    *
-   * @return {@link String} that can find an icon in a {@link boardgame.items.boardcell.Board}
+   * @return {@link String} that can find an icon in a {@link boardgame.items.board.Board}
    * {@code figureIcons} list
    */
   public String getIconStringName() {

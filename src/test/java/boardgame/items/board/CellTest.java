@@ -1,4 +1,4 @@
-package boardgame.items.boardcell;
+package boardgame.items.board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,42 +10,38 @@ import org.junit.jupiter.api.Test;
 class CellTest {
 
   Cell cell;
-  CellBuilder cellBuilder;
+  Cell.Builder cellBuilder;
 
   @BeforeEach
   void init() {
-    cellBuilder = new CellBuilder('A', 1);
+    cellBuilder = new Cell.Builder('A', 1);
   }
 
   @Test
   void figureMovedFromThisCell() {
-    cellBuilder.buildFigureCell(new King(new Player("white")));
-    cell = cellBuilder.getResultCell();
+    cell = cellBuilder.withFigure(new King(new Player("white"))).build();
     cell.figureMovedFromThisCell();
     assertTrue(cell.isEmpty());
   }
 
   @Test
   void figureMovedToThisCell() {
-    cellBuilder.buildEmptyCell();
-    cell = cellBuilder.getResultCell();
+    cell = cellBuilder.empty(true).build();
     cell.figureMovedToThisCell(new King(new Player("white")));
     assertEquals("KING", cell.getFigure().toString());
   }
 
   @Test
   void getStringKey() {
-    cellBuilder.buildEmptyCell();
-    cell = cellBuilder.getResultCell();
+    cell = cellBuilder.empty(true).build();
     assertEquals("A1", cell.getStringKey());
   }
 
   @Test
   void testEquals() {
-    cellBuilder.buildEmptyCell();
-    cell = cellBuilder.getResultCell();
-    cellBuilder.buildChangeAbleEmptyCell();
-    Cell anotherCell = cellBuilder.getResultCell();
+    cell = cellBuilder.empty(true).build();
+    Cell anotherCell =
+        cellBuilder.withFigure(new King(new Player("white"))).changeable(true).build();
 
     assertEquals(cell, anotherCell);
   }

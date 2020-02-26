@@ -1,7 +1,6 @@
 package boardgame.items.figures.checkers;
 
-import boardgame.items.boardcell.Cell;
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class CheckerTest {
 
   Checker checker;
+  Cell startCell;
+  Cell endCell;
 
   @BeforeEach
   void init() {
@@ -18,30 +19,30 @@ class CheckerTest {
   }
 
   @Test
-  void move() {
-    Cell startCell = new CellBuilder('A', 1).getResultCell();
-    Cell endCell = new CellBuilder('B', 2).getResultCell();
+  void testMove() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('B', 2).build();
     assertTrue(checker.canMove(startCell, endCell));
   }
 
   @Test
-  void moveFail() {
-    Cell startCell = new CellBuilder('A', 1).getResultCell();
-    Cell endCell = new CellBuilder('B', 1).getResultCell();
+  void testMoveFail() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('B', 1).build();
     assertFalse(checker.canMove(startCell, endCell));
   }
 
   @Test
-  void beat() {
-    Cell startCell = new CellBuilder('A', 1).getResultCell();
-    Cell endCell = new CellBuilder('C', 3).getResultCell();
+  void testBeat() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('C', 3).build();
     assertTrue(checker.canBeat(startCell, endCell));
   }
 
   @Test
-  void beatFail() {
-    Cell startCell = new CellBuilder('A', 1).getResultCell();
-    Cell endCell = new CellBuilder('B', 2).getResultCell();
+  void testBeatFail() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('B', 2).build();
     assertFalse(checker.canBeat(startCell, endCell));
   }
 }

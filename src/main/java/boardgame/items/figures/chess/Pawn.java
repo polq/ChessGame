@@ -1,6 +1,6 @@
 package boardgame.items.figures.chess;
 
-import boardgame.items.boardcell.Cell;
+import boardgame.items.board.Cell;
 import boardgame.items.figures.Figure;
 import boardgame.player.Player;
 
@@ -40,13 +40,6 @@ public class Pawn extends Figure {
 
   @Override
   public boolean canBeat(Cell start, Cell destination) {
-    if (start == null || destination == null) {
-      throw new NullPointerException("Invalid null arguments");
-    }
-
-    if (start.equals(destination)) {
-      throw new IllegalArgumentException("Method arguments cannot be equal");
-    }
     int defaultStep = this.getFigureOwner().getDefaultStep();
 
     // pawn can only beat by diagonal for 1 step

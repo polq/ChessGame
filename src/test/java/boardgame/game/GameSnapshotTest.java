@@ -9,20 +9,14 @@ class GameSnapshotTest {
   GameSnapshot gameSnapshot;
 
   @Test
-  void isActive() {
-    gameSnapshot = GameSnapshot.buildJustStartedGameSnap(new CheckersGameAI());
-    assertTrue(gameSnapshot.isActive());
-  }
-
-  @Test
   void getStringGameSnap() {
-    gameSnapshot = GameSnapshot.buildJustStartedGameSnap(new CheckersGameAI());
+    gameSnapshot = new GameSnapshot.Builder().withBoard(new CheckersGameAI().gameBoard).build();
     assertDoesNotThrow(() -> gameSnapshot.getStringGameSnap());
   }
 
   @Test
   void getStringGameSnapError() {
-    gameSnapshot = GameSnapshot.buildErrorSnap("Error");
+    gameSnapshot = new GameSnapshot.Builder().withGameMessage("Error").build();
     assertEquals("Error", gameSnapshot.getStringGameSnap());
   }
 }

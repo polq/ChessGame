@@ -1,7 +1,6 @@
 package boardgame.items.figures.checkers;
 
-import boardgame.items.boardcell.Cell;
-import boardgame.items.boardcell.CellBuilder;
+import boardgame.items.board.Cell;
 import boardgame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class CheckerKingTest {
 
   CheckerKing king;
+  Cell startCell;
+  Cell endCell;
 
   @BeforeEach
   void init() {
@@ -18,16 +19,16 @@ class CheckerKingTest {
   }
 
   @Test
-  void move() {
-    Cell startCell = new CellBuilder('A', 1).getResultCell();
-    Cell endCell = new CellBuilder('D', 4).getResultCell();
+  void testMove() {
+    startCell = new Cell.Builder('A', 1).build();
+    endCell = new Cell.Builder('D', 4).build();
     assertTrue(king.canMove(startCell, endCell));
   }
 
   @Test
-  void moveFail() {
-    Cell startCell = new CellBuilder('B', 1).getResultCell();
-    Cell endCell = new CellBuilder('D', 4).getResultCell();
+  void testMoveFail() {
+    startCell = new Cell.Builder('B', 1).build();
+    endCell = new Cell.Builder('D', 4).build();
     assertFalse(king.canMove(startCell, endCell));
   }
 }
