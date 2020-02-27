@@ -1,12 +1,10 @@
 package boardgame.items.board;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import boardgame.items.figures.Figure;
 import boardgame.items.figures.chess.King;
 import boardgame.player.Player;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -15,12 +13,14 @@ import org.junit.jupiter.api.Test;
 
 class BoardTest {
 
-  BoardFactory factory;
   Board board;
 
   @BeforeEach
   void init() {
-    board = BoardFactory.createBoard("checkers", (LinkedList<Player>) (Arrays.asList(new Player("white"), new Player("black"))));
+    LinkedList<Player> list = new LinkedList<>();
+    list.add(new Player("white"));
+    list.add(new Player("black"));
+    board = BoardFactory.createBoard("checkers", list);
   }
 
   @Test

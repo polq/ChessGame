@@ -35,10 +35,27 @@ public abstract class BoardFactory {
     return board;
   }
 
+  /**
+   * Used to get board physical width
+   *
+   * @return int that specifies board width
+   */
   abstract int getBoardWidth();
 
+  /**
+   * Used to get board physical height
+   *
+   * @return int that specifies board height
+   */
   abstract int getBoardHeight();
 
+  /**
+   * Creates a list of icons that will be used in the concrete game, where key represents it's name
+   * in a format [figureOwner_figureName] and value corresponds to a {@link String} representation
+   * of the {@link boardgame.items.figures.Figure}
+   *
+   * @return Map containing all {@link boardgame.items.figures.Figure} icons that will be used.
+   */
   abstract Map<String, String> generateFigureIcons();
 
   /**

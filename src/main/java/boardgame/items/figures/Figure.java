@@ -20,6 +20,40 @@ public abstract class Figure {
     this.isMoved = false;
   }
 
+  /**
+   * Method is used to determinate if specified {@link Figure} can move from one {@link Cell} to
+   * another
+   *
+   * @param start represent initial position of the {@link Figure}
+   * @param destination represents where {@link Figure} should move
+   * @return true if figure can move from one cell to another and false - if not.
+   * @throws NullPointerException in case param values are null
+   */
+  public abstract boolean canMove(Cell start, Cell destination);
+
+  /**
+   * Method is used to determinate if specified {@link Figure} can beat from one {@link Cell} to
+   * another
+   *
+   * @param start represent initial position of the {@link Figure}
+   * @param destination represents where {@link Figure} should move
+   * @return true if figure can beat from one cell to another and false - if not.
+   * @throws NullPointerException in case param values are null
+   */
+  public boolean canBeat(Cell start, Cell destination) {
+    return this.canMove(start, destination);
+  }
+
+  /**
+   * Method that is used to return a name for an figure icon in a format of [PlayerOwner_Figure]
+   *
+   * @return {@link String} that can find an icon in a {@link boardgame.items.board.Board} {@code
+   *     figureIcons} list
+   */
+  public String getIconStringName() {
+    return this.getFigureOwner().toString() + "_" + this.toString();
+  }
+
   public Player getFigureOwner() {
     return figureOwner;
   }
@@ -47,39 +81,4 @@ public abstract class Figure {
   public void setCastlable(boolean castlable) {
     isCastlable = castlable;
   }
-
-  /**
-   * Method is used to determinate if specified {@link Figure} can move from one {@link Cell} to
-   * another
-   *
-   * @param start       represent initial position of the {@link Figure}
-   * @param destination represents where {@link Figure} should move
-   * @return true if figure can move from one cell to another and false - if not.
-   * @throws NullPointerException in case param values are null
-   */
-  public abstract boolean canMove(Cell start, Cell destination);
-
-  /**
-   * Method is used to determinate if specified {@link Figure} can beat from one {@link Cell} to
-   * another
-   *
-   * @param start       represent initial position of the {@link Figure}
-   * @param destination represents where {@link Figure} should move
-   * @return true if figure can beat from one cell to another and false - if not.
-   * @throws NullPointerException in case param values are null
-   */
-  public boolean canBeat(Cell start, Cell destination) {
-    return this.canMove(start, destination);
-  }
-
-  /**
-   * Method that is used to return a name for an figure icon in a format of [PlayerOwner_Figure]
-   *
-   * @return {@link String} that can find an icon in a {@link boardgame.items.board.Board}
-   * {@code figureIcons} list
-   */
-  public String getIconStringName() {
-    return this.getFigureOwner().toString() + "_" + this.toString();
-  }
-
 }

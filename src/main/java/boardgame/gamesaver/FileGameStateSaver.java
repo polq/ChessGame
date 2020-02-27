@@ -4,8 +4,12 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Concrete {@link GameStateSaver} class that is used to save and load saves from a OS files. Class
@@ -13,6 +17,14 @@ import java.util.stream.Collectors;
  *
  * <p>Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
  * class will cause a {@link NullPointerException} to be thrown.
+ *
+ * <p>Standard save file has the following format:
+ *
+ * <p>2020-02-27T11:35:39.275733 [Unique ID - timeStamp]<br>
+ * chess [Game name]<br>
+ * 2020-02-27T11:35:41.835101 e2 e4 [Command with the timeStamp]<br>
+ * 2020-02-27T11:35:49.552936 a7 a5 [Command with the timeStamp]<br>
+ * 2020-02-27T11:36:39.578808 f1 a6 [Command with the timeStamp]
  */
 public class FileGameStateSaver extends GameStateSaver {
 
@@ -82,10 +94,10 @@ public class FileGameStateSaver extends GameStateSaver {
   @Override
   public void createSave() {
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath.toFile()))) {
-      String[] fileNames = filePath.toString().split("_");
-      bufferedWriter.write(fileNames[1]);
+      LocalDateTime dateTime = LocalDateTime.now();
+      bufferedWriter.write(dateTime.toString());
       bufferedWriter.write("\n");
-      bufferedWriter.write(fileNames[0]);
+      bufferedWriter.write(this.gameName);
       bufferedWriter.write("\n");
     } catch (IOException e) {
       e.printStackTrace();
@@ -100,5 +112,39 @@ public class FileGameStateSaver extends GameStateSaver {
   @Override
   public boolean hasSave() {
     return filePath.toFile().exists();
+  }
+
+  /**
+   * Util method that used to get GameSave from a file with a specified game name;
+   *
+   * @param fileName represents a file name that contains a save
+   * @param gameName represents game name that save belongs to.
+   * @return in case save exist and belongs to the same game name, specified in the params, game
+   *     stat saver object is returned.
+   * @throws IllegalArgumentException in case game specified in param does not match with the game
+   *     listed in a file
+   */
+  public static GameStateSaver getGameStateFromAFile(String fileName, String gameName) {
+    GameStateSaver newFileGameSaver = new FileGameStateSaver(Path.of(fileName), gameName);
+    GameSave save = newFileGameSaver.getSave();
+    if (save.getGameName().equals(gameName)) {
+      return newFileGameSaver;
+    } else {
+      throw new IllegalArgumentException(
+          "Game specified in file does not match with the selected one");
+    }
+  }
+
+  /**
+   * Until method that is used to get the most recent save in the current directory by the game name
+   *
+   * @param gameName represents game, that save will be looked fro
+   * @return {@link Optional} that contains the most recent save file name in case there is any.
+   */
+  public static Optional<String> findMostRecentFileSave(String gameName) {
+    Path path = Path.of(".");
+    return Stream.of(Objects.requireNonNull(path.toFile().list()))
+        .filter(line -> line.startsWith(gameName + "_"))
+        .max(Comparator.naturalOrder());
   }
 }

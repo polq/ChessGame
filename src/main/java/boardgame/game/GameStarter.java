@@ -77,8 +77,8 @@ public class GameStarter {
       } catch (IllegalArgumentException | NullPointerException e) {
         return new GameSnapshot.Builder()
             .withGameMessage(
-                "It's seems the game save has been damaged. The game cannot be, please double-check the"
-                    + " specified save and try again")
+                "It's seems the game save has been damaged. The game cannot be loaded, please double-check the"
+                    + " current save and try again")
             .end()
             .build();
       }

@@ -2,35 +2,37 @@ package boardgame.gamesaver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileGameStateSaverTest {
 
-  public static final String STANDARD_FILE_SAVE_PATH = "game.txt";
+  @TempDir File tempDir;
+  File tempFile;
   GameStateSaver gameSaver;
 
   @BeforeEach
   void init() {
-    gameSaver = new FileGameStateSaver(Path.of(STANDARD_FILE_SAVE_PATH), "chess");
+    tempFile = new File(tempDir, "file.txt");
+    gameSaver = new FileGameStateSaver(tempFile.toPath(), "chess");
   }
 
   @Test
   void testCreateNewSave() throws IOException {
     gameSaver.createSave();
-
-    assertEquals(2, Files.lines(Path.of(STANDARD_FILE_SAVE_PATH)).count());
+    assertEquals(2, Files.lines(tempFile.toPath()).count());
   }
 
   @Test
   void testSaveCommand() throws IOException {
-    boolean isPath = Path.of(STANDARD_FILE_SAVE_PATH).toFile().delete();
     gameSaver.save("A2 A3");
-    long linesCount = Files.lines(Path.of(STANDARD_FILE_SAVE_PATH)).count();
+    long linesCount = Files.lines(tempFile.toPath()).count();
     assertEquals(1, linesCount);
   }
 
@@ -46,12 +48,50 @@ class FileGameStateSaverTest {
 
   @Test
   void testHasSave() {
-    assertTrue(gameSaver.hasSave());
+    assertFalse(gameSaver.hasSave());
   }
 
   @Test
   void testHastSaveNoSave() {
-    gameSaver = new FileGameStateSaver(Path.of("randomfile.extension"), "chess");
+    File anotherTempFile = new File(tempDir, "anotherFile");
+    gameSaver = new FileGameStateSaver(anotherTempFile.toPath(), "chess");
     assertFalse(gameSaver.hasSave());
+  }
+
+  @Test
+  void testGetGameStateFromAFile() {
+    gameSaver.createSave();
+    GameStateSaver saver =
+        FileGameStateSaver.getGameStateFromAFile(tempFile.getAbsolutePath(), "chess");
+    assertNotNull(saver);
+  }
+
+  @Test
+  void testGetGameStateFromAFileWrongGame() {
+    gameSaver.createSave();
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> FileGameStateSaver.getGameStateFromAFile(tempFile.getAbsolutePath(), "checkers"));
+  }
+
+  @Test
+  void testFindMostRecentSave() throws IOException {
+    File tempFileOne = new File("game_1");
+    File tempFileTwo = new File("game_2");
+    assertTrue(tempFileOne.createNewFile());
+    assertTrue(tempFileTwo.createNewFile());
+    Optional<String> recentSave = FileGameStateSaver.findMostRecentFileSave("game");
+
+    assertTrue(recentSave.isPresent());
+    assertEquals("game_2", recentSave.get());
+
+    tempFileOne.deleteOnExit();
+    tempFileTwo.deleteOnExit();
+  }
+
+  @Test
+  void testFindMostRecentNoFiles() {
+    Optional<String> recentSave = FileGameStateSaver.findMostRecentFileSave("randomGame");
+    assertTrue(recentSave.isEmpty());
   }
 }

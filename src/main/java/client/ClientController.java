@@ -3,7 +3,6 @@ package client;
 import boardgame.game.*;
 import boardgame.gamesaver.FileGameStateSaver;
 import boardgame.gamesaver.GameStateSaver;
-import boardgame.gamesaver.GameSave;
 import boardgame.player.Player;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -13,7 +12,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ClientController {
 
@@ -25,40 +23,16 @@ public class ClientController {
             + "\nTo load game from a file, add [-load] flag followed by a file name separated by space."
             + "\nTo specify player names, add [-players] flag followed by names you would like to use separated by space");
     String commandString;
-    Args argsObj = new Args();
-    GameAI gameAI;
-    GameStateSaver saver;
-    boolean newGame;
-    while (true) {
+    GameStarter gameStarter = null;
+    while (gameStarter == null) {
       try {
         commandString = scanner.nextLine();
-        JCommander.newBuilder().addObject(argsObj).build().parse(commandString.split(" "));
-        String gameName = argsObj.gameName;
-        String loadFile = argsObj.gameFile;
-        newGame = argsObj.newGame;
-        List<String> players = argsObj.players;
-        gameAI = getGameAI(gameName, players);
-        if (loadFile != null) {
-          saver = getGameStateFromAFile(loadFile, gameName);
-        } else {
-          Optional<String> latestSave = findMostRecentFileSave(gameName);
-          if (latestSave.isPresent() && !newGame) {
-            saver = new FileGameStateSaver(Path.of(latestSave.get()), gameName);
-          } else {
-            LocalDateTime dateTime = LocalDateTime.now();
-            String fileName = gameName + "_" + dateTime.toString();
-            saver = new FileGameStateSaver(Path.of(fileName), gameName);
-            newGame = true;
-          }
-        }
-        break;
+        Args arguments = parseInputLine(commandString);
+        gameStarter = getGameStarterForFile(arguments);
       } catch (ParameterException | IllegalArgumentException e) {
         System.out.println(e.getMessage());
       }
     }
-
-    GameStarter gameStarter =
-        new GameStarter.Builder().withGameAI(gameAI).withGameSaver(saver).newGame(newGame).build();
     GameSnapshot gameSnapshot = gameStarter.getStartedGameSnap();
     System.out.println(gameSnapshot.getStringGameSnap());
     String inputCommand;
@@ -70,6 +44,16 @@ public class ClientController {
     }
   }
 
+  /**
+   * Method is used to create {@link GameAI} by game name, with the specified players list.
+   *
+   * @param gameName represents game that will be created
+   * @param playerList represents list of player names.
+   * @return {@link GameAI} for the specified in the param game and players list. In case {@code
+   *     playerList} is null, it will return {@link GameAI} with the standard player list
+   * @throws IllegalArgumentException in case there is no game matches the specified game in the
+   *     param.
+   */
   static GameAI getGameAI(String gameName, List<String> playerList) {
     GameAI gameAI;
     LinkedList<Player> players = null;
@@ -88,39 +72,72 @@ public class ClientController {
     return gameAI;
   }
 
-  static GameStateSaver getGameStateFromAFile(String fileName, String gameName) {
-    GameStateSaver newFileGameSaver = new FileGameStateSaver(Path.of(fileName));
-    GameSave save = newFileGameSaver.getSave();
-    if (save.getGameName().equals(gameName)) {
-      return newFileGameSaver;
+  /**
+   * Method that is used to get {@link GameStarter} by already parsed argsObject. Input line format
+   * specified in a {@link Args} class.
+   *
+   * @param argsObj represents {@link Args} object that contains field required to create returned
+   *     object
+   * @return {@link GameStarter} object that is ready to be executed.
+   * @throws IllegalArgumentException in case save specified is not present or damaged.
+   */
+  static GameStarter getGameStarterForFile(Args argsObj) {
+    GameStarter gameStarter;
+    GameAI gameAI;
+    GameStateSaver saver;
+    boolean newGame;
+    String gameName = argsObj.gameName;
+    String loadFile = argsObj.gameFile;
+    newGame = argsObj.newGame;
+    List<String> players = argsObj.players;
+    gameAI = getGameAI(gameName, players);
+    if (loadFile != null) {
+      saver = FileGameStateSaver.getGameStateFromAFile(loadFile, gameName);
     } else {
-      throw new IllegalArgumentException(
-          "Game specified in file does not match with the selected one");
+      Optional<String> latestSave = FileGameStateSaver.findMostRecentFileSave(gameName);
+      if (latestSave.isPresent() && !newGame) {
+        saver = new FileGameStateSaver(Path.of(latestSave.get()), gameName);
+      } else {
+        LocalDateTime dateTime = LocalDateTime.now();
+        String fileName = gameName + "_" + dateTime.toString();
+        saver = new FileGameStateSaver(Path.of(fileName), gameName);
+        newGame = true;
+      }
     }
+    gameStarter =
+        new GameStarter.Builder().withGameAI(gameAI).withGameSaver(saver).newGame(newGame).build();
+
+    return gameStarter;
   }
 
-  static Optional<String> findMostRecentFileSave(String gameName) {
-    Path path = Path.of(".");
-    return Stream.of(Objects.requireNonNull(path.toFile().list()))
-        .filter(line -> line.startsWith(gameName + "_"))
-        .max(Comparator.naturalOrder());
+  /**
+   * Method that is used to parse input line into and convenient object format.
+   *
+   * @param inputLine String that should be parsed
+   * @return {@link Args} object that contains field parsed from input param
+   * @throws ParameterException in case the inputLine does not match the required param format.
+   */
+  static Args parseInputLine(String inputLine) {
+    Args args = new Args();
+    JCommander.newBuilder().addObject(args).build().parse(inputLine.split(" "));
+    return args;
   }
 
   static class Args {
 
     @Parameter(description = "main parameter that defines game to play", required = true)
-    private String gameName;
+    public String gameName;
 
     @Parameter(
         names = "-players",
         arity = 2,
         description = "Space-separated list of player names to be run")
-    private List<String> players;
+    public List<String> players;
 
     @Parameter(names = "-new", description = "Boolean flag to explicitly start new game")
-    private boolean newGame;
+    public boolean newGame;
 
     @Parameter(names = "-load", description = "Specifies file to load game")
-    private String gameFile;
+    public String gameFile;
   }
 }

@@ -20,11 +20,6 @@ public class Cell {
   private boolean isEmpty;
   private boolean isChangeable;
 
-  Cell(char positionLetter, int positionNumber) {
-    this.positionLetter = positionLetter;
-    this.positionNumber = positionNumber;
-  }
-
   private Cell() {}
 
   /** Method used to changed Cell to an empty one */
@@ -79,18 +74,6 @@ public class Cell {
     return figure;
   }
 
-  void setFigure(Figure figure) {
-    this.figure = figure;
-  }
-
-  void setEmpty(boolean empty) {
-    isEmpty = empty;
-  }
-
-  void setChangeable(boolean changeable) {
-    isChangeable = changeable;
-  }
-
   public boolean isEmpty() {
     return isEmpty;
   }
@@ -107,6 +90,9 @@ public class Cell {
     return isChangeable;
   }
 
+  /**
+   * Builder class to create a new Cell object, where Cell's number and letter are required params.
+   */
   public static class Builder {
 
     private int positionNumber;

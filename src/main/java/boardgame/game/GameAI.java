@@ -25,6 +25,13 @@ public abstract class GameAI {
   LinkedList<Player> playerQueue;
 
   /**
+   * Method that is used to retrieve name of the game
+   *
+   * @return {@link String} representing games name
+   */
+  public abstract String getGameName();
+
+  /**
    * Method is used to check if game is still active or has been ended.
    *
    * @return true if the game is still active, false in case the game ended.
@@ -45,22 +52,27 @@ public abstract class GameAI {
    */
   abstract String getGameStatus();
 
-  public abstract String getGameName();
-
   Board getGameBoard() {
     return gameBoard;
   }
 
+  /**
+   * Method that is used to change player's turn
+   *
+   * @return new {@link Player} that become current one
+   */
   Player switchPlayer() {
     Player previousPlayer = playerQueue.remove();
     playerQueue.add(previousPlayer);
     return getCurrentTurnPlayer();
   }
 
-  Player getCurrentTurnPlayer() {
-    return playerQueue.peek();
-  }
-
+  /**
+   * Method that is used to generate standard {@link Player's} queue when one is not explicitly
+   * specified.
+   *
+   * @return LinkedList of standard black and white {@link Player}
+   */
   static LinkedList<Player> generateStandardPlayerQueue() {
     LinkedList<Player> playersQueue = new LinkedList<>();
     playersQueue.add(new Player("white"));
@@ -68,11 +80,21 @@ public abstract class GameAI {
     return playersQueue;
   }
 
+  /**
+   * Method that is used to check if figure belongs to the current turn player
+   *
+   * @param figure that is to be checked
+   * @return true - in case current player owns the figure, false - in case does not.
+   */
   boolean checkFigureOwner(Figure figure) {
     return figure.getFigureOwner().equals(getCurrentTurnPlayer());
   }
 
   public Queue<Player> getPlayerQueue() {
     return playerQueue;
+  }
+
+  Player getCurrentTurnPlayer() {
+    return playerQueue.peek();
   }
 }

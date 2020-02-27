@@ -10,6 +10,7 @@ import boardgame.player.Player;
 
 import java.util.*;
 
+/** Concrete realization of the BoardFactory class to build Checkers Board */
 public class ChessBoardFactory extends BoardFactory {
 
   private static final int BOARD_WIDTH = 8;

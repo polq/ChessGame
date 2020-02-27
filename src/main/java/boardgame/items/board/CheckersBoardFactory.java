@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+/** Concrete realization of the BoardFactory class to build Checkers Board */
 public class CheckersBoardFactory extends BoardFactory {
   private static final int BOARD_WIDTH = 8;
   private static final int BOARD_HEIGHT = 8;
