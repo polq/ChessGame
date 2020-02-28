@@ -8,13 +8,14 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
-        <org.junit.jupiter.version>5.5.0</org.junit.jupiter.version>
+        <org.junit.jupiter.version>5.4.2</org.junit.jupiter.version>
+        <org.mockito.version>3.2.4</org.mockito.version>
         <jcommander.version>1.78</jcommander.version>
-        <mokito.version>1.10.19</mokito.version>
+        <jdbc.mysql.version>8.0.19</jdbc.mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -22,6 +23,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>${org.junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${org.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
@@ -37,9 +44,14 @@
             <version>${jcommander.version}</version>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${jdbc.mysql.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mokito.version}</version>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${org.mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

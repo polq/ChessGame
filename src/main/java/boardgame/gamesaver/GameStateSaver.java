@@ -25,11 +25,4 @@ public abstract class GameStateSaver {
 
   /** Method that is used to create a new save instance */
   public abstract void createSave();
-
-  /**
-   * Method is used to check if current save is present
-   *
-   * @return true in case save is present, false - in case there is no save
-   */
-  public abstract boolean hasSave();
 }

@@ -4,16 +4,28 @@ import boardgame.game.GameAI;
 import boardgame.game.GameStarter;
 import boardgame.gamesaver.FileGameStateSaver;
 import com.beust.jcommander.ParameterException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class ClientControllerTest {
 
   @TempDir File tempDir;
@@ -103,5 +115,24 @@ class ClientControllerTest {
         ClientController.getGameStarterForFile(ClientController.parseInputLine("chess"));
     assertNotNull(starter);
     tempFile.deleteOnExit();
+  }
+
+  @Disabled("TODO")
+  @Test
+  void testGetGameStarterFromFileLoad(
+      @Mock DataSource dataSource,
+      @Mock Connection connection,
+      @Mock PreparedStatement preparedStatement,
+      @Mock ResultSet resultSet)
+      throws SQLException {
+
+    when(dataSource.getConnection()).thenReturn(connection);
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+    GameStarter starter =
+        ClientController.getStarterFromDB(ClientController.parseInputLine("chess"));
+    starter.getStartedGameSnap();
+    assertNotNull(starter);
   }
 }

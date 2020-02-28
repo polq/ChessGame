@@ -3,13 +3,12 @@ package client;
 import boardgame.game.*;
 import boardgame.gamesaver.FileGameStateSaver;
 import boardgame.gamesaver.GameStateSaver;
+import boardgame.gamesaver.JDBCGameStateSaver;
 import boardgame.player.Player;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 
-import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,14 +20,19 @@ public class ClientController {
         "In order to play, please type in game name [chess|checkers]. It will load the latest save or start a new game if no save found."
             + "\nTo start a new game explicitly, add [-new] flag."
             + "\nTo load game from a file, add [-load] flag followed by a file name separated by space."
-            + "\nTo specify player names, add [-players] flag followed by names you would like to use separated by space");
+            + "\nTo specify player names, add [-players] flag followed by names you would like to use separated by space"
+            + "\nTo use database as saves storage, used [-db] flag");
     String commandString;
     GameStarter gameStarter = null;
     while (gameStarter == null) {
       try {
         commandString = scanner.nextLine();
         Args arguments = parseInputLine(commandString);
-        gameStarter = getGameStarterForFile(arguments);
+        if (arguments.loadDB) {
+          gameStarter = getStarterFromDB(arguments);
+        } else {
+          gameStarter = getGameStarterForFile(arguments);
+        }
       } catch (ParameterException | IllegalArgumentException e) {
         System.out.println(e.getMessage());
       }
@@ -42,6 +46,34 @@ public class ClientController {
       gameSnapshot = gameStarter.play(inputCommand);
       System.out.println(gameSnapshot.getStringGameSnap());
     }
+  }
+
+  /**
+   * Method that is used to get {@link GameStarter} for a DataBase by already parsed argsObject.
+   * Input line format specified in a {@link Args} class.
+   *
+   * @param argsObj represents {@link Args} object that contains field required to create returned
+   *     object
+   * @return {@link GameStarter} object that is ready to be executed.
+   */
+  static GameStarter getStarterFromDB(Args argsObj) {
+    GameAI gameAI;
+    GameStateSaver saver;
+    boolean newGame;
+    String gameName = argsObj.gameName;
+    newGame = argsObj.newGame;
+    List<String> players = argsObj.players;
+    gameAI = getGameAI(gameName, players);
+    if (newGame) {
+      saver = new JDBCGameStateSaver(gameName);
+    } else {
+      saver = JDBCGameStateSaver.getLatestSaveOrNew(gameName);
+    }
+    return new GameStarter.Builder()
+        .withGameSaver(saver)
+        .withGameAI(gameAI)
+        .newGame(newGame)
+        .build();
   }
 
   /**
@@ -73,8 +105,8 @@ public class ClientController {
   }
 
   /**
-   * Method that is used to get {@link GameStarter} by already parsed argsObject. Input line format
-   * specified in a {@link Args} class.
+   * Method that is used to get {@link GameStarter} for a File by already parsed argsObject. Input
+   * line format specified in a {@link Args} class.
    *
    * @param argsObj represents {@link Args} object that contains field required to create returned
    *     object
@@ -94,14 +126,10 @@ public class ClientController {
     if (loadFile != null) {
       saver = FileGameStateSaver.getGameStateFromAFile(loadFile, gameName);
     } else {
-      Optional<String> latestSave = FileGameStateSaver.findMostRecentFileSave(gameName);
-      if (latestSave.isPresent() && !newGame) {
-        saver = new FileGameStateSaver(Path.of(latestSave.get()), gameName);
+      if (newGame) {
+        saver = FileGameStateSaver.getNewSaver(gameName);
       } else {
-        LocalDateTime dateTime = LocalDateTime.now();
-        String fileName = gameName + "_" + dateTime.toString();
-        saver = new FileGameStateSaver(Path.of(fileName), gameName);
-        newGame = true;
+        saver = FileGameStateSaver.findMostRecentFileSave(gameName);
       }
     }
     gameStarter =
@@ -139,5 +167,10 @@ public class ClientController {
 
     @Parameter(names = "-load", description = "Specifies file to load game")
     public String gameFile;
+
+    @Parameter(
+        names = "-db",
+        description = "Flag that specifies that DB should be used, file save is default value")
+    public boolean loadDB = false;
   }
 }

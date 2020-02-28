@@ -7,7 +7,6 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,15 +46,24 @@ class FileGameStateSaverTest {
   }
 
   @Test
-  void testHasSave() {
-    assertFalse(gameSaver.hasSave());
+  void testGetSaveNoFile() {
+    assertThrows(IllegalArgumentException.class, () -> gameSaver.getSave());
+  }
+
+  @Test
+  void testGetSaveDamageFile() throws IOException {
+    File temp = new File("game_1");
+    assertTrue(temp.createNewFile());
+    GameStateSaver saver = new FileGameStateSaver(temp.toPath(), "game");
+    assertThrows(IllegalArgumentException.class, saver::getSave);
+    assertTrue(temp.delete());
   }
 
   @Test
   void testHastSaveNoSave() {
     File anotherTempFile = new File(tempDir, "anotherFile");
     gameSaver = new FileGameStateSaver(anotherTempFile.toPath(), "chess");
-    assertFalse(gameSaver.hasSave());
+    assertFalse(anotherTempFile.exists());
   }
 
   @Test
@@ -75,23 +83,23 @@ class FileGameStateSaverTest {
   }
 
   @Test
-  void testFindMostRecentSave() throws IOException {
-    File tempFileOne = new File("game_1");
-    File tempFileTwo = new File("game_2");
-    assertTrue(tempFileOne.createNewFile());
-    assertTrue(tempFileTwo.createNewFile());
-    Optional<String> recentSave = FileGameStateSaver.findMostRecentFileSave("game");
+  void findMostRecentSave() throws IOException {
+    File tempFile = new File("game_1");
+    assertTrue(tempFile.createNewFile());
+    GameStateSaver saver = new FileGameStateSaver(tempFile.toPath(), "game");
+    saver.createSave();
 
-    assertTrue(recentSave.isPresent());
-    assertEquals("game_2", recentSave.get());
+    saver = FileGameStateSaver.findMostRecentFileSave("game");
 
-    tempFileOne.deleteOnExit();
-    tempFileTwo.deleteOnExit();
+    assertNotNull(saver);
+    assertEquals("game", saver.getSave().getGameName());
+
+    tempFile.deleteOnExit();
   }
 
   @Test
-  void testFindMostRecentNoFiles() {
-    Optional<String> recentSave = FileGameStateSaver.findMostRecentFileSave("randomGame");
-    assertTrue(recentSave.isEmpty());
+  void findMostRecentSaveNew() {
+    GameStateSaver saver = FileGameStateSaver.findMostRecentFileSave("game");
+    assertNotNull(saver);
   }
 }

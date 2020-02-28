@@ -11,6 +11,11 @@ public class GameSave {
 
   private Map<String, String> commandsLog;
   private String gameName;
+
+  public String getUniqueSaveID() {
+    return uniqueSaveID;
+  }
+
   private String uniqueSaveID;
 
   public GameSave(String uniqueSaveID, String gameName, Map<String, String> commandsLog) {

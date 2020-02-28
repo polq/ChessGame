@@ -59,7 +59,7 @@ public class GameStarter {
    *     loaded game if save is present.
    */
   public GameSnapshot getStartedGameSnap() {
-    if (saver.hasSave() && !isNewGame) {
+    if (!isNewGame) {
       try {
         GameSave gameSave = saver.getSave();
         gameSave.getCommandsLog().entrySet().stream()
