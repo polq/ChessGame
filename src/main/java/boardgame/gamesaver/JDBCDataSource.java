@@ -18,7 +18,7 @@ public class JDBCDataSource {
    */
   public static DataSource getMySQLDataSource() {
     Properties props = new Properties();
-    try (FileReader reader = new FileReader("db.properties")) {
+    try (FileReader reader = new FileReader("src/main/resources/db.properties")) {
       props.load(reader);
     } catch (IOException e) {
       throw new RuntimeException(e);

@@ -118,12 +118,14 @@ public class JDBCGameStateSaver extends GameStateSaver {
           connection.prepareStatement("SELECT max(game_id) FROM games Where game_name = ? ;");
       statement.setString(1, gameName);
       ResultSet resultSet = statement.executeQuery();
-      String gameID = resultSet.getString(1);
-      if (gameID == null) {
-        this.initialize();
-        return this;
+      String gameID;
+      if (resultSet.first()) {
+        gameID = resultSet.getString(1);
+        return new JDBCGameStateSaver(gameName, gameID);
       }
-      return new JDBCGameStateSaver(gameName, gameID);
+      this.initialize();
+      return this;
+
     } catch (SQLException e) {
       throw new IllegalArgumentException("Fail while getting latest save, " + e.getMessage());
     }
