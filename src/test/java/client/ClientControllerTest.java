@@ -32,25 +32,25 @@ class ClientControllerTest {
 
   @Test
   void testGetGameAIChess() {
-    GameAI gameAI = ClientController.getGameAI("chess", null);
+    GameAI gameAI = ClientController.nameGameAI("chess", null);
     assertEquals("chess", gameAI.getGameName());
   }
 
   @Test
   void testGetGameAICheckers() {
-    GameAI gameAI = ClientController.getGameAI("checkers", null);
+    GameAI gameAI = ClientController.nameGameAI("checkers", null);
     assertEquals("checkers", gameAI.getGameName());
   }
 
   @Test
   void testGetGameAIFailGame() {
-    assertThrows(IllegalArgumentException.class, () -> ClientController.getGameAI("pai sho", null));
+    assertThrows(IllegalArgumentException.class, () -> ClientController.nameGameAI("pai sho", null));
   }
 
   @Test
   void testGetGameAICustomPlayers() {
     List<String> playerList = Arrays.asList("1", "2");
-    GameAI gameAI = ClientController.getGameAI("chess", playerList);
+    GameAI gameAI = ClientController.nameGameAI("chess", playerList);
     assertEquals("1", Objects.requireNonNull(gameAI.getPlayerQueue().peek()).toString());
   }
 
@@ -85,10 +85,10 @@ class ClientControllerTest {
   void testGetGameStarterFromFile() {
     File tempFile = new File(tempDir, "file.txt");
     FileGameStateSaver stateSaver = new FileGameStateSaver(tempFile.toPath(), "chess");
-    stateSaver.createSave();
+    stateSaver.initialize();
 
     GameStarter starter =
-        ClientController.getGameStarterForFile(
+        ClientController.fileStarter(
             ClientController.parseInputLine("chess -load " + tempFile.getAbsolutePath()));
     assertNotNull(starter);
   }
@@ -96,7 +96,7 @@ class ClientControllerTest {
   @Test
   void testGetGameStarterFromFileNew() {
     GameStarter starter =
-        ClientController.getGameStarterForFile(ClientController.parseInputLine("chess -new"));
+        ClientController.fileStarter(ClientController.parseInputLine("chess -new"));
     starter.getStartedGameSnap();
     Optional<File> files =
         Arrays.stream(Objects.requireNonNull(Path.of(".").toFile().listFiles()))
@@ -112,7 +112,7 @@ class ClientControllerTest {
     File tempFile = new File("chess_9");
     assertTrue(tempFile.createNewFile());
     GameStarter starter =
-        ClientController.getGameStarterForFile(ClientController.parseInputLine("chess"));
+        ClientController.fileStarter(ClientController.parseInputLine("chess"));
     assertNotNull(starter);
     tempFile.deleteOnExit();
   }
@@ -131,7 +131,7 @@ class ClientControllerTest {
     when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
     GameStarter starter =
-        ClientController.getStarterFromDB(ClientController.parseInputLine("chess"));
+        ClientController.DBStarter(ClientController.parseInputLine("chess"));
     starter.getStartedGameSnap();
     assertNotNull(starter);
   }

@@ -1,6 +1,7 @@
 package boardgame.gamesaver;
 
 import java.io.*;
+import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -36,8 +37,8 @@ public class FileGameStateSaver extends GameStateSaver {
     this.gameName = gameName;
   }
 
-  public FileGameStateSaver(Path filePath) {
-    this.filePath = filePath;
+  public FileGameStateSaver(String gameName) {
+    this(Path.of(gameName + "_" + LocalDateTime.now()), gameName);
   }
 
   /**
@@ -66,7 +67,7 @@ public class FileGameStateSaver extends GameStateSaver {
    * @return {@link GameSave} object that can be used to reestablish game state.
    */
   @Override
-  public GameSave getSave() {
+  public GameSave load() {
     GameSave gameSave;
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
       String gameID = reader.readLine();
@@ -92,7 +93,7 @@ public class FileGameStateSaver extends GameStateSaver {
    * and a game name that will be used to identify which game save file belongs to.
    */
   @Override
-  public void createSave() {
+  public void initialize() {
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath.toFile()))) {
       LocalDateTime dateTime = LocalDateTime.now();
       bufferedWriter.write(dateTime.toString());
@@ -100,28 +101,7 @@ public class FileGameStateSaver extends GameStateSaver {
       bufferedWriter.write(this.gameName);
       bufferedWriter.write("\n");
     } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Util method that used to get GameSave from a file with a specified game name;
-   *
-   * @param fileName represents a file name that contains a save
-   * @param gameName represents game name that save belongs to.
-   * @return in case save exist and belongs to the same game name, specified in the params, game
-   *     stat saver object is returned.
-   * @throws IllegalArgumentException in case game specified in param does not match with the game
-   *     listed in a file
-   */
-  public static GameStateSaver getGameStateFromAFile(String fileName, String gameName) {
-    GameStateSaver newFileGameSaver = new FileGameStateSaver(Path.of(fileName), gameName);
-    GameSave save = newFileGameSaver.getSave();
-    if (save.getGameName().equals(gameName)) {
-      return newFileGameSaver;
-    } else {
-      throw new IllegalArgumentException(
-          "Game specified in file does not match with the selected one");
+      throw new IllegalArgumentException("Error while creating new save file" + e.getMessage());
     }
   }
 
@@ -129,34 +109,21 @@ public class FileGameStateSaver extends GameStateSaver {
    * Until method that is used to get the most recent save in the current directory by the game name
    * or a new one in case it does not exist.
    *
-   * @param gameName represents game, that save will be looked fro
    * @return {@link GameStateSaver} of a latest save in case it was found or a new instance for the
    *     current game name, in case there was no saves.
    */
-  public static GameStateSaver findMostRecentFileSave(String gameName) {
+  public GameStateSaver latestSave() {
     Path path = Path.of(".");
     Optional<String> optionalS =
         Stream.of(Objects.requireNonNull(path.toFile().list()))
-            .filter(line -> line.startsWith(gameName + "_"))
+            .filter(line -> line.startsWith(this.gameName + "_"))
             .max(Comparator.naturalOrder());
 
     if (optionalS.isPresent()) {
-      return new FileGameStateSaver(Path.of(optionalS.get()), gameName);
+      return new FileGameStateSaver(Path.of(optionalS.get()), this.gameName);
     } else {
-      return FileGameStateSaver.getNewSaver(gameName);
+      this.initialize();
+      return this;
     }
-  }
-
-  /**
-   * Creates a re {@link GameStateSaver} for the specified game. File created would have the
-   * following format: timeStamp_gameName.
-   *
-   * @param gameName presents game that game save will belongs to.
-   * @return new {@link GameStateSaver} object
-   */
-  public static GameStateSaver getNewSaver(String gameName) {
-    LocalDateTime dateTime = LocalDateTime.now();
-    String fileName = gameName + "_" + dateTime.toString();
-    return new FileGameStateSaver(Path.of(fileName), gameName);
   }
 }

@@ -37,7 +37,7 @@ class JDBCGameStateSaverTest {
   void testCreateSave() {
     String date = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).toString();
     JDBCGameStateSaver saver = new JDBCGameStateSaver("chess", dataSource);
-    saver.createSave();
+    saver.initialize();
 
     assertTrue(saver.getGameID().startsWith(date));
   }
@@ -45,8 +45,8 @@ class JDBCGameStateSaverTest {
   @Test
   void testGetSave() {
     JDBCGameStateSaver saver = new JDBCGameStateSaver("chess", dataSource);
-    saver.createSave();
-    GameSave save = saver.getSave();
+    saver.initialize();
+    GameSave save = saver.load();
 
     assertEquals("chess", save.getGameName());
     assertEquals(saver.getGameID(), save.getUniqueSaveID());
@@ -66,8 +66,9 @@ class JDBCGameStateSaverTest {
   @Test
   void testGetLatestSaveNewGame() {
     LocalDateTime dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    String id = UUID.randomUUID().toString();
     JDBCGameStateSaver newSaver =
-        JDBCGameStateSaver.getLatestSaveOrNew(UUID.randomUUID().toString());
+            (JDBCGameStateSaver) new JDBCGameStateSaver(id).latestSave();
     assertTrue(newSaver.getGameID().startsWith(dateTime.toString()));
   }
 
@@ -76,8 +77,8 @@ class JDBCGameStateSaverTest {
     String gameName = UUID.randomUUID().toString();
     when(dataSource.getConnection()).thenReturn(connection);
     JDBCGameStateSaver saver = new JDBCGameStateSaver(gameName);
-    saver.createSave();
-    JDBCGameStateSaver newSaver = JDBCGameStateSaver.getLatestSaveOrNew(gameName);
+    saver.initialize();
+    JDBCGameStateSaver newSaver = (JDBCGameStateSaver) new JDBCGameStateSaver(gameName).latestSave();
 
     assertEquals(newSaver.getGameID(), saver.getGameID());
   }

@@ -21,8 +21,15 @@ public abstract class GameStateSaver {
    *
    * @return {@link GameSave} that represents game save
    */
-  public abstract GameSave getSave();
+  public abstract GameSave load();
 
   /** Method that is used to create a new save instance */
-  public abstract void createSave();
+  public abstract void initialize();
+
+  /**
+   * Method that is used to get latest save or if no save found new one.
+   *
+   * @return {@link GameStateSaver} initialized
+   */
+  public abstract GameStateSaver latestSave();
 }

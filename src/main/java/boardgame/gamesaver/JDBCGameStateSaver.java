@@ -13,15 +13,12 @@ import java.util.Map;
  * <p>Unless otherwise noted, passing a {@code null} argument to a constructor * or method in this
  * class will cause a {@link NullPointerException} to be thrown.
  *
- * <p>Database stores information in the following format:
- *     game_name,             game_id,                    move_id            move
- *      chess,     2020-02-28T16:51:19.122983, 2020-02-28T16:54:53.950757, d8 e8
- *      chess,     2020-02-28T16:51:19.122983, 2020-02-28T16:53:56.748506, d7 e8
- *      chess,     2020-02-28T16:51:19.122983, 2020-02-28T16:53:44.812731, e7 e6
- *      chess,     2020-02-28T16:51:19.122983, 2020-02-28T16:53:31.247281, e6 d7
- *      chess,     2020-02-28T16:51:19.122983, 2020-02-28T16:53:09.482712, b8 c6
+ * <p>Database stores information in the following format: game_name, game_id, move_id move chess,
+ * 2020-02-28T16:51:19.122983, 2020-02-28T16:54:53.950757, d8 e8 chess, 2020-02-28T16:51:19.122983,
+ * 2020-02-28T16:53:56.748506, d7 e8 chess, 2020-02-28T16:51:19.122983, 2020-02-28T16:53:44.812731,
+ * e7 e6 chess, 2020-02-28T16:51:19.122983, 2020-02-28T16:53:31.247281, e6 d7 chess,
+ * 2020-02-28T16:51:19.122983, 2020-02-28T16:53:09.482712, b8 c6
  */
-
 public class JDBCGameStateSaver extends GameStateSaver {
 
   private String gameName;
@@ -70,7 +67,7 @@ public class JDBCGameStateSaver extends GameStateSaver {
    * @return {@link GameSave} object that can be used to reestablish game state.
    */
   @Override
-  public GameSave getSave() {
+  public GameSave load() {
     try (Connection connection = this.dataSource.getConnection()) {
       PreparedStatement selectStatement =
           connection.prepareStatement("SELECT move_id, move FROM game_moves where game_id = ?;");
@@ -91,7 +88,7 @@ public class JDBCGameStateSaver extends GameStateSaver {
    * identifier and a game name that will be used to identify which game save belongs to.
    */
   @Override
-  public void createSave() {
+  public void initialize() {
     try (Connection connection = this.dataSource.getConnection()) {
       LocalDateTime dateTime = LocalDateTime.now();
       String gameID = dateTime.toString();
@@ -110,29 +107,25 @@ public class JDBCGameStateSaver extends GameStateSaver {
    * Method that is used to get the last instance of a game saver from a database for a specific
    * game name, specified in a param.
    *
-   * @param gameName represents the name for which the save will be searched and returned.
    * @return {@link GameStateSaver} for the latest save for the specified game or in case no save
    *     found, it will create a new one.
    */
-  public static JDBCGameStateSaver getLatestSaveOrNew(String gameName) {
+  @Override
+  public GameStateSaver latestSave() {
     DataSource dataSource = JDBCDataSource.getMySQLDataSource();
     try (Connection connection = dataSource.getConnection()) {
       PreparedStatement statement =
           connection.prepareStatement("SELECT max(game_id) FROM games Where game_name = ? ;");
       statement.setString(1, gameName);
       ResultSet resultSet = statement.executeQuery();
-      String gameID = null;
-      while (resultSet.next()) {
-        gameID = resultSet.getString(1);
-      }
+      String gameID = resultSet.getString(1);
       if (gameID == null) {
-        JDBCGameStateSaver saver = new JDBCGameStateSaver(gameName);
-        saver.createSave();
-        return saver;
+        this.initialize();
+        return this;
       }
       return new JDBCGameStateSaver(gameName, gameID);
     } catch (SQLException e) {
-      throw new IllegalArgumentException("Fail while saving message, " + e.getMessage());
+      throw new IllegalArgumentException("Fail while getting latest save, " + e.getMessage());
     }
   }
 

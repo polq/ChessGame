@@ -61,7 +61,13 @@ public class GameStarter {
   public GameSnapshot getStartedGameSnap() {
     if (!isNewGame) {
       try {
-        GameSave gameSave = saver.getSave();
+        GameSave gameSave = saver.load();
+        if (!gameSave.getGameName().equals(gameAI.getGameName())) {
+          return new GameSnapshot.Builder()
+              .withGameMessage("Game specified in file does not match selected one")
+              .end()
+              .build();
+        }
         gameSave.getCommandsLog().entrySet().stream()
             .sorted(Map.Entry.comparingByKey())
             .forEach(
@@ -83,7 +89,7 @@ public class GameStarter {
             .build();
       }
     } else {
-      saver.createSave();
+      saver.initialize();
       return new GameSnapshot.Builder()
           .withBoard(this.gameAI.getGameBoard())
           .withGameMessage(

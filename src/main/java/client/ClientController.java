@@ -9,6 +9,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,9 +30,9 @@ public class ClientController {
         commandString = scanner.nextLine();
         Args arguments = parseInputLine(commandString);
         if (arguments.loadDB) {
-          gameStarter = getStarterFromDB(arguments);
+          gameStarter = DBStarter(arguments);
         } else {
-          gameStarter = getGameStarterForFile(arguments);
+          gameStarter = fileStarter(arguments);
         }
       } catch (ParameterException | IllegalArgumentException e) {
         System.out.println(e.getMessage());
@@ -56,18 +57,16 @@ public class ClientController {
    *     object
    * @return {@link GameStarter} object that is ready to be executed.
    */
-  static GameStarter getStarterFromDB(Args argsObj) {
+  static GameStarter DBStarter(Args argsObj) {
     GameAI gameAI;
-    GameStateSaver saver;
     boolean newGame;
     String gameName = argsObj.gameName;
     newGame = argsObj.newGame;
     List<String> players = argsObj.players;
-    gameAI = getGameAI(gameName, players);
-    if (newGame) {
-      saver = new JDBCGameStateSaver(gameName);
-    } else {
-      saver = JDBCGameStateSaver.getLatestSaveOrNew(gameName);
+    gameAI = nameGameAI(gameName, players);
+    GameStateSaver saver = new JDBCGameStateSaver(gameName);
+    if (!newGame) {
+      saver = saver.latestSave();
     }
     return new GameStarter.Builder()
         .withGameSaver(saver)
@@ -86,7 +85,7 @@ public class ClientController {
    * @throws IllegalArgumentException in case there is no game matches the specified game in the
    *     param.
    */
-  static GameAI getGameAI(String gameName, List<String> playerList) {
+  static GameAI nameGameAI(String gameName, List<String> playerList) {
     GameAI gameAI;
     LinkedList<Player> players = null;
     if (playerList != null) {
@@ -113,7 +112,7 @@ public class ClientController {
    * @return {@link GameStarter} object that is ready to be executed.
    * @throws IllegalArgumentException in case save specified is not present or damaged.
    */
-  static GameStarter getGameStarterForFile(Args argsObj) {
+  static GameStarter fileStarter(Args argsObj) {
     GameStarter gameStarter;
     GameAI gameAI;
     GameStateSaver saver;
@@ -122,14 +121,13 @@ public class ClientController {
     String loadFile = argsObj.gameFile;
     newGame = argsObj.newGame;
     List<String> players = argsObj.players;
-    gameAI = getGameAI(gameName, players);
+    gameAI = nameGameAI(gameName, players);
     if (loadFile != null) {
-      saver = FileGameStateSaver.getGameStateFromAFile(loadFile, gameName);
+      saver = new FileGameStateSaver(Path.of(loadFile), gameName);
     } else {
-      if (newGame) {
-        saver = FileGameStateSaver.getNewSaver(gameName);
-      } else {
-        saver = FileGameStateSaver.findMostRecentFileSave(gameName);
+      saver = new FileGameStateSaver(gameName);
+      if (!newGame) {
+        saver = saver.latestSave();
       }
     }
     gameStarter =
@@ -165,12 +163,12 @@ public class ClientController {
     @Parameter(names = "-new", description = "Boolean flag to explicitly start new game")
     public boolean newGame;
 
-    @Parameter(names = "-load", description = "Specifies file to load game")
+    @Parameter(names = "-load", description = "Specifies file to load game from")
     public String gameFile;
 
     @Parameter(
         names = "-db",
         description = "Flag that specifies that DB should be used, file save is default value")
-    public boolean loadDB = false;
+    public boolean loadDB;
   }
 }

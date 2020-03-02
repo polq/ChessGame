@@ -41,7 +41,7 @@ class GameStarterTest {
 
   @Test
   void getStartedGameSnapLoadGame() {
-    GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"));
+    GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"), "chess");
     gameStarter =
         new GameStarter.Builder().withGameAI(new ChessGameAI()).withGameSaver(saver).build();
     GameSnapshot snapshot = gameStarter.getStartedGameSnap();
@@ -64,7 +64,7 @@ class GameStarterTest {
 
   @Test
   void getStartedGameSnapDamagedFile() {
-    GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"));
+    GameStateSaver saver = new FileGameStateSaver(Path.of("damaged.txt"), "chess");
     gameStarter =
         new GameStarter.Builder().withGameAI(new CheckersGameAI()).withGameSaver(saver).build();
     GameSnapshot snapshot = gameStarter.getStartedGameSnap();
