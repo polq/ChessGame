@@ -37,7 +37,7 @@ public class FileGameStateSaver extends GameStateSaver {
   }
 
   public FileGameStateSaver(String gameName) {
-    this(Path.of(gameName + "_" + LocalDateTime.now()), gameName);
+    this(Path.of(gameName + "_" + LocalDateTime.now().toString().trim().split(":")[0]), gameName);
   }
 
   /**

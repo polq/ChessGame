@@ -1,18 +1,18 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head></head>
 <body>
-<h2>Welcome to game</h2>
+<h2>Welcome to game menu, choose a game that you would like to play and press Start</h2>
 
-<form action="#" th:action="@{/}" th:object="${props}" method="post">
-    <input type="text" th:field="*{gameName}"/>
-    <input type="submit"/>
-    <input type="radio" th:field="*{gameName}" th:value="*{gameName}">
-    <label th:value="*{gameName}"> </label><br>
+<form action="#" th:action="@{/start}" th:object="${props}" method="post">
+  <ul>
+    <li th:each="game : ${props.allGames}">
+      <input type="radio" th:field="*{gameName}" th:value="${game}"/>
+      <label th:for="${#ids.prev('gameName')}" th:text="${game}"/>
+    </li>
+  </ul>
+  <p>
+    <button type="submit" name="startGame">Start new game</button>
+  </p>
 </form>
-
-<h1 th:text="${gameName}"></h1>
-
-
-<h1>h1</h1>
 </body>
 </html>

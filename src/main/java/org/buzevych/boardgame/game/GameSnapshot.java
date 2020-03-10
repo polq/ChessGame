@@ -20,17 +20,47 @@ public class GameSnapshot {
   private String gameStatusMessage;
   private Board board;
 
-  private GameSnapshot() {}
+  private GameSnapshot() {
+  }
 
   /**
    * Method is used to determinate if the game is still active and has not ended.
    *
    * @return true if the game is still ongoing, false - if it has ended and no more commands are
-   *     necessary
+   * necessary
    */
   public boolean isActive() {
     return active;
   }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public String[][] boardMatrix() {
+    String[][] cells = new String[this.board.getBoardHeight()][this.board.getBoardWeight()+1];
+    int firstLetter = 'A';
+    int lastLetter = firstLetter + board.getBoardWeight();
+    for (int i = board.getBoardHeight(); i >= 1; i--) {
+      cells[i-1][0] = board.getBoardHeight() - i + 1 + "";
+      for (int j = firstLetter; j < lastLetter; j++) {
+        String cellKey = "" + (char) j + i;
+        Cell cell = board.getBoardCells().get(cellKey);
+        if (!cell.isEmpty()) {
+          String iconName = cell.getFigure().getIconStringName();
+          int matrixI = board.getBoardHeight() - i;
+          int matrixJ = j - firstLetter;
+          cells[matrixI][matrixJ+1] = board.getFigureIcons().get(iconName);
+        }
+      }
+    }
+    return cells;
+  }
+
+  public String getGameStatusMessage() {
+    return gameStatusMessage;
+  }
+
 
   /**
    * Method is used to get the String representation of the {@link Board} and the whole game status
@@ -72,6 +102,7 @@ public class GameSnapshot {
   }
 
   static class Builder {
+
     private boolean active;
     private String gameStatusMessage;
     private Board board;

@@ -4,6 +4,7 @@ import org.buzevych.boardgame.gamesaver.FileGameStateSaver;
 import org.buzevych.boardgame.gamesaver.GameSave;
 import org.buzevych.boardgame.gamesaver.GameStateSaver;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -93,6 +94,7 @@ class FileGameStateSaverTest {
     tempFile.deleteOnExit();
   }
 
+  @Disabled
   @Test
   void findMostRecentSaveNew() {
     GameStateSaver saver = new FileGameStateSaver("game").latestSave();

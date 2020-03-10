@@ -68,9 +68,9 @@ public class ChessBoardFactory extends BoardFactory {
             newCell = builder.withFigure(new Knight(player)).changeable(true).build();
           } else if (j == 'C' || j == 'F') {
             newCell = builder.withFigure(new Bishop(player)).changeable(true).build();
-          } else if (j == 'D') {
-            newCell = builder.withFigure(new King(player)).changeable(true).build();
           } else if (j == 'E') {
+            newCell = builder.withFigure(new King(player)).changeable(true).build();
+          } else if (j == 'D') {
             newCell = builder.withFigure(new Queen(player)).changeable(true).build();
           } else {
             newCell = builder.empty(true).build();
