@@ -108,23 +108,21 @@ public class JDBCGameStateSaver extends GameStateSaver {
    * game name, specified in a param.
    *
    * @return {@link GameStateSaver} for the latest save for the specified game or in case no save
-   *     found, it will create a new one.
+   * found, it will create a new one.
    */
   @Override
-  public GameStateSaver latestSave() {
+  public boolean latestSave() {
     DataSource dataSource = JDBCDataSource.getMySQLDataSource();
     try (Connection connection = dataSource.getConnection()) {
       PreparedStatement statement =
           connection.prepareStatement("SELECT max(game_id) FROM games Where game_name = ? ;");
       statement.setString(1, gameName);
       ResultSet resultSet = statement.executeQuery();
-      String gameID;
       if (resultSet.first()) {
-        gameID = resultSet.getString(1);
-        return new JDBCGameStateSaver(gameName, gameID);
+        this.gameID = resultSet.getString(1);
+        return true;
       }
-      this.initialize();
-      return this;
+      return false;
 
     } catch (SQLException e) {
       throw new IllegalArgumentException("Fail while getting latest save, " + e.getMessage());

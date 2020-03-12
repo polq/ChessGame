@@ -54,7 +54,7 @@ public class ClientController {
    * Input line format specified in a {@link Args} class.
    *
    * @param argsObj represents {@link Args} object that contains field required to create returned
-   *     object
+   *                object
    * @return {@link GameStarter} object that is ready to be executed.
    */
   static GameStarter DBStarter(Args argsObj) {
@@ -66,7 +66,9 @@ public class ClientController {
     gameAI = nameGameAI(gameName, players);
     GameStateSaver saver = new JDBCGameStateSaver(gameName);
     if (!newGame) {
-      saver = saver.latestSave();
+      if (!saver.latestSave()) {
+        newGame = true;
+      }
     }
     return new GameStarter.Builder()
         .withGameSaver(saver)
@@ -78,12 +80,12 @@ public class ClientController {
   /**
    * Method is used to create {@link GameAI} by game name, with the specified players list.
    *
-   * @param gameName represents game that will be created
+   * @param gameName   represents game that will be created
    * @param playerList represents list of player names.
    * @return {@link GameAI} for the specified in the param game and players list. In case {@code
-   *     playerList} is null, it will return {@link GameAI} with the standard player list
+   * playerList} is null, it will return {@link GameAI} with the standard player list
    * @throws IllegalArgumentException in case there is no game matches the specified game in the
-   *     param.
+   *                                  param.
    */
   static GameAI nameGameAI(String gameName, List<String> playerList) {
     GameAI gameAI;
@@ -108,7 +110,7 @@ public class ClientController {
    * line format specified in a {@link Args} class.
    *
    * @param argsObj represents {@link Args} object that contains field required to create returned
-   *     object
+   *                object
    * @return {@link GameStarter} object that is ready to be executed.
    * @throws IllegalArgumentException in case save specified is not present or damaged.
    */
@@ -126,8 +128,8 @@ public class ClientController {
       saver = new FileGameStateSaver(Path.of(loadFile), gameName);
     } else {
       saver = new FileGameStateSaver(gameName);
-      if (!newGame) {
-        saver = saver.latestSave();
+      if (!newGame && !saver.latestSave()) {
+        newGame = true;
       }
     }
     gameStarter =

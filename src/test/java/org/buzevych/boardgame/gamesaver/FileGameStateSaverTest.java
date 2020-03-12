@@ -85,10 +85,7 @@ class FileGameStateSaverTest {
     assertTrue(tempFile.createNewFile());
     GameStateSaver saver = new FileGameStateSaver(tempFile.toPath(), "game");
     saver.initialize();
-
-    saver = saver.latestSave();
-
-    assertNotNull(saver);
+    assertTrue(saver.latestSave());
     assertEquals("game", saver.load().getGameName());
 
     tempFile.deleteOnExit();
@@ -97,7 +94,6 @@ class FileGameStateSaverTest {
   @Disabled
   @Test
   void findMostRecentSaveNew() {
-    GameStateSaver saver = new FileGameStateSaver("game").latestSave();
-    assertNotNull(saver);
+   assertFalse(new FileGameStateSaver("game").latestSave());
   }
 }

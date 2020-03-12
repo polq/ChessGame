@@ -111,7 +111,8 @@ public class FileGameStateSaver extends GameStateSaver {
    * @return {@link GameStateSaver} of a latest save in case it was found or a new instance for the
    *     current game name, in case there was no saves.
    */
-  public GameStateSaver latestSave() {
+  @Override
+  public boolean latestSave() {
     Path path = Path.of(".");
     Optional<String> optionalS =
         Stream.of(Objects.requireNonNull(path.toFile().list()))
@@ -119,10 +120,15 @@ public class FileGameStateSaver extends GameStateSaver {
             .max(Comparator.naturalOrder());
 
     if (optionalS.isPresent()) {
-      return new FileGameStateSaver(Path.of(optionalS.get()), this.gameName);
+      this.setFilePath(Path.of(optionalS.get()));
+      return true;
     } else {
-      this.initialize();
-      return this;
+      return false;
     }
   }
+
+  public void setFilePath(Path filePath) {
+    this.filePath = filePath;
+  }
+
 }

@@ -31,5 +31,5 @@ public abstract class GameStateSaver {
    *
    * @return {@link GameStateSaver} initialized
    */
-  public abstract GameStateSaver latestSave();
+  public abstract boolean latestSave();
 }

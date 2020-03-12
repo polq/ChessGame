@@ -45,7 +45,7 @@ td {
   <span th:text="${snapshot.gameStatusMessage}"/>
 </p>
 <p>
-<form th:action="@{/play}">
+<form th:action="@{/play}" method="post">
   <input type="text" th:name="move"/>
   <input type="submit" value="Make a move">
 </form>

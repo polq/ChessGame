@@ -65,7 +65,7 @@ public class GameStarter {
     if (!isNewGame) {
       try {
         GameSave gameSave = saver.load();
-        if (!gameSave.getGameName().equals(gameAI.getGameName())) {
+        if (!gameSave.getGameName().equalsIgnoreCase(gameAI.getGameName())) {
           return new GameSnapshot.Builder()
               .withGameMessage("Game specified in file does not match selected one")
               .end()

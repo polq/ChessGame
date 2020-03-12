@@ -1,18 +1,57 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head></head>
+<head>
+</head>
 <body>
-<h2>Welcome to game menu, choose a game that you would like to play and press Start</h2>
 
-<form action="#" th:action="@{/start}" th:object="${props}" method="post">
-  <ul>
-    <li th:each="game : ${props.allGames}">
-      <input type="radio" th:field="*{gameName}" th:value="${game}"/>
-      <label th:for="${#ids.prev('gameName')}" th:text="${game}"/>
+<div align="center">
+  <h3>Welcome to game menu, choose a game that you would like to play and press Start</h3>
+  <form action="#" th:action="@{/start}" method="post" enctype="multipart/form-data">
+
+    </ul>
+    <li th:each="game : ${@environment.getProperty('gameNames').split(',')}">
+      <input type="radio" id="${game}" th:name="gameName" th:value="${game}" required>
+      <label for="${game}" th:text="${game}"/>
     </li>
-  </ul>
+    </ul>
+
+    <p>
+      <span id="text" onClick="simpleDropDown()"> Additional settings  </span>
+    </p>
+    <div id="additionalSetting" style="display: none">
+      </ul>
+      <li th:each="source : ${@environment.getProperty('sourceNames').split(',')}">
+        <input type="radio" id="${source}" th:name="sourceType" th:value="${source}" required
+               checked>
+        <label for="${source}" th:text="${source}"/>
+      </li>
+      </ul>
+      <br>
+      <input type="file" name="file"/><br/>
+    </div>
+    <p>
+      <button type="submit" name="startGame" value="startGame">Start new game</button>
+      <button type="submit" name="loadGame" value="loadGame">Continue playing</button>
+    </p>
+
+  </form>
   <p>
-    <button type="submit" name="startGame">Start new game</button>
+    <span th:text="${error}"/>
   </p>
-</form>
+</div>
+<script>
+function simpleDropDown() {
+  var x = document.getElementById("additionalSetting");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+
+
+</script>
+
 </body>
 </html>
