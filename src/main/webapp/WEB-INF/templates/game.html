@@ -19,24 +19,10 @@ td {
 <head></head>
 <body>
 <table border="2">
-  <thead>
-    <th> </th>
-    <th>A</th>
-    <th>B</th>
-    <th>C</th>
-    <th>D</th>
-    <th>E</th>
-    <th>F</th>
-    <th>G</th>
-    <th>H</th>
-  </thead>
   <tbody>
-  <tr th:if="${!snapshot.isActive()}">
-    <td colspan="2"> Game has been ended</td>
-  </tr>
-  <tr th:each="row : ${snapshot.boardMatrix()}">
-    <td th:each="cell : ${row}">
-      <span th:text="${cell}"> </span>
+  <tr th:each="row : ${snapshot.htmlBoardRepresentation()}">
+    <td th:each="cell : ${row}" align="center">
+      <span th:utext="${cell}" > </span>
     </td>
   </tr>
   </tbody>
@@ -47,7 +33,7 @@ td {
 <p>
 <form th:action="@{/play}" method="post">
   <input type="text" th:name="move"/>
-  <input type="submit" value="Make a move">
+  <input type="submit" value="Make a move" th:disabled="${!snapshot.isActive()}">
 </form>
 
 </p>

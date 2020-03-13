@@ -91,9 +91,8 @@ class FileGameStateSaverTest {
     tempFile.deleteOnExit();
   }
 
-  @Disabled
   @Test
   void findMostRecentSaveNew() {
-   assertFalse(new FileGameStateSaver("game").latestSave());
+   assertFalse(new FileGameStateSaver("RandomFIleName").latestSave());
   }
 }

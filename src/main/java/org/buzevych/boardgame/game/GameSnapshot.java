@@ -37,12 +37,13 @@ public class GameSnapshot {
     return board;
   }
 
-  public String[][] boardMatrix() {
-    String[][] cells = new String[this.board.getBoardHeight()][this.board.getBoardWeight()+1];
+  public String[][] htmlBoardRepresentation() {
+    String[][] cells = new String[this.board.getBoardHeight()+1][this.board.getBoardWeight()+1];
     int firstLetter = 'A';
     int lastLetter = firstLetter + board.getBoardWeight();
     for (int i = board.getBoardHeight(); i >= 1; i--) {
-      cells[i-1][0] = board.getBoardHeight() - i + 1 + "";
+      cells[i][0] = board.getBoardHeight() - i + 1 + "";
+      cells[0][board.getBoardWeight()-i +1] = (char) (firstLetter + board.getBoardWeight()-i) + "";
       for (int j = firstLetter; j < lastLetter; j++) {
         String cellKey = "" + (char) j + i;
         Cell cell = board.getBoardCells().get(cellKey);
@@ -50,7 +51,7 @@ public class GameSnapshot {
           String iconName = cell.getFigure().getIconStringName();
           int matrixI = board.getBoardHeight() - i;
           int matrixJ = j - firstLetter;
-          cells[matrixI][matrixJ+1] = board.getFigureIcons().get(iconName);
+          cells[matrixI+1][matrixJ+1] = board.getFigureIcons().get(iconName);
         }
       }
     }
@@ -109,6 +110,13 @@ public class GameSnapshot {
 
     Builder() {
       active = true;
+    }
+
+    Builder withGameAI(GameAI gameAI){
+      this.active = gameAI.isActive();
+      this.board = gameAI.getGameBoard();
+      this.gameStatusMessage = gameAI.getGameStatus();
+      return this;
     }
 
     Builder end() {

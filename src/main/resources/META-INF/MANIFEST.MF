@@ -1,1 +1,1 @@
-Main-Class: org.buzevych.client.ClientController
+Main-Class: org.buzevych.controller.ConsoleController

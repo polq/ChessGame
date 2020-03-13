@@ -4,10 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,6 +80,8 @@ public class FileGameStateSaver extends GameStateSaver {
       gameSave = new GameSave(gameID, gameName, commandsList);
     } catch (IOException e) {
       throw new IllegalArgumentException("No such file specified");
+    } catch (Exception e){
+      throw new IllegalArgumentException("Selected file does not correspond to a save file");
     }
     return gameSave;
   }
@@ -131,4 +130,7 @@ public class FileGameStateSaver extends GameStateSaver {
     this.filePath = filePath;
   }
 
+  public Path getFilePath() {
+    return filePath;
+  }
 }

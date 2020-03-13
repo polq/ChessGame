@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JDBCDataSourceTest {
 
+  // Only working if local DB is running
   @Disabled
   @Test
   void getMySQLDataSource() throws SQLException {

@@ -65,21 +65,11 @@ class JDBCGameStateSaverTest {
     verify(preparedStatement).executeUpdate();
     verify(connection).close();
   }
-
-  @Disabled
-  @Test
-  void testGetLatestSaveNewGame() {
-    LocalDateTime dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-    String id = UUID.randomUUID().toString();
-
-  }
-
-  @Disabled
   @Test
   void testGetLatestSaveLoad() throws SQLException {
     String gameName = UUID.randomUUID().toString();
     when(dataSource.getConnection()).thenReturn(connection);
-    JDBCGameStateSaver saver = new JDBCGameStateSaver(gameName);
-    saver.initialize();
+    JDBCGameStateSaver saver = new JDBCGameStateSaver(gameName, dataSource);
+    assertFalse(saver.latestSave());
   }
 }

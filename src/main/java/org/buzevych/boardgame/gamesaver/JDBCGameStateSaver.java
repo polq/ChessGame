@@ -112,7 +112,6 @@ public class JDBCGameStateSaver extends GameStateSaver {
    */
   @Override
   public boolean latestSave() {
-    DataSource dataSource = JDBCDataSource.getMySQLDataSource();
     try (Connection connection = dataSource.getConnection()) {
       PreparedStatement statement =
           connection.prepareStatement("SELECT max(game_id) FROM games Where game_name = ? ;");

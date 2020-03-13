@@ -1,4 +1,4 @@
-package org.buzevych.client;
+package org.buzevych.controller;
 
 import org.buzevych.boardgame.game.*;
 import org.buzevych.boardgame.gamesaver.FileGameStateSaver;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ClientController {
+public class ConsoleController {
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);

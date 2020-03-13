@@ -21,17 +21,16 @@ public class GameStarter {
   private GameStateSaver saver;
   private boolean isNewGame;
 
-  private GameStarter() {
-  }
+  private GameStarter() {}
 
   /**
    * Takes {@link String} line as an input command, checks it against validity and returns {@link
    * GameSnapshot} representation of current game situation and corresponding message.
    *
    * @param inputCommand {@link String} argument representing {@link Board} coordinates in the
-   *                     format : 'Letter''Number' separated by either of the following delimiters [
-   *                     -\./|] in case the figure should move several times in one turn, move
-   *                     coordinates should be specified in the sequential order
+   *     format : 'Letter''Number' separated by either of the following delimiters [ -\./|] in case
+   *     the figure should move several times in one turn, move coordinates should be specified in
+   *     the sequential order
    * @return {@link GameSnapshot} representation of the current game status
    * @throws IllegalArgumentException if param does not match the specified game board size
    */
@@ -40,15 +39,13 @@ public class GameStarter {
     try {
       gameAI.executeCommand(inputCommand.toUpperCase());
       gameAI.switchPlayer();
-      gameSnapshot =
-          new GameSnapshot.Builder()
-              .withBoard(gameAI.getGameBoard())
-              .withGameMessage(gameAI.getGameStatus())
-              .build();
+      gameSnapshot = new GameSnapshot.Builder().withGameAI(gameAI).build();
       saver.save(inputCommand);
     } catch (NullPointerException | IllegalArgumentException exception) {
-      gameSnapshot = new GameSnapshot.Builder().withBoard(gameAI.getGameBoard())
-          .withGameMessage(exception.getMessage()).build();
+      gameSnapshot =
+          new GameSnapshot.Builder()
+                  .withGameAI(gameAI)
+              .build();
     }
     return gameSnapshot;
   }
@@ -59,7 +56,7 @@ public class GameStarter {
    * ends.
    *
    * @return {@link GameSnapshot} either of just started game, if the game has just started or
-   * loaded game if save is present.
+   *     loaded game if save is present.
    */
   public GameSnapshot getStartedGameSnap() {
     if (!isNewGame) {
@@ -80,8 +77,7 @@ public class GameStarter {
                 });
 
         return new GameSnapshot.Builder()
-            .withBoard(this.gameAI.getGameBoard())
-            .withGameMessage(this.gameAI.getGameStatus())
+                .withGameAI(gameAI)
             .build();
       } catch (IllegalArgumentException | NullPointerException e) {
         return new GameSnapshot.Builder()

@@ -1,56 +1,48 @@
-package org.buzevych.client;
+package org.buzevych.controller;
 
 import org.buzevych.boardgame.game.GameAI;
 import org.buzevych.boardgame.game.GameStarter;
 import org.buzevych.boardgame.gamesaver.FileGameStateSaver;
 import com.beust.jcommander.ParameterException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClientControllerTest {
+class ConsoleControllerTest {
 
   @TempDir File tempDir;
 
   @Test
   void testGetGameAIChess() {
-    GameAI gameAI = ClientController.nameGameAI("chess", null);
+    GameAI gameAI = ConsoleController.nameGameAI("chess", null);
     assertEquals("chess", gameAI.getGameName());
   }
 
   @Test
   void testGetGameAICheckers() {
-    GameAI gameAI = ClientController.nameGameAI("checkers", null);
+    GameAI gameAI = ConsoleController.nameGameAI("checkers", null);
     assertEquals("checkers", gameAI.getGameName());
   }
 
   @Test
   void testGetGameAIFailGame() {
-    assertThrows(IllegalArgumentException.class, () -> ClientController.nameGameAI("pai sho", null));
+    assertThrows(
+        IllegalArgumentException.class, () -> ConsoleController.nameGameAI("pai sho", null));
   }
 
   @Test
   void testGetGameAICustomPlayers() {
     List<String> playerList = Arrays.asList("1", "2");
-    GameAI gameAI = ClientController.nameGameAI("chess", playerList);
+    GameAI gameAI = ConsoleController.nameGameAI("chess", playerList);
     assertEquals("1", Objects.requireNonNull(gameAI.getPlayerQueue().peek()).toString());
   }
 
@@ -59,26 +51,26 @@ class ClientControllerTest {
 
   @Test
   void testParseInputLineJustGame() {
-    ClientController.Args args = ClientController.parseInputLine("chess");
+    ConsoleController.Args args = ConsoleController.parseInputLine("chess");
     assertEquals("chess", args.gameName);
   }
 
   @Test
   void testParseInputLineNewGame() {
-    ClientController.Args args = ClientController.parseInputLine("chess -new");
+    ConsoleController.Args args = ConsoleController.parseInputLine("chess -new");
     assertTrue(args.newGame);
   }
 
   @Test
   void testParseInputLineLoad() {
-    ClientController.Args args = ClientController.parseInputLine("chess -load file.txt");
+    ConsoleController.Args args = ConsoleController.parseInputLine("chess -load file.txt");
     assertEquals("file.txt", args.gameFile);
   }
 
   @Test
   void testParseInputError() {
     assertThrows(
-        ParameterException.class, () -> ClientController.parseInputLine("chess load file.txt"));
+        ParameterException.class, () -> ConsoleController.parseInputLine("chess load file.txt"));
   }
 
   @Test
@@ -88,16 +80,15 @@ class ClientControllerTest {
     stateSaver.initialize();
 
     GameStarter starter =
-        ClientController.fileStarter(
-            ClientController.parseInputLine("chess -load " + tempFile.getAbsolutePath()));
+        ConsoleController.fileStarter(
+            ConsoleController.parseInputLine("chess -load " + tempFile.getAbsolutePath()));
     assertNotNull(starter);
   }
 
-  @Disabled
   @Test
   void testGetGameStarterFromFileNew() {
     GameStarter starter =
-        ClientController.fileStarter(ClientController.parseInputLine("chess -new"));
+        ConsoleController.fileStarter(ConsoleController.parseInputLine("chess -new"));
     starter.getStartedGameSnap();
     Optional<File> files =
         Arrays.stream(Objects.requireNonNull(Path.of(".").toFile().listFiles()))
@@ -108,15 +99,12 @@ class ClientControllerTest {
     files.get().deleteOnExit();
   }
 
-  @Disabled
   @Test
   void testGetGameStarterFromFileLatestSave() throws IOException {
     File tempFile = new File("chess_9");
     assertTrue(tempFile.createNewFile());
-    GameStarter starter =
-        ClientController.fileStarter(ClientController.parseInputLine("chess"));
+    GameStarter starter = ConsoleController.fileStarter(ConsoleController.parseInputLine("chess"));
     assertNotNull(starter);
     tempFile.deleteOnExit();
   }
-
 }
