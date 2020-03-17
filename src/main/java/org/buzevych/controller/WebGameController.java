@@ -81,7 +81,8 @@ public class WebGameController {
    * @return {@link String} representing index page.
    */
   @GetMapping("/")
-  public String index() {
+  public String index(Model model, Authentication authentication) {
+    model.addAttribute("username", authentication.getName());
     return "index";
   }
 
