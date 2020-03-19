@@ -19,7 +19,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -66,7 +65,6 @@ class WebGameControllerTest {
                 .param("gameName", "chess")
                 .param("sourceType", "File")
                 .param("startGame", ""))
-     //   .andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("game"))
         .andReturn();

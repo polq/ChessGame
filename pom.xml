@@ -25,6 +25,8 @@
         <commons.file.upload.version>1.4</commons.file.upload.version>
         <org.slf4j.verison>1.7.30</org.slf4j.verison>
         <org.hamcrest.version>2.2</org.hamcrest.version>
+        <org.hibernate.core.version>5.4.10.Final</org.hibernate.core.version>
+        <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version>
         <maven.var.plugin.version>3.2.2</maven.var.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -39,6 +41,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
 
@@ -63,7 +70,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>5.2.4.RELEASE</version>
+            <version>${org.springframework.version}</version>
         </dependency>
 
         <dependency>
@@ -152,12 +159,10 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.core.version}</version>
         </dependency>
-
-
 
     </dependencies>
 
@@ -172,7 +177,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.27.v20200227</version>
+                <version>${org.eclipse.jetty.version}</version>
             </plugin>
 
             <plugin>

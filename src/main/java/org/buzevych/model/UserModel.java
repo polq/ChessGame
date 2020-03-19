@@ -1,11 +1,18 @@
 package org.buzevych.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class UserModel {
 
+  @Id
   private String username;
+
   private String password;
+
+  @Column @ElementCollection
   private List<String> roles;
 
   public String getUsername() {

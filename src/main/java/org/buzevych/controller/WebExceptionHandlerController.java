@@ -40,19 +40,4 @@ public class WebExceptionHandlerController {
         "error", "There was some exception while reading a file " + throwable.getMessage());
     return "index";
   }
-
-  /**
-   * Method that is used to handle the unappropriated request to make a move without starting a
-   * game.
-   *
-   * @param throwable represents exception that was caught
-   * @param model used to access HTML based file and insert appropriate
-   * @return {@link String} that identifies which file will be loaded
-   */
-  @ExceptionHandler(NullPointerException.class)
-  private String nullPointerHandler(Throwable throwable, Model model) {
-    model.addAttribute(
-        "error", "There was a error while trying to make a move without starting a game");
-    return "index";
-  }
 }

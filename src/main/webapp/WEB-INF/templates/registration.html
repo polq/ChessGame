@@ -7,11 +7,11 @@
     </p>
     <div>
         <label>Username: </label>
-        <input th:field="*{username}"/>
+        <input th:field="*{username}" required/>
     </div>
     <div>
         <label>Password: </label>
-        <input type="password" th:field="*{password}"/>
+        <input type="password" th:field="*{password}" required/>
     </div>
     <button type="submit" th:text="Register"/>
 </form>

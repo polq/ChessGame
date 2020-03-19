@@ -2,9 +2,21 @@ package org.buzevych.repository;
 
 import org.buzevych.model.UserModel;
 
+/** Interface that is used to handle login/registration methods from a service class. */
 public interface UserRepository {
 
-    UserModel findByUsername (String userName);
+  /**
+   * Method is used to find a user by a username;
+   *
+   * @param username specifies user to be found
+   * @return retrieved user
+   */
+  UserModel findByUsername(String username);
 
-    UserModel save(UserModel user);
+  /**
+   * Used to save a new user
+   *
+   * @param user which should be save
+   */
+  void save(UserModel user);
 }
