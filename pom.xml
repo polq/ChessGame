@@ -19,6 +19,7 @@
         <jdbc.mysql.version>8.0.19</jdbc.mysql.version>
         <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
         <org.springframework.security.version>5.3.0.RELEASE</org.springframework.security.version>
+        <org.springframeword.data.version>2.2.5.RELEASE</org.springframeword.data.version>
         <org.thymeleaf.version>3.0.11.RELEASE</org.thymeleaf.version>
         <org.apache.tomcat.maven.plugin.version>2.2</org.apache.tomcat.maven.plugin.version>
         <org.javax.servlet.version>4.0.1</org.javax.servlet.version>
@@ -28,16 +29,21 @@
         <org.hibernate.core.version>5.4.10.Final</org.hibernate.core.version>
         <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version>
         <maven.var.plugin.version>3.2.2</maven.var.plugin.version>
+        <org.jsonwebtoken.version>0.9.1</org.jsonwebtoken.version>
+        <org.lombok.version>1.18.12</org.lombok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+
+        <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${org.springframework.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -74,44 +80,74 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${org.springframeword.data.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${org.springframeword.data.version}</version>
+        </dependency>
+
+        <!-- TEST dependencies -->
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${org.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${org.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>${org.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven.compiler.plugin.version}</version>
-            <type>maven-plugin</type>
-        </dependency>
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>${jcommander.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${jdbc.mysql.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${org.mockito.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${org.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- DB dependencies -->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${jdbc.mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.core.version}</version>
+        </dependency>
+
+        <!-- WEB dependencies -->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${org.javax.servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -127,17 +163,12 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${org.javax.servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>${commons.file.upload.version}</version>
         </dependency>
+
+        <!-- Log dependencies -->
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -151,18 +182,34 @@
             <version>${org.slf4j.verison}</version>
         </dependency>
 
+        <!-- Other -->
+
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>${org.hamcrest.version}</version>
-            <scope>test</scope>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${org.jsonwebtoken.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${org.hibernate.core.version}</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+            <type>maven-plugin</type>
         </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>${jcommander.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${org.lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
