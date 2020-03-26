@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<style type="text/css">
+table {
+	height: 200px;
+	width: 200px;
+	margin: 0; padding: 0;
+	border-collapse: collapse;
+}
+td {
+	border: 1px solid #CC3;
+	border-spacing: 0;
+	height: 20px;
+	width: 20px;
+	margin: 0; padding: 0;
+}
+
+</style>
+<head></head>
+<body>
+<table border="2">
+  <tbody>
+  <tr th:each="row : ${snapshot.htmlBoardRepresentation()}">
+    <td th:each="cell : ${row}" align="center">
+      <span th:utext="${cell}" > </span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<p>
+  <span th:text="${snapshot.gameStatusMessage}"/>
+</p>
+<p>
+<form th:action="@{/play}" method="post">
+  <input type="text" th:name="move"/>
+  <input type="submit" value="Make a move" th:disabled="${!snapshot.isActive()}">
+</form>
+
+</p>
+</body>
+</html>
