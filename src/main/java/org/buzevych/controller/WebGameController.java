@@ -4,6 +4,7 @@ import java.io.IOException;
 import org.buzevych.boardgame.game.GameSnapshot;
 import org.buzevych.service.WebGameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,8 @@ public class WebGameController {
    * @return {@link String} representing index page.
    */
   @GetMapping("/")
-  public String index() {
+  public String index(Model model, Authentication authentication) {
+    model.addAttribute("username", authentication.getName());
     return "index";
   }
 

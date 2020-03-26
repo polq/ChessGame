@@ -18,12 +18,15 @@
         <jcommander.version>1.78</jcommander.version>
         <jdbc.mysql.version>8.0.19</jdbc.mysql.version>
         <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
+        <org.springframework.security.version>5.3.0.RELEASE</org.springframework.security.version>
         <org.thymeleaf.version>3.0.11.RELEASE</org.thymeleaf.version>
         <org.apache.tomcat.maven.plugin.version>2.2</org.apache.tomcat.maven.plugin.version>
         <org.javax.servlet.version>4.0.1</org.javax.servlet.version>
         <commons.file.upload.version>1.4</commons.file.upload.version>
         <org.slf4j.verison>1.7.30</org.slf4j.verison>
         <org.hamcrest.version>2.2</org.hamcrest.version>
+        <org.hibernate.core.version>5.4.10.Final</org.hibernate.core.version>
+        <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version>
         <maven.var.plugin.version>3.2.2</maven.var.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -40,6 +43,36 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -125,6 +158,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.core.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -133,6 +172,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${org.eclipse.jetty.version}</version>
             </plugin>
 
             <plugin>
