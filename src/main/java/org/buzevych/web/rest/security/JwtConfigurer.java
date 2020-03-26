@@ -16,6 +16,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * Class that is used to configure Spring Security Adapter to used custom Filter based on JWT token
+ * provider. Has inner class that is used to add additional filter in a filter chain, which will get
+ * token from HTTP request header, check it for validity and set authentication made from it to
+ * SecurityContextHolder.
+ */
 public class JwtConfigurer
     extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 

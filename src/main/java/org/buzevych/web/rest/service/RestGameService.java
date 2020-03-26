@@ -1,5 +1,6 @@
 package org.buzevych.web.rest.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.extern.slf4j.Slf4j;
 import org.buzevych.core.boardgame.game.*;
 import org.buzevych.core.boardgame.gamesaver.JDBCGameStateSaver;
@@ -8,16 +9,26 @@ import org.buzevych.web.rest.repository.UserGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class that is used to handle main game requests, such as starting a new game by it's name for a
+ * specific user, to make a move in the specific game and to load game by it's gameid.
+ */
 @Service
 @Slf4j
 public class RestGameService {
 
-  @Autowired UserGameRepository userGameRepository;
+  private UserGameRepository userGameRepository;
+  private GameStarter starter;
+
+  @Autowired
+  public RestGameService(@Autowired UserGameRepository userGameRepository) {
+    this.userGameRepository = userGameRepository;
+  }
 
   public String startNewGame(String gameName, String username) {
     GameAI gameAI = gameAIByString(gameName);
     JDBCGameStateSaver saver = new JDBCGameStateSaver(gameName);
-    GameStarter starter =
+    starter =
         new GameStarter.Builder().withGameAI(gameAI).withGameSaver(saver).newGame(true).build();
     starter.getStartedGameSnap();
     String gameID = saver.getGameID();
@@ -27,10 +38,15 @@ public class RestGameService {
     return gameID;
   }
 
-  public GameSnapshot play(String move, String gameID) {
+  public GameSnapshot play(String move, String gameID, String username) {
     UserGame userGame = userGameRepository.findByGameID(gameID);
+    if (!userGame.getUsername().equals(username)) {
+      log.error("User with the username '{}' does not own '{}' game", username, gameID);
+      throw new IllegalArgumentException(
+          "Game " + gameID + " does not belong to the " + username + " user.");
+    }
     String gameName = userGame.getGameName();
-    GameStarter starter =
+    starter =
         new GameStarter.Builder()
             .withGameAI(gameAIByString(gameName))
             .withGameSaver(new JDBCGameStateSaver(gameName, gameID))
@@ -50,7 +66,7 @@ public class RestGameService {
       throw new IllegalArgumentException("User " + username + " does not own " + gameId);
     }
     String gameName = userGame.getGameName();
-    GameStarter starter =
+    starter =
         new GameStarter.Builder()
             .withGameAI(gameAIByString(gameName))
             .withGameSaver(new JDBCGameStateSaver(gameName, gameId))
@@ -69,5 +85,10 @@ public class RestGameService {
     } else {
       throw new IllegalArgumentException("No such game defined " + gameName);
     }
+  }
+
+  @VisibleForTesting
+  public void setStarter(GameStarter starter) {
+    this.starter = starter;
   }
 }

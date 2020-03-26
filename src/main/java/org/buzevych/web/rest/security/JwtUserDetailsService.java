@@ -1,6 +1,5 @@
 package org.buzevych.web.rest.security;
 
-import lombok.extern.slf4j.Slf4j;
 import org.buzevych.web.rest.model.JwtUser;
 import org.buzevych.web.rest.model.Role;
 import org.buzevych.web.rest.model.User;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -30,13 +28,12 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     List<GrantedAuthority> userAuthorities = convertToAuthorities(user.getRoles());
-    JwtUser jwtUser = new JwtUser(user.getID(), user.getUsername(), user.getPassword(), userAuthorities);
-    log.info("JwtUser with username {} successfully created", jwtUser.getUsername());
-
-    return jwtUser;
+    return new JwtUser(user.getID(), user.getUsername(), user.getPassword(), userAuthorities);
   }
 
-  private List<GrantedAuthority> convertToAuthorities(List<Role> roles){
-      return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+  private List<GrantedAuthority> convertToAuthorities(List<Role> roles) {
+    return roles.stream()
+        .map(role -> new SimpleGrantedAuthority(role.getName()))
+        .collect(Collectors.toList());
   }
 }

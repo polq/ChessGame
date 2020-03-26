@@ -3,7 +3,6 @@ package org.buzevych.web.mvc.controller;
 import org.buzevych.core.boardgame.game.GameSnapshot;
 import org.buzevych.web.mvc.service.WebGameService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -38,16 +37,6 @@ class WebGameControllerTest {
   void init() {
     controller = new WebGameController(service);
     this.mockMvc = MockMvcBuilders.standaloneSetup(controller).setCustomArgumentResolvers().build();
-  }
-
-  @Disabled
-  @Test
-  void testIndexPage() throws Exception {
-    this.mockMvc
-        .perform(MockMvcRequestBuilders.get("/"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("index"))
-        .andReturn();
   }
 
   @Test

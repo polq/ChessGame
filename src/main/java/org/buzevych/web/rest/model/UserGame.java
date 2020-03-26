@@ -1,12 +1,14 @@
 package org.buzevych.web.rest.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "user_games")
+@NoArgsConstructor
 public class UserGame {
 
   @Id

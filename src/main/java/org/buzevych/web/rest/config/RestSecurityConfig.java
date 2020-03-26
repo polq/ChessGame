@@ -7,23 +7,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * Security Configuration class that that defines that all REST request to the application (beside
+ * the authorization ones) should be authorized with the defined JWT token provider. Additionally
+ * specifies password encoder that will be used to store user credentials in the DB.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
 @ComponentScan("org.buzevych.web.rest")
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
-
-  @Autowired UserDetailsService userDetailsService;
 
   @Autowired JwtTokenProvider jwtTokenProvider;
 
@@ -40,9 +41,12 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.httpBasic().disable()
-        .csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    http.httpBasic()
+        .disable()
+        .csrf()
+        .disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
         .antMatchers("/rest/auth/*")

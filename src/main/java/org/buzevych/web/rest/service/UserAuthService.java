@@ -13,16 +13,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+/**
+ * Class that is used to handle user authorization requests sent from a controller, has method to
+ * register a new user and to find a user by username.
+ */
 @Service
 @Slf4j
-public class UserService {
+public class UserAuthService {
 
   private UserRepository userRepository;
   private RoleRepository roleRepository;
   private PasswordEncoder encoder;
 
   @Autowired
-  public UserService(
+  public UserAuthService(
       UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
@@ -42,7 +46,7 @@ public class UserService {
     newUser.setUsername(user.getUsername());
     newUser.setPassword(encoder.encode(user.getPassword()));
     newUser.setRoles(Collections.singletonList(role));
-    userRepository.save(newUser);
+    newUser = userRepository.save(newUser);
 
     log.info("User {} successfully saved", newUser.getUsername());
 

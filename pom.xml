@@ -31,6 +31,8 @@
         <maven.var.plugin.version>3.2.2</maven.var.plugin.version>
         <org.jsonwebtoken.version>0.9.1</org.jsonwebtoken.version>
         <org.lombok.version>1.18.12</org.lombok.version>
+        <org.json.version>20190722</org.json.version>
+        <org.jsonpath.version>2.4.0</org.jsonpath.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -90,6 +92,15 @@
             <artifactId>spring-data-commons</artifactId>
             <version>${org.springframeword.data.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${org.springframework.security.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- TEST dependencies -->
         <dependency>
@@ -208,6 +219,19 @@
             <artifactId>lombok</artifactId>
             <version>${org.lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${org.json.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${org.jsonpath.version}</version>
         </dependency>
 
 

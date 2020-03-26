@@ -18,6 +18,11 @@ import javax.sql.DataSource;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Configuration class which contains Beans for enabling entityManagerFactory, dataSource and
+ * transactional manager for a full JPA support as well as Spring Data JPA {@link
+ * org.springframework.data.jpa.repository.JpaRepository}
+ */
 @Configuration
 @EnableJpaRepositories("org.buzevych.web.rest.repository")
 @PropertySource("classpath:db.properties")
@@ -49,7 +54,7 @@ public class DataRepositoryConfig {
     return factory;
   }
 
-  @Bean(name="transactionManager")
+  @Bean(name = "transactionManager")
   public PlatformTransactionManager manager(EntityManagerFactory emf) {
     JpaTransactionManager transactionManager = new JpaTransactionManager();
     transactionManager.setEntityManagerFactory(emf);
