@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,7 +74,7 @@ public class JwtTokenProvider {
   public boolean validateToken(String token) {
     try {
       Jws<Claims> claims = Jwts.parser().setSigningKey(JWT_TOKEN_SALT).parseClaimsJws(token);
-      boolean valid = claims.getBody().getExpiration().before(new Date());
+      boolean valid = !claims.getBody().getExpiration().before(new Date());
       log.info("Token {} is valid - {}", token, valid);
       return valid;
     } catch (JwtException | IllegalArgumentException e) {

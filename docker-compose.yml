@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  sql-rest:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=rest_game_db
+
+  tomcat-web-image:
+    build:
+      context: ./
+      dockerfile: ./src/main/docker/Dockerfile
+    image: tomcat-web-image:latest
+    restart: always
+    ports:
+      - 8080:8080
+      - 8000:8000
+    depends_on:
+      - sql-rest
+    command: ["/wait-for-it.sh", "sql-rest:3306", "--", "catalina.sh", "jpda", "run"]

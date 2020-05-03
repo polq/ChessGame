@@ -1,6 +1,7 @@
 package org.buzevych.web.rest.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "roles")
 @Data
 @ToString
+@NoArgsConstructor
 public class Role {
 
   @Id
@@ -20,8 +22,11 @@ public class Role {
   @Column(name = "name")
   private String name;
 
-  @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
   private List<User> users;
 
+  public Role(String name) {
+    this.name = name;
+  }
 
 }

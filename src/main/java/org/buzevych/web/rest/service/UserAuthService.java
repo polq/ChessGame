@@ -42,6 +42,9 @@ public class UserAuthService {
           "User with the '" + user.getUsername() + "' username is already registered");
     }
     Role role = roleRepository.findByName("USER");
+    if (role == null) {
+      role = roleRepository.save(new Role("USER"));
+    }
     User newUser = new User();
     newUser.setUsername(user.getUsername());
     newUser.setPassword(encoder.encode(user.getPassword()));
